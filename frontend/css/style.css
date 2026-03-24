@@ -1,0 +1,754 @@
+/* ============================================================
+   style.css — Feuille de styles MaliXplore
+   Thème Bogolan : terres maliennes, motifs géométriques
+   ============================================================ */
+
+/* ── Variables de couleur ────────────────────────────────── */
+:root {
+  --bogo-dark  : #1C120A;
+  --bogo-brown : #5C3A1E;
+  --bogo-clay  : #A0522D;
+  --bogo-sand  : #D4A96A;
+  --bogo-cream : #F2E4C4;
+  --bogo-red   : #8B1A1A;
+  --bogo-gold  : #C8860A;
+}
+
+/* ── Reset et base ────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin : 0;
+  padding: 0;
+}
+
+body {
+  font-family   : system-ui, -apple-system, sans-serif;
+  font-size     : 16px;
+  color         : var(--bogo-cream);
+  background    : var(--bogo-dark);
+  min-height    : 100vh;
+  line-height   : 1.6;
+}
+
+h1, h2, h3, h4 {
+  font-family: Georgia, serif;
+  color      : var(--bogo-sand);
+}
+
+a {
+  color          : var(--bogo-gold);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ============================================================
+   MOTIF BOGOLAN — arrière-plan géométrique pour pages auth
+   ============================================================ */
+.page-auth {
+  background-color : var(--bogo-dark);
+  background-image : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Crect width='60' height='60' fill='%231C120A'/%3E%3Crect x='0' y='0' width='20' height='20' fill='none' stroke='%235C3A1E' stroke-width='1.5'/%3E%3Crect x='20' y='20' width='20' height='20' fill='none' stroke='%235C3A1E' stroke-width='1.5'/%3E%3Crect x='40' y='40' width='20' height='20' fill='none' stroke='%235C3A1E' stroke-width='1.5'/%3E%3Cline x1='0' y1='0' x2='20' y2='20' stroke='%235C3A1E' stroke-width='1'/%3E%3Cline x1='20' y1='0' x2='40' y2='20' stroke='%235C3A1E' stroke-width='1'/%3E%3Cline x1='40' y1='0' x2='60' y2='20' stroke='%235C3A1E' stroke-width='1'/%3E%3Ccircle cx='10' cy='10' r='2' fill='%23C8860A' opacity='0.4'/%3E%3Ccircle cx='30' cy='30' r='2' fill='%23C8860A' opacity='0.4'/%3E%3Ccircle cx='50' cy='50' r='2' fill='%23C8860A' opacity='0.4'/%3E%3Ccircle cx='50' cy='10' r='2' fill='%23A0522D' opacity='0.3'/%3E%3Ccircle cx='10' cy='50' r='2' fill='%23A0522D' opacity='0.3'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* ============================================================
+   CONTENEUR PRINCIPAL AUTH
+   ============================================================ */
+.auth-wrapper {
+  display        : flex;
+  flex-direction : column;
+  align-items    : center;
+  justify-content: center;
+  min-height     : 100vh;
+  padding        : 2rem 1rem;
+}
+
+.auth-box {
+  background   : rgba(28, 18, 10, 0.92);
+  border       : 1px solid var(--bogo-gold);
+  border-radius: 12px;
+  padding      : 2.5rem;
+  width        : 100%;
+  max-width    : 460px;
+  box-shadow   : 0 8px 32px rgba(0,0,0,0.5);
+}
+
+/* Logo / titre du site */
+.auth-logo {
+  text-align   : center;
+  margin-bottom: 1.5rem;
+}
+
+.auth-logo h1 {
+  font-size : 2rem;
+  color     : var(--bogo-gold);
+  letter-spacing: 2px;
+}
+
+.auth-logo p {
+  color    : var(--bogo-sand);
+  font-size: 0.85rem;
+}
+
+.auth-box h2 {
+  font-size    : 1.3rem;
+  margin-bottom: 1.5rem;
+  text-align   : center;
+  color        : var(--bogo-cream);
+}
+
+/* ============================================================
+   INDICATEUR DE PROGRESSION MFA
+   ============================================================ */
+.mfa-indicateur {
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+  margin-bottom  : 2rem;
+  gap            : 0;
+}
+
+.mfa-etape {
+  display        : flex;
+  flex-direction : column;
+  align-items    : center;
+  gap            : 4px;
+}
+
+.mfa-cercle {
+  width          : 40px;
+  height         : 40px;
+  border-radius  : 50%;
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+  font-weight    : bold;
+  font-size      : 0.95rem;
+  border         : 2px solid;
+  transition     : all 0.3s ease;
+}
+
+/* État : à venir (gris) */
+.mfa-cercle.gris {
+  background  : transparent;
+  border-color: #555;
+  color       : #777;
+}
+
+/* État : en cours (or) */
+.mfa-cercle.or {
+  background  : var(--bogo-gold);
+  border-color: var(--bogo-gold);
+  color       : var(--bogo-dark);
+  box-shadow  : 0 0 12px rgba(200, 134, 10, 0.5);
+}
+
+/* État : validé (vert) */
+.mfa-cercle.vert {
+  background  : #14532d;
+  border-color: #22c55e;
+  color       : #22c55e;
+}
+
+.mfa-label {
+  font-size: 0.7rem;
+  color    : #888;
+}
+
+.mfa-label.active {
+  color: var(--bogo-gold);
+}
+
+.mfa-label.valide {
+  color: #22c55e;
+}
+
+/* Ligne de connexion entre les cercles */
+.mfa-ligne {
+  width      : 50px;
+  height     : 2px;
+  background : #444;
+  margin     : 0 4px;
+  margin-top : -18px;
+}
+
+.mfa-ligne.valide {
+  background: #22c55e;
+}
+
+/* ============================================================
+   FORMULAIRES
+   ============================================================ */
+.form-groupe {
+  margin-bottom: 1.2rem;
+}
+
+.form-groupe label {
+  display      : block;
+  margin-bottom: 0.4rem;
+  font-size    : 0.9rem;
+  color        : var(--bogo-sand);
+}
+
+.form-groupe input,
+.form-groupe select {
+  width        : 100%;
+  background   : rgba(255, 255, 255, 0.08);
+  border       : 1px solid var(--bogo-sand);
+  color        : var(--bogo-cream);
+  border-radius: 6px;
+  padding      : 10px 14px;
+  font-size    : 1rem;
+  transition   : border-color 0.2s;
+  outline      : none;
+}
+
+.form-groupe input:focus,
+.form-groupe select:focus {
+  border-color: var(--bogo-gold);
+  box-shadow  : 0 0 0 2px rgba(200, 134, 10, 0.2);
+}
+
+.form-groupe select option {
+  background: var(--bogo-dark);
+  color     : var(--bogo-cream);
+}
+
+/* Texte d'aide sous les champs */
+.aide-champ {
+  font-size : 0.78rem;
+  color     : var(--bogo-sand);
+  margin-top: 0.3rem;
+  opacity   : 0.8;
+}
+
+/* ── Champs d'erreur ──────────────────────────────────────── */
+.erreur-champ {
+  font-size         : 0.82rem;
+  color             : #F0ADAD;
+  background        : rgba(139, 26, 26, 0.2);
+  border-radius     : 4px;
+  padding           : 4px 8px;
+  margin-top        : 4px;
+  display           : none;
+}
+
+.erreur-champ.visible {
+  display: block;
+}
+
+/* ── Message d'erreur global ─────────────────────────────── */
+.message-erreur {
+  background   : rgba(139, 26, 26, 0.2);
+  border       : 1px solid var(--bogo-red);
+  border-radius: 6px;
+  padding      : 10px 14px;
+  color        : #F0ADAD;
+  margin-bottom: 1rem;
+  font-size    : 0.9rem;
+  display      : none;
+}
+
+.message-erreur.visible {
+  display: block;
+}
+
+/* ── Message de succès ───────────────────────────────────── */
+.message-succes {
+  background   : rgba(20, 83, 45, 0.2);
+  border       : 1px solid #22c55e;
+  border-radius: 6px;
+  padding      : 10px 14px;
+  color        : #9FE1CB;
+  margin-bottom: 1rem;
+  font-size    : 0.9rem;
+  display      : none;
+}
+
+.message-succes.visible {
+  display: block;
+}
+
+/* ============================================================
+   BOUTONS
+   ============================================================ */
+.btn-primaire {
+  width        : 100%;
+  background   : var(--bogo-clay);
+  color        : var(--bogo-cream);
+  border       : none;
+  border-radius: 6px;
+  padding      : 12px;
+  font-size    : 1rem;
+  font-family  : Georgia, serif;
+  cursor       : pointer;
+  transition   : background 0.2s, transform 0.1s;
+  margin-top   : 0.5rem;
+}
+
+.btn-primaire:hover {
+  background: var(--bogo-brown);
+}
+
+.btn-primaire:active {
+  transform: scale(0.98);
+}
+
+.btn-primaire:disabled {
+  opacity: 0.6;
+  cursor : not-allowed;
+}
+
+/* ── Lien de navigation sous les formulaires ─────────────── */
+.lien-nav {
+  text-align : center;
+  margin-top : 1.2rem;
+  font-size  : 0.88rem;
+  color      : #aaa;
+}
+
+/* ============================================================
+   CHAMPS OTP — 6 cases séparées
+   ============================================================ */
+.otp-grille {
+  display        : flex;
+  justify-content: center;
+  gap            : 10px;
+  margin         : 1rem 0;
+}
+
+.otp-chiffre {
+  width          : 50px;
+  height         : 58px;
+  background     : rgba(255, 255, 255, 0.08);
+  border         : 2px solid var(--bogo-sand);
+  border-radius  : 8px;
+  text-align     : center;
+  font-size      : 1.6rem;
+  font-weight    : bold;
+  color          : var(--bogo-cream);
+  outline        : none;
+  transition     : border-color 0.2s;
+}
+
+.otp-chiffre:focus {
+  border-color: var(--bogo-gold);
+  box-shadow  : 0 0 0 2px rgba(200, 134, 10, 0.3);
+}
+
+/* ============================================================
+   HEADER (pages accueil et mali)
+   ============================================================ */
+.site-header {
+  background    : rgba(28, 18, 10, 0.95);
+  border-bottom : 2px solid var(--bogo-gold);
+  padding       : 1rem 2rem;
+  display       : flex;
+  align-items   : center;
+  justify-content: space-between;
+  position      : sticky;
+  top           : 0;
+  z-index       : 100;
+}
+
+.header-logo {
+  font-family   : Georgia, serif;
+  font-size     : 1.5rem;
+  color         : var(--bogo-gold);
+  letter-spacing: 2px;
+}
+
+.header-droite {
+  display    : flex;
+  align-items: center;
+  gap        : 1rem;
+}
+
+.header-nom {
+  color    : var(--bogo-sand);
+  font-size: 0.9rem;
+}
+
+.btn-deconnexion {
+  background   : transparent;
+  border       : 1px solid var(--bogo-clay);
+  color        : var(--bogo-cream);
+  border-radius: 6px;
+  padding      : 6px 14px;
+  cursor       : pointer;
+  font-size    : 0.85rem;
+  transition   : background 0.2s;
+}
+
+.btn-deconnexion:hover {
+  background: var(--bogo-brown);
+}
+
+/* ============================================================
+   PAGE ACCUEIL
+   ============================================================ */
+.accueil-hero {
+  text-align: center;
+  padding   : 3rem 1rem 2rem;
+}
+
+.accueil-hero h1 {
+  font-size    : 2.2rem;
+  color        : var(--bogo-gold);
+  margin-bottom: 0.5rem;
+}
+
+.accueil-hero p {
+  color    : var(--bogo-sand);
+  font-size: 1.1rem;
+}
+
+.grille-cartes {
+  display              : grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap                  : 1.5rem;
+  padding              : 2rem;
+  max-width            : 1000px;
+  margin               : 0 auto;
+}
+
+/* ── Carte ────────────────────────────────────────────────── */
+.carte {
+  background   : rgba(92, 58, 30, 0.3);
+  border       : 1px solid var(--bogo-gold);
+  border-radius: 8px;
+  padding      : 1.5rem;
+  cursor       : pointer;
+  transition   : transform 0.2s, box-shadow 0.2s, background 0.2s;
+  text-decoration: none;
+  display      : block;
+}
+
+.carte:hover {
+  transform : translateY(-4px);
+  background: rgba(92, 58, 30, 0.55);
+  box-shadow: 0 8px 24px rgba(200, 134, 10, 0.2);
+  text-decoration: none;
+}
+
+.carte-icone {
+  font-size    : 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.carte h3 {
+  color        : var(--bogo-sand);
+  margin-bottom: 0.4rem;
+}
+
+.carte p {
+  font-size: 0.88rem;
+  color    : #bbb;
+}
+
+/* ============================================================
+   PAGE MALI — ONGLETS
+   ============================================================ */
+.onglets-nav {
+  display        : flex;
+  gap            : 0;
+  border-bottom  : 2px solid var(--bogo-gold);
+  padding        : 0 2rem;
+  background     : rgba(28, 18, 10, 0.8);
+}
+
+.onglet-btn {
+  background   : transparent;
+  border       : none;
+  border-bottom: 3px solid transparent;
+  color        : var(--bogo-sand);
+  padding      : 1rem 1.5rem;
+  cursor       : pointer;
+  font-size    : 1rem;
+  font-family  : Georgia, serif;
+  transition   : color 0.2s, border-color 0.2s;
+  margin-bottom: -2px;
+}
+
+.onglet-btn:hover {
+  color: var(--bogo-cream);
+}
+
+.onglet-btn.actif {
+  color        : var(--bogo-gold);
+  border-bottom: 3px solid var(--bogo-gold);
+}
+
+/* Contenu des onglets */
+.onglet-contenu {
+  display: none;
+  padding: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.onglet-contenu.actif {
+  display: block;
+}
+
+/* ── Grille de fiches ─────────────────────────────────────── */
+.grille-fiches {
+  display              : grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap                  : 1.5rem;
+}
+
+.fiche {
+  background   : rgba(92, 58, 30, 0.3);
+  border       : 1px solid var(--bogo-gold);
+  border-radius: 8px;
+  padding      : 1.25rem;
+  cursor       : pointer;
+  transition   : transform 0.2s, background 0.2s;
+}
+
+.fiche:hover {
+  transform : translateY(-3px);
+  background: rgba(92, 58, 30, 0.5);
+}
+
+.fiche h3 {
+  color        : var(--bogo-sand);
+  margin-bottom: 0.5rem;
+}
+
+.fiche-resume {
+  font-size: 0.85rem;
+  color    : #bbb;
+}
+
+/* ── Tags ─────────────────────────────────────────────────── */
+.tags {
+  display  : flex;
+  flex-wrap: wrap;
+  gap      : 6px;
+  margin-top: 0.75rem;
+}
+
+.tag {
+  background   : rgba(200, 134, 10, 0.15);
+  border       : 1px solid var(--bogo-gold);
+  color        : var(--bogo-sand);
+  border-radius: 20px;
+  padding      : 2px 10px;
+  font-size    : 0.75rem;
+}
+
+/* ============================================================
+   MODAL — Détail d'une fiche
+   ============================================================ */
+.modal-overlay {
+  position        : fixed;
+  inset           : 0;
+  background      : rgba(0,0,0,0.75);
+  display         : flex;
+  align-items     : center;
+  justify-content : center;
+  z-index         : 200;
+  padding         : 1rem;
+  opacity         : 0;
+  pointer-events  : none;
+  transition      : opacity 0.25s;
+}
+
+.modal-overlay.visible {
+  opacity       : 1;
+  pointer-events: auto;
+}
+
+.modal-boite {
+  background   : var(--bogo-dark);
+  border       : 1px solid var(--bogo-gold);
+  border-radius: 12px;
+  padding      : 2rem;
+  max-width    : 560px;
+  width        : 100%;
+  max-height   : 85vh;
+  overflow-y   : auto;
+  position     : relative;
+}
+
+.modal-fermer {
+  position  : absolute;
+  top       : 1rem;
+  right     : 1rem;
+  background: transparent;
+  border    : none;
+  color     : var(--bogo-sand);
+  font-size : 1.4rem;
+  cursor    : pointer;
+}
+
+.modal-fermer:hover {
+  color: var(--bogo-cream);
+}
+
+.modal-titre {
+  font-size    : 1.4rem;
+  color        : var(--bogo-gold);
+  margin-bottom: 1rem;
+}
+
+.modal-contenu {
+  color    : var(--bogo-cream);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.modal-contenu ul {
+  padding-left: 1.2rem;
+  margin      : 0.5rem 0;
+}
+
+/* ── Section Quiz dans la modal ──────────────────────────── */
+.quiz-section {
+  margin-top  : 1.5rem;
+  border-top  : 1px solid var(--bogo-brown);
+  padding-top : 1rem;
+}
+
+.quiz-section h4 {
+  color        : var(--bogo-sand);
+  margin-bottom: 0.75rem;
+}
+
+.quiz-question {
+  font-size    : 0.95rem;
+  color        : var(--bogo-cream);
+  margin-bottom: 1rem;
+}
+
+.quiz-options {
+  display       : flex;
+  flex-direction: column;
+  gap           : 8px;
+}
+
+.quiz-option {
+  background   : rgba(255, 255, 255, 0.05);
+  border       : 1px solid var(--bogo-brown);
+  border-radius: 6px;
+  padding      : 10px 14px;
+  cursor       : pointer;
+  color        : var(--bogo-cream);
+  text-align   : left;
+  font-size    : 0.9rem;
+  transition   : background 0.2s, border-color 0.2s;
+}
+
+.quiz-option:hover:not(:disabled) {
+  background  : rgba(160, 82, 45, 0.3);
+  border-color: var(--bogo-clay);
+}
+
+/* Réponse correcte */
+.quiz-option.correct {
+  background  : rgba(20, 83, 45, 0.4);
+  border-color: #22c55e;
+  color       : #9FE1CB;
+}
+
+/* Réponse incorrecte */
+.quiz-option.incorrect {
+  background  : rgba(139, 26, 26, 0.4);
+  border-color: var(--bogo-red);
+  color       : #F0ADAD;
+}
+
+.quiz-feedback {
+  margin-top   : 0.75rem;
+  padding      : 8px 12px;
+  border-radius: 6px;
+  font-size    : 0.88rem;
+  display      : none;
+}
+
+.quiz-feedback.correct {
+  background: rgba(20, 83, 45, 0.2);
+  color     : #9FE1CB;
+  display   : block;
+}
+
+.quiz-feedback.incorrect {
+  background: rgba(139, 26, 26, 0.2);
+  color     : #F0ADAD;
+  display   : block;
+}
+
+/* Boutons de la modal */
+.modal-actions {
+  display    : flex;
+  gap        : 10px;
+  margin-top : 1.5rem;
+  flex-wrap  : wrap;
+}
+
+.btn-quiz {
+  background   : var(--bogo-clay);
+  color        : var(--bogo-cream);
+  border       : none;
+  border-radius: 6px;
+  padding      : 10px 18px;
+  cursor       : pointer;
+  font-size    : 0.9rem;
+  transition   : background 0.2s;
+}
+
+.btn-quiz:hover {
+  background: var(--bogo-brown);
+}
+
+.btn-fermer-modal {
+  background   : transparent;
+  border       : 1px solid var(--bogo-clay);
+  color        : var(--bogo-cream);
+  border-radius: 6px;
+  padding      : 10px 18px;
+  cursor       : pointer;
+  font-size    : 0.9rem;
+  transition   : background 0.2s;
+}
+
+.btn-fermer-modal:hover {
+  background: rgba(92, 58, 30, 0.3);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 480px) {
+  .auth-box {
+    padding: 1.5rem;
+  }
+
+  .otp-grille {
+    gap: 6px;
+  }
+
+  .otp-chiffre {
+    width : 42px;
+    height: 50px;
+    font-size: 1.3rem;
+  }
+
+  .grille-cartes {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .onglets-nav {
+    padding: 0 0.5rem;
+  }
+
+  .onglet-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+}

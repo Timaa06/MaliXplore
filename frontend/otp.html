@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code OTP — MaliXplore</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-auth">
+
+  <div class="auth-wrapper">
+    <div class="auth-box">
+
+      <!-- Logo -->
+      <div class="auth-logo">
+        <h1>MaliXplore</h1>
+        <p>Découvrez la richesse du Mali</p>
+      </div>
+
+      <!-- Indicateur de progression MFA -->
+      <div class="mfa-indicateur" aria-label="Étapes de connexion MFA">
+        <!-- Étape 1 : validée (vert) -->
+        <div class="mfa-etape">
+          <div class="mfa-cercle vert" aria-label="Étape 1 validée">✓</div>
+          <span class="mfa-label valide">Identité</span>
+        </div>
+
+        <!-- Ligne validée -->
+        <div class="mfa-ligne valide"></div>
+
+        <!-- Étape 2 : active (or) -->
+        <div class="mfa-etape">
+          <div class="mfa-cercle or" aria-current="step">2</div>
+          <span class="mfa-label active">OTP</span>
+        </div>
+
+        <!-- Ligne en attente -->
+        <div class="mfa-ligne"></div>
+
+        <!-- Étape 3 : à venir (gris) -->
+        <div class="mfa-etape">
+          <div class="mfa-cercle gris">3</div>
+          <span class="mfa-label">Secret</span>
+        </div>
+      </div>
+
+      <h2>Connexion — Étape 2</h2>
+
+      <p style="text-align:center; color:var(--bogo-sand); margin-bottom:1rem; font-size:0.9rem;">
+        Entrez votre code OTP personnel que vous avez défini à l'inscription
+      </p>
+
+      <!-- Message d'erreur -->
+      <div id="msg-erreur" class="message-erreur" role="alert"></div>
+
+      <!-- Formulaire OTP -->
+      <form id="form-otp" novalidate>
+
+        <!-- 6 cases de saisie OTP -->
+        <div class="otp-grille" aria-label="Saisie du code OTP à 6 chiffres">
+          <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 1">
+          <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 2">
+          <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 3">
+          <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 4">
+          <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 5">
+          <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 6">
+        </div>
+
+        <!-- Bouton -->
+        <button type="submit" class="btn-primaire" id="btn-verifier">
+          Vérifier
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+
+  <script>
+    const form       = document.getElementById('form-otp');
+    const btnVerif   = document.getElementById('btn-verifier');
+    const msgErreur  = document.getElementById('msg-erreur');
+    const cases      = document.querySelectorAll('.otp-chiffre');
+
+    // ── Focus automatique sur la première case au chargement ──
+    cases[0].focus();
+
+    // ── Gestion de la navigation entre les cases OTP ──────────
+    cases.forEach((input, index) => {
+
+      // N'autoriser que les chiffres
+      input.addEventListener('keypress', (e) => {
+        if (!/[0-9]/.test(e.key)) {
+          e.preventDefault();
+        }
+      });
+
+      // Avancer automatiquement à la case suivante après saisie
+      input.addEventListener('input', (e) => {
+        // Conserver uniquement le dernier chiffre saisi
+        input.value = input.value.replace(/\D/g, '').slice(-1);
+
+        if (input.value && index < cases.length - 1) {
+          cases[index + 1].focus();
+        }
+      });
+
+      // Gestion de la touche Retour arrière
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && index > 0) {
+          cases[index - 1].focus();
+        }
+      });
+
+      // Gestion du collage d'un code complet
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const colle = (e.clipboardData || window.clipboardData)
+          .getData('text')
+          .replace(/\D/g, '')
+          .slice(0, 6);
+
+        colle.split('').forEach((chiffre, i) => {
+          if (cases[i]) cases[i].value = chiffre;
+        });
+
+        // Focus sur la dernière case remplie
+        const dernier = Math.min(colle.length - 1, cases.length - 1);
+        if (dernier >= 0) cases[dernier].focus();
+      });
+    });
+
+    // ── Soumission du formulaire OTP ───────────────────────────
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msgErreur.classList.remove('visible');
+
+      // Assembler le code OTP depuis les 6 cases
+      const otp_code = Array.from(cases).map(c => c.value).join('');
+
+      if (otp_code.length !== 6 || !/^\d{6}$/.test(otp_code)) {
+        msgErreur.textContent = 'Veuillez saisir les 6 chiffres de votre code OTP';
+        msgErreur.classList.add('visible');
+        return;
+      }
+
+      btnVerif.disabled    = true;
+      btnVerif.textContent = 'Vérification…';
+
+      try {
+        const reponse = await fetch('/auth/otp', {
+          method : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body   : JSON.stringify({ otp_code })
+        });
+
+        const donnees = await reponse.json();
+
+        if (!reponse.ok) {
+          msgErreur.textContent = donnees.erreur || 'Code OTP incorrect';
+          msgErreur.classList.add('visible');
+
+          // Vider les cases et refocaliser sur la première
+          cases.forEach(c => c.value = '');
+          cases[0].focus();
+
+          // Si session invalide, rediriger vers l'accueil
+          if (donnees.redirect) {
+            setTimeout(() => { window.location.href = donnees.redirect; }, 1500);
+          }
+        } else {
+          // Rediriger vers l'étape 3 (question secrète)
+          window.location.href = donnees.redirect || '/secret.html';
+        }
+
+      } catch (err) {
+        msgErreur.textContent = 'Erreur réseau. Vérifiez votre connexion.';
+        msgErreur.classList.add('visible');
+      } finally {
+        btnVerif.disabled    = false;
+        btnVerif.textContent = 'Vérifier';
+      }
+    });
+  </script>
+
+</body>
+</html>

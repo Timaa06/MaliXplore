@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription — MaliXplore</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-auth">
+
+  <div class="auth-wrapper">
+    <div class="auth-box">
+
+      <!-- Logo -->
+      <div class="auth-logo">
+        <h1>MaliXplore</h1>
+        <p>Découvrez la richesse du Mali</p>
+      </div>
+
+      <h2>Créer un compte MaliXplore</h2>
+
+      <!-- Message de succès global -->
+      <div id="msg-succes" class="message-succes" role="alert"></div>
+
+      <!-- Message d'erreur global -->
+      <div id="msg-erreur" class="message-erreur" role="alert"></div>
+
+      <!-- Formulaire d'inscription -->
+      <form id="form-inscription" novalidate>
+
+        <!-- Nom d'utilisateur -->
+        <div class="form-groupe">
+          <label for="nom">Nom d'utilisateur</label>
+          <input
+            type="text"
+            id="nom"
+            name="nom"
+            placeholder="Votre nom d'utilisateur"
+            autocomplete="username"
+            required
+          >
+          <div class="erreur-champ" id="err-nom"></div>
+        </div>
+
+        <!-- Mot de passe -->
+        <div class="form-groupe">
+          <label for="mot_de_passe">Mot de passe</label>
+          <input
+            type="password"
+            id="mot_de_passe"
+            name="mot_de_passe"
+            placeholder="Votre mot de passe"
+            autocomplete="new-password"
+            required
+          >
+          <div class="erreur-champ" id="err-mdp"></div>
+        </div>
+
+        <!-- Confirmer le mot de passe -->
+        <div class="form-groupe">
+          <label for="confirmer_mot_de_passe">Confirmer le mot de passe</label>
+          <input
+            type="password"
+            id="confirmer_mot_de_passe"
+            name="confirmer_mot_de_passe"
+            placeholder="Répétez votre mot de passe"
+            autocomplete="new-password"
+            required
+          >
+          <div class="erreur-champ" id="err-confirm"></div>
+        </div>
+
+        <!-- Code OTP personnel -->
+        <div class="form-groupe">
+          <label for="otp_code">Code OTP personnel (6 chiffres)</label>
+          <input
+            type="number"
+            id="otp_code"
+            name="otp_code"
+            placeholder="Ex : 482619"
+            min="100000"
+            max="999999"
+            required
+          >
+          <div class="aide-champ">
+            Ce code vous sera demandé à chaque connexion. Notez-le bien.
+          </div>
+          <div class="erreur-champ" id="err-otp"></div>
+        </div>
+
+        <!-- Question secrète -->
+        <div class="form-groupe">
+          <label for="question_secrete">Question secrète</label>
+          <select id="question_secrete" name="question_secrete" required>
+            <option value="" disabled selected>— Choisissez une question —</option>
+            <option value="Quelle est la ville de naissance de ta mère ?">
+              Quelle est la ville de naissance de ta mère ?
+            </option>
+            <option value="Quel est le prénom de ton meilleur ami d'enfance ?">
+              Quel est le prénom de ton meilleur ami d'enfance ?
+            </option>
+            <option value="Quel est le nom de ton premier animal de compagnie ?">
+              Quel est le nom de ton premier animal de compagnie ?
+            </option>
+            <option value="Quelle est ta nourriture préférée ?">
+              Quelle est ta nourriture préférée ?
+            </option>
+            <option value="Dans quelle ville as-tu grandi ?">
+              Dans quelle ville as-tu grandi ?
+            </option>
+          </select>
+          <div class="erreur-champ" id="err-question"></div>
+        </div>
+
+        <!-- Réponse secrète -->
+        <div class="form-groupe">
+          <label for="reponse_secrete">Votre réponse</label>
+          <input
+            type="text"
+            id="reponse_secrete"
+            name="reponse_secrete"
+            placeholder="Votre réponse secrète"
+            autocomplete="off"
+            required
+          >
+          <div class="erreur-champ" id="err-reponse"></div>
+        </div>
+
+        <!-- Bouton d'inscription -->
+        <button type="submit" class="btn-primaire" id="btn-inscrire">
+          S'inscrire
+        </button>
+
+      </form>
+
+      <!-- Lien vers la connexion -->
+      <p class="lien-nav">
+        Déjà un compte ? <a href="/index.html#connexion">Se connecter</a>
+      </p>
+
+    </div>
+  </div>
+
+  <script>
+    // ── Références aux éléments du formulaire ──────────────
+    const form         = document.getElementById('form-inscription');
+    const btnInscrire  = document.getElementById('btn-inscrire');
+    const msgSucces    = document.getElementById('msg-succes');
+    const msgErreur    = document.getElementById('msg-erreur');
+
+    // Références aux champs d'erreur individuels
+    const erreurs = {
+      nom      : document.getElementById('err-nom'),
+      mdp      : document.getElementById('err-mdp'),
+      confirm  : document.getElementById('err-confirm'),
+      otp      : document.getElementById('err-otp'),
+      question : document.getElementById('err-question'),
+      reponse  : document.getElementById('err-reponse')
+    };
+
+    // ── Fonction : afficher une erreur sous un champ ───────
+    function afficherErreurChamp(cle, message) {
+      erreurs[cle].textContent = message;
+      erreurs[cle].classList.add('visible');
+    }
+
+    // ── Fonction : masquer toutes les erreurs ──────────────
+    function reinitialiserErreurs() {
+      Object.values(erreurs).forEach(el => {
+        el.textContent = '';
+        el.classList.remove('visible');
+      });
+      msgErreur.classList.remove('visible');
+      msgSucces.classList.remove('visible');
+    }
+
+    // ── Soumission du formulaire ───────────────────────────
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      reinitialiserErreurs();
+
+      const nom        = document.getElementById('nom').value.trim();
+      const mdp        = document.getElementById('mot_de_passe').value;
+      const confirm    = document.getElementById('confirmer_mot_de_passe').value;
+      const otp        = document.getElementById('otp_code').value;
+      const question   = document.getElementById('question_secrete').value;
+      const reponse    = document.getElementById('reponse_secrete').value.trim();
+
+      // ── Validation côté client ─────────────────────────
+      let valide = true;
+
+      if (!nom) {
+        afficherErreurChamp('nom', 'Le nom d\'utilisateur est obligatoire');
+        valide = false;
+      }
+
+      if (!mdp) {
+        afficherErreurChamp('mdp', 'Le mot de passe est obligatoire');
+        valide = false;
+      }
+
+      if (mdp !== confirm) {
+        afficherErreurChamp('confirm', 'Les mots de passe ne correspondent pas');
+        valide = false;
+      }
+
+      if (!otp || !/^\d{6}$/.test(String(otp))) {
+        afficherErreurChamp('otp', 'Le code OTP doit contenir exactement 6 chiffres');
+        valide = false;
+      }
+
+      if (!question) {
+        afficherErreurChamp('question', 'Veuillez choisir une question secrète');
+        valide = false;
+      }
+
+      if (!reponse) {
+        afficherErreurChamp('reponse', 'La réponse secrète est obligatoire');
+        valide = false;
+      }
+
+      if (!valide) return;
+
+      // ── Envoi au serveur ───────────────────────────────
+      btnInscrire.disabled    = true;
+      btnInscrire.textContent = 'Inscription en cours…';
+
+      try {
+        const reponseServeur = await fetch('/auth/register', {
+          method : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body   : JSON.stringify({ nom, mot_de_passe: mdp, confirmer_mot_de_passe: confirm, otp_code: otp, question_secrete: question, reponse_secrete: reponse })
+        });
+
+        const donnees = await reponseServeur.json();
+
+        if (!reponseServeur.ok) {
+          // Gestion des erreurs du serveur
+          const msg = donnees.erreur || 'Erreur lors de l\'inscription';
+
+          if (msg.includes('Nom d\'utilisateur')) {
+            afficherErreurChamp('nom', msg);
+          } else if (msg.includes('OTP')) {
+            afficherErreurChamp('otp', msg);
+          } else if (msg.includes('correspondent')) {
+            afficherErreurChamp('confirm', msg);
+          } else {
+            msgErreur.textContent = msg;
+            msgErreur.classList.add('visible');
+          }
+        } else {
+          // Succès : afficher le message et rediriger
+          msgSucces.textContent = donnees.message;
+          msgSucces.classList.add('visible');
+          form.reset();
+
+          setTimeout(() => {
+            window.location.href = '/index.html';
+          }, 2000);
+        }
+
+      } catch (err) {
+        msgErreur.textContent = 'Erreur réseau. Vérifiez votre connexion.';
+        msgErreur.classList.add('visible');
+      } finally {
+        btnInscrire.disabled    = false;
+        btnInscrire.textContent = 'S\'inscrire';
+      }
+    });
+  </script>
+
+</body>
+</html>

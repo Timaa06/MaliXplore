@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MaliXplore — Découvrez la richesse du Mali</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* ============================================================
+       LANDING PAGE — styles spécifiques à la page marketing
+       ============================================================ */
+
+    /* Fond : photo sombre + motif bogolan superposé */
+    .landing-body {
+      margin     : 0;
+      min-height : 100vh;
+      overflow-x : hidden;
+      background : var(--bogo-dark);
+    }
+
+    /* ── Arrière-plan bogolan (image réelle) ───────────────────── */
+    .landing-bg {
+      position           : fixed;
+      inset              : 0;
+      z-index            : 0;
+      background-image   : url('/Bogolan.jpg');
+      background-size    : cover;
+      background-position: center;
+      background-repeat  : no-repeat;
+    }
+
+    /* Voile sombre par-dessus pour garder le texte lisible */
+    .landing-bg::after {
+      content   : '';
+      position  : absolute;
+      inset     : 0;
+      background: linear-gradient(
+        180deg,
+        rgba(18, 10, 4, 0.55) 0%,
+        rgba(18, 10, 4, 0.45) 40%,
+        rgba(18, 10, 4, 0.75) 75%,
+        rgba(18, 10, 4, 0.97) 100%
+      );
+    }
+
+    /* ── Contenu principal (par-dessus le fond) ────────────────── */
+    .landing-content {
+      position       : relative;
+      z-index        : 1;
+      display        : flex;
+      flex-direction : column;
+      align-items    : center;
+      min-height     : 100vh;
+    }
+
+    /* ── Barre de navigation supérieure ───────────────────────── */
+    .landing-nav {
+      width          : 100%;
+      display        : flex;
+      justify-content: space-between;
+      align-items    : center;
+      padding        : 1.5rem 3rem;
+      border-bottom  : 1px solid rgba(200,134,10,0.2);
+    }
+
+    .nav-logo {
+      font-family   : Georgia, serif;
+      font-size     : 1.6rem;
+      color         : var(--bogo-gold);
+      letter-spacing: 3px;
+      text-shadow   : 0 0 20px rgba(200,134,10,0.4);
+    }
+
+    .nav-links {
+      display : flex;
+      gap     : 1rem;
+      align-items: center;
+    }
+
+    .nav-btn-connexion {
+      background   : transparent;
+      border       : 1px solid var(--bogo-gold);
+      color        : var(--bogo-gold);
+      border-radius: 6px;
+      padding      : 8px 20px;
+      cursor       : pointer;
+      font-size    : 0.9rem;
+      font-family  : Georgia, serif;
+      transition   : all 0.25s;
+    }
+
+    .nav-btn-connexion:hover {
+      background: var(--bogo-gold);
+      color     : var(--bogo-dark);
+    }
+
+    /* ── Section héros ─────────────────────────────────────────── */
+    .hero {
+      flex           : 1;
+      display        : flex;
+      flex-direction : column;
+      align-items    : center;
+      justify-content: center;
+      text-align     : center;
+      padding        : 4rem 2rem 2rem;
+      max-width      : 900px;
+      margin         : 0 auto;
+    }
+
+    /* Badge "Nouveau" */
+    .hero-badge {
+      display      : inline-flex;
+      align-items  : center;
+      gap          : 6px;
+      background   : rgba(200,134,10,0.12);
+      border       : 1px solid rgba(200,134,10,0.4);
+      border-radius: 30px;
+      padding      : 6px 16px;
+      font-size    : 0.78rem;
+      color        : var(--bogo-gold);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      animation    : fadeDown 0.8s ease both;
+    }
+
+    /* Titre principal */
+    .hero-titre {
+      font-family   : Georgia, serif;
+      font-size     : clamp(3.5rem, 9vw, 7rem);
+      color         : var(--bogo-cream);
+      line-height   : 1.05;
+      letter-spacing: -1px;
+      margin-bottom : 0.5rem;
+      animation     : fadeDown 0.9s ease 0.1s both;
+    }
+
+    .hero-titre span {
+      color      : var(--bogo-gold);
+      text-shadow: 0 0 40px rgba(200,134,10,0.5);
+    }
+
+    /* Citation principale */
+    .hero-citation {
+      font-family  : Georgia, serif;
+      font-style   : italic;
+      font-size    : clamp(1rem, 2.5vw, 1.35rem);
+      color        : #fff;
+      text-shadow  : 0 1px 6px rgba(0,0,0,0.7);
+      line-height  : 1.6;
+      max-width    : 700px;
+      margin       : 1.5rem auto 0.5rem;
+      animation    : fadeDown 1s ease 0.2s both;
+    }
+
+    .hero-citation strong {
+      color         : var(--bogo-gold);
+      font-style    : normal;
+      display       : block;
+      font-size     : clamp(1.6rem, 4vw, 2.4rem);
+      margin-bottom : 0.6rem;
+      letter-spacing: 0.5px;
+      line-height   : 1.2;
+      text-shadow   : 0 0 30px rgba(200,134,10,0.4);
+    }
+
+    /* Séparateur décoratif */
+    .separateur {
+      display        : flex;
+      align-items    : center;
+      gap            : 12px;
+      margin         : 1.8rem auto;
+      color          : var(--bogo-gold);
+      font-size      : 1.1rem;
+      animation      : fadeDown 1s ease 0.3s both;
+    }
+
+    .separateur::before,
+    .separateur::after {
+      content   : '';
+      width     : 80px;
+      height    : 1px;
+      background: linear-gradient(90deg, transparent, var(--bogo-gold), transparent);
+    }
+
+    /* Description */
+    .hero-desc {
+      font-size    : 1.05rem;
+      color        : #c0a882;
+      max-width    : 580px;
+      line-height  : 1.7;
+      margin-bottom: 2.5rem;
+      animation    : fadeDown 1s ease 0.35s both;
+    }
+
+    /* ── Bouton CTA principal ──────────────────────────────────── */
+    .btn-cta {
+      display      : inline-flex;
+      align-items  : center;
+      gap          : 10px;
+      background   : linear-gradient(135deg, var(--bogo-clay) 0%, var(--bogo-gold) 100%);
+      color        : var(--bogo-dark);
+      border       : none;
+      border-radius: 50px;
+      padding      : 16px 40px;
+      font-size    : 1.1rem;
+      font-family  : Georgia, serif;
+      font-weight  : bold;
+      cursor       : pointer;
+      box-shadow   : 0 8px 30px rgba(200,134,10,0.35);
+      transition   : transform 0.2s, box-shadow 0.2s;
+      animation    : fadeUp 1s ease 0.4s both;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-cta:hover {
+      transform : translateY(-3px) scale(1.02);
+      box-shadow: 0 14px 40px rgba(200,134,10,0.5);
+    }
+
+    .btn-cta:active {
+      transform: scale(0.98);
+    }
+
+    .btn-cta .fleche {
+      font-size  : 1.3rem;
+      transition : transform 0.2s;
+    }
+
+    .btn-cta:hover .fleche {
+      transform: translateX(4px);
+    }
+
+    /* ── Cartes de fonctionnalités ─────────────────────────────── */
+    .features {
+      display              : grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap                  : 1.2rem;
+      width                : 100%;
+      max-width            : 860px;
+      margin               : 3.5rem auto 0;
+      padding              : 0 1rem;
+      animation            : fadeUp 1s ease 0.5s both;
+    }
+
+    .feature-card {
+      background   : rgba(92,58,30,0.18);
+      border       : 1px solid rgba(200,134,10,0.25);
+      border-radius: 12px;
+      padding      : 1.4rem 1.2rem;
+      text-align   : center;
+      transition   : background 0.3s, border-color 0.3s, transform 0.3s;
+    }
+
+    .feature-card:hover {
+      background  : rgba(92,58,30,0.38);
+      border-color: var(--bogo-gold);
+      transform   : translateY(-4px);
+    }
+
+    .feature-icone {
+      font-size    : 2.2rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .feature-titre {
+      font-family  : Georgia, serif;
+      font-size    : 1rem;
+      color        : var(--bogo-sand);
+      margin-bottom: 0.4rem;
+    }
+
+    .feature-desc {
+      font-size: 0.8rem;
+      color    : #9a8060;
+      line-height: 1.5;
+    }
+
+    /* ── Pied de page minimaliste ──────────────────────────────── */
+    .landing-footer {
+      position   : relative;
+      z-index    : 1;
+      text-align : center;
+      padding    : 2rem;
+      color      : #5a4030;
+      font-size  : 0.78rem;
+    }
+
+    /* ============================================================
+       MODAL AUTH (connexion + inscription en onglets)
+       ============================================================ */
+    .auth-modal-overlay {
+      position       : fixed;
+      inset          : 0;
+      background     : rgba(0,0,0,0.8);
+      backdrop-filter: blur(6px);
+      display        : flex;
+      align-items    : center;
+      justify-content: center;
+      z-index        : 500;
+      padding        : 1rem;
+      opacity        : 0;
+      pointer-events : none;
+      transition     : opacity 0.3s ease;
+    }
+
+    .auth-modal-overlay.visible {
+      opacity       : 1;
+      pointer-events: auto;
+    }
+
+    .auth-modal {
+      background   : rgba(22, 13, 6, 0.98);
+      border       : 1px solid var(--bogo-gold);
+      border-radius: 16px;
+      width        : 100%;
+      max-width    : 480px;
+      max-height   : 92vh;
+      overflow-y   : auto;
+      padding      : 2rem;
+      position     : relative;
+      transform    : translateY(24px) scale(0.97);
+      transition   : transform 0.3s ease;
+      box-shadow   : 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(200,134,10,0.1);
+    }
+
+    .auth-modal-overlay.visible .auth-modal {
+      transform: translateY(0) scale(1);
+    }
+
+    /* Bouton fermeture modal */
+    .auth-modal-fermer {
+      position  : absolute;
+      top       : 1rem;
+      right     : 1rem;
+      background: transparent;
+      border    : none;
+      color     : #888;
+      font-size : 1.4rem;
+      cursor    : pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .auth-modal-fermer:hover { color: var(--bogo-cream); }
+
+    /* Mini logo dans la modal */
+    .modal-logo {
+      text-align   : center;
+      margin-bottom: 1.2rem;
+    }
+
+    .modal-logo h2 {
+      font-family   : Georgia, serif;
+      font-size     : 1.5rem;
+      color         : var(--bogo-gold);
+      letter-spacing: 2px;
+    }
+
+    /* Onglets Connexion / Inscription */
+    .auth-tabs {
+      display      : flex;
+      border-bottom: 1px solid rgba(200,134,10,0.3);
+      margin-bottom: 1.5rem;
+    }
+
+    .auth-tab-btn {
+      flex         : 1;
+      background   : transparent;
+      border       : none;
+      border-bottom: 3px solid transparent;
+      color        : #888;
+      padding      : 10px;
+      cursor       : pointer;
+      font-size    : 0.95rem;
+      font-family  : Georgia, serif;
+      transition   : color 0.2s, border-color 0.2s;
+      margin-bottom: -1px;
+    }
+
+    .auth-tab-btn.actif {
+      color        : var(--bogo-gold);
+      border-bottom: 3px solid var(--bogo-gold);
+    }
+
+    /* Panneaux des onglets */
+    .auth-panneau {
+      display: none;
+    }
+
+    .auth-panneau.actif {
+      display: block;
+    }
+
+    /* ── Animations ───────────────────────────────────────────── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .landing-nav { padding: 1rem 1.2rem; }
+      .features { grid-template-columns: 1fr; }
+      .auth-modal { padding: 1.5rem; }
+      .nav-logo { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body class="landing-body">
+
+  <!-- Fond animé bogolan -->
+  <div class="landing-bg"></div>
+
+  <!-- Contenu principal -->
+  <div class="landing-content">
+
+    <!-- Barre de navigation -->
+    <nav class="landing-nav">
+      <div class="nav-logo">MaliXplore</div>
+      <div class="nav-links">
+        <button class="nav-btn-connexion" onclick="ouvrirModal('connexion')">
+          Se connecter
+        </button>
+      </div>
+    </nav>
+
+    <!-- Section héros -->
+    <section class="hero">
+
+      <!-- Badge -->
+      <div class="hero-badge">
+        ✦ Découverte culturelle ✦
+      </div>
+
+      <!-- Titre -->
+      <h1 class="hero-titre">
+        Mali<span>Xplore</span>
+      </h1>
+
+      <!-- Citation phare -->
+      <p class="hero-citation">
+        <strong>« Le Mali, Berceau de l'Afrique »</strong>
+        L'Afrique, Berceau de l'Humanité
+      </p>
+
+      <!-- Séparateur -->
+      <div class="separateur">✦</div>
+
+      <!-- Description -->
+      <p class="hero-desc">
+        Plongez au cœur d'une civilisation millénaire. Griots, bogolan,
+        Empire du Mali, cuisine ancestrale et paysages époustouflants —
+        tout ce qui fait la grandeur d'un peuple vous attend.
+      </p>
+
+      <!-- Bouton CTA -->
+      <button class="btn-cta" onclick="ouvrirModal('inscription')">
+        Découvrir MaliXplore
+        <span class="fleche">→</span>
+      </button>
+
+    </section>
+
+    <!-- Cartes de fonctionnalités -->
+    <div class="features">
+
+      <div class="feature-card">
+        <div class="feature-icone">🎵</div>
+        <div class="feature-titre">Culture & Traditions</div>
+        <div class="feature-desc">Griots, kora à 21 cordes, tissu bogolan et Empire médiéval du Mali</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icone">🍲</div>
+        <div class="feature-titre">Cuisine Ancestrale</div>
+        <div class="feature-desc">Tiga dèguè, fonio 5 000 ans, bissap — les saveurs authentiques du Sahel</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icone">🏔️</div>
+        <div class="feature-titre">Régions & Paysages</div>
+        <div class="feature-desc">Bamako, Tombouctou UNESCO, falaises Dogon sur 150 km</div>
+      </div>
+
+    </div>
+
+    <!-- Pied de page -->
+    <footer class="landing-footer">
+      © 2024 MaliXplore — Tous droits réservés
+    </footer>
+
+  </div>
+
+  <!-- ============================================================
+       MODAL AUTH — Connexion / Inscription
+       ============================================================ -->
+  <div id="auth-overlay" class="auth-modal-overlay" onclick="fermerModalParFond(event)">
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-label="Authentification">
+
+      <!-- Bouton fermeture -->
+      <button class="auth-modal-fermer" onclick="fermerModal()" aria-label="Fermer">✕</button>
+
+      <!-- Mini logo -->
+      <div class="modal-logo">
+        <h2>MaliXplore</h2>
+      </div>
+
+      <!-- Onglets -->
+      <div class="auth-tabs" role="tablist">
+        <button class="auth-tab-btn actif" id="tab-connexion" role="tab"
+          aria-selected="true" aria-controls="panneau-connexion"
+          onclick="changerOnglet('connexion')">
+          Se connecter
+        </button>
+        <button class="auth-tab-btn" id="tab-inscription" role="tab"
+          aria-selected="false" aria-controls="panneau-inscription"
+          onclick="changerOnglet('inscription')">
+          Créer un compte
+        </button>
+      </div>
+
+      <!-- ── PANNEAU CONNEXION ────────────────────────────────── -->
+      <div id="panneau-connexion" class="auth-panneau actif" role="tabpanel">
+
+        <!-- Indicateur MFA -->
+        <div class="mfa-indicateur" style="margin-bottom:1.5rem;">
+          <div class="mfa-etape">
+            <div class="mfa-cercle or">1</div>
+            <span class="mfa-label active">Identité</span>
+          </div>
+          <div class="mfa-ligne"></div>
+          <div class="mfa-etape">
+            <div class="mfa-cercle gris">2</div>
+            <span class="mfa-label">OTP</span>
+          </div>
+          <div class="mfa-ligne"></div>
+          <div class="mfa-etape">
+            <div class="mfa-cercle gris">3</div>
+            <span class="mfa-label">Secret</span>
+          </div>
+        </div>
+
+        <p style="font-size:0.82rem;color:var(--bogo-sand);text-align:center;margin-bottom:1.2rem;">
+          Connexion — Étape 1 / 3
+        </p>
+
+        <div id="msg-succes-login" class="message-succes"></div>
+        <div id="msg-erreur-login" class="message-erreur"></div>
+
+        <form id="form-login" novalidate>
+          <div class="form-groupe">
+            <label for="nom-login">Nom d'utilisateur</label>
+            <input type="text" id="nom-login" placeholder="Votre nom d'utilisateur" autocomplete="username" required>
+          </div>
+          <div class="form-groupe">
+            <label for="mdp-login">Mot de passe</label>
+            <input type="password" id="mdp-login" placeholder="Votre mot de passe" autocomplete="current-password" required>
+          </div>
+          <button type="submit" class="btn-primaire" id="btn-continuer">Continuer →</button>
+        </form>
+
+      </div>
+
+      <!-- ── PANNEAU INSCRIPTION ─────────────────────────────── -->
+      <div id="panneau-inscription" class="auth-panneau" role="tabpanel">
+
+        <div id="msg-succes-inscr" class="message-succes"></div>
+        <div id="msg-erreur-inscr" class="message-erreur"></div>
+
+        <form id="form-inscription" novalidate>
+
+          <div class="form-groupe">
+            <label for="nom-inscr">Nom d'utilisateur</label>
+            <input type="text" id="nom-inscr" placeholder="Votre nom d'utilisateur" autocomplete="username" required>
+            <div class="erreur-champ" id="err-nom"></div>
+          </div>
+
+          <div class="form-groupe">
+            <label for="mdp-inscr">Mot de passe</label>
+            <input type="password" id="mdp-inscr" placeholder="Votre mot de passe" autocomplete="new-password" required>
+            <div class="erreur-champ" id="err-mdp"></div>
+          </div>
+
+          <div class="form-groupe">
+            <label for="confirm-inscr">Confirmer le mot de passe</label>
+            <input type="password" id="confirm-inscr" placeholder="Répétez votre mot de passe" autocomplete="new-password" required>
+            <div class="erreur-champ" id="err-confirm"></div>
+          </div>
+
+          <div class="form-groupe">
+            <label for="otp-inscr">Code OTP personnel (6 chiffres)</label>
+            <input type="number" id="otp-inscr" placeholder="Ex : 482619" min="100000" max="999999" required>
+            <div class="aide-champ">Ce code vous sera demandé à chaque connexion. Notez-le bien.</div>
+            <div class="erreur-champ" id="err-otp"></div>
+          </div>
+
+          <div class="form-groupe">
+            <label for="question-inscr">Question secrète</label>
+            <select id="question-inscr" required>
+              <option value="" disabled selected>— Choisissez une question —</option>
+              <option value="Quelle est la ville de naissance de ta mère ?">Quelle est la ville de naissance de ta mère ?</option>
+              <option value="Quel est le prénom de ton meilleur ami d'enfance ?">Quel est le prénom de ton meilleur ami d'enfance ?</option>
+              <option value="Quel est le nom de ton premier animal de compagnie ?">Quel est le nom de ton premier animal de compagnie ?</option>
+              <option value="Quelle est ta nourriture préférée ?">Quelle est ta nourriture préférée ?</option>
+              <option value="Dans quelle ville as-tu grandi ?">Dans quelle ville as-tu grandi ?</option>
+            </select>
+            <div class="erreur-champ" id="err-question"></div>
+          </div>
+
+          <div class="form-groupe">
+            <label for="reponse-inscr">Votre réponse</label>
+            <input type="text" id="reponse-inscr" placeholder="Votre réponse secrète" autocomplete="off" required>
+            <div class="erreur-champ" id="err-reponse"></div>
+          </div>
+
+          <button type="submit" class="btn-primaire" id="btn-inscrire">S'inscrire</button>
+
+        </form>
+
+      </div>
+      <!-- fin panneaux -->
+
+    </div>
+  </div>
+  <!-- fin modal -->
+
+  <script>
+    // ============================================================
+    // GESTION DE LA MODAL
+    // ============================================================
+
+    /**
+     * Ouvrir la modal sur l'onglet spécifié ('connexion' ou 'inscription')
+     */
+    function ouvrirModal(onglet) {
+      document.getElementById('auth-overlay').classList.add('visible');
+      document.body.style.overflow = 'hidden';
+      changerOnglet(onglet || 'connexion');
+    }
+
+    /** Fermer la modal */
+    function fermerModal() {
+      document.getElementById('auth-overlay').classList.remove('visible');
+      document.body.style.overflow = '';
+    }
+
+    /** Fermer en cliquant sur le fond */
+    function fermerModalParFond(e) {
+      if (e.target === document.getElementById('auth-overlay')) fermerModal();
+    }
+
+    /** Fermer avec Échap */
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') fermerModal();
+    });
+
+    /**
+     * Changer d'onglet dans la modal
+     */
+    function changerOnglet(nom) {
+      ['connexion', 'inscription'].forEach(n => {
+        document.getElementById(`tab-${n}`).classList.toggle('actif', n === nom);
+        document.getElementById(`tab-${n}`).setAttribute('aria-selected', n === nom);
+        document.getElementById(`panneau-${n}`).classList.toggle('actif', n === nom);
+      });
+    }
+
+    // ============================================================
+    // FORMULAIRE DE CONNEXION (étape 1)
+    // ============================================================
+    document.getElementById('form-login').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msgErr = document.getElementById('msg-erreur-login');
+      msgErr.classList.remove('visible');
+
+      const nom          = document.getElementById('nom-login').value.trim();
+      const mot_de_passe = document.getElementById('mdp-login').value;
+      const btn          = document.getElementById('btn-continuer');
+
+      if (!nom || !mot_de_passe) {
+        msgErr.textContent = 'Veuillez remplir tous les champs';
+        msgErr.classList.add('visible');
+        return;
+      }
+
+      btn.disabled    = true;
+      btn.textContent = 'Vérification…';
+
+      try {
+        const rep     = await fetch('/auth/login', {
+          method : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body   : JSON.stringify({ nom, mot_de_passe })
+        });
+        const donnees = await rep.json();
+
+        if (!rep.ok) {
+          msgErr.textContent = donnees.erreur || 'Nom ou mot de passe incorrect';
+          msgErr.classList.add('visible');
+        } else {
+          window.location.href = donnees.redirect || '/otp.html';
+        }
+      } catch {
+        msgErr.textContent = 'Erreur réseau. Vérifiez votre connexion.';
+        msgErr.classList.add('visible');
+      } finally {
+        btn.disabled    = false;
+        btn.textContent = 'Continuer →';
+      }
+    });
+
+    // ============================================================
+    // FORMULAIRE D'INSCRIPTION
+    // ============================================================
+    const errs = {
+      nom     : document.getElementById('err-nom'),
+      mdp     : document.getElementById('err-mdp'),
+      confirm : document.getElementById('err-confirm'),
+      otp     : document.getElementById('err-otp'),
+      question: document.getElementById('err-question'),
+      reponse : document.getElementById('err-reponse')
+    };
+
+    function afficherErrChamp(cle, msg) {
+      errs[cle].textContent = msg;
+      errs[cle].classList.add('visible');
+    }
+
+    function reinitErrs() {
+      Object.values(errs).forEach(el => {
+        el.textContent = '';
+        el.classList.remove('visible');
+      });
+      document.getElementById('msg-erreur-inscr').classList.remove('visible');
+      document.getElementById('msg-succes-inscr').classList.remove('visible');
+    }
+
+    document.getElementById('form-inscription').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      reinitErrs();
+
+      const nom      = document.getElementById('nom-inscr').value.trim();
+      const mdp      = document.getElementById('mdp-inscr').value;
+      const confirm  = document.getElementById('confirm-inscr').value;
+      const otp      = document.getElementById('otp-inscr').value;
+      const question = document.getElementById('question-inscr').value;
+      const reponse  = document.getElementById('reponse-inscr').value.trim();
+      const btn      = document.getElementById('btn-inscrire');
+      const msgSucc  = document.getElementById('msg-succes-inscr');
+      const msgErr   = document.getElementById('msg-erreur-inscr');
+
+      // Validation client
+      let valide = true;
+      if (!nom)                                        { afficherErrChamp('nom',      'Obligatoire'); valide = false; }
+      if (!mdp)                                        { afficherErrChamp('mdp',      'Obligatoire'); valide = false; }
+      if (mdp !== confirm)                             { afficherErrChamp('confirm',  'Les mots de passe ne correspondent pas'); valide = false; }
+      if (!otp || !/^\d{6}$/.test(String(otp)))       { afficherErrChamp('otp',      'Exactement 6 chiffres requis'); valide = false; }
+      if (!question)                                   { afficherErrChamp('question', 'Choisissez une question'); valide = false; }
+      if (!reponse)                                    { afficherErrChamp('reponse',  'Obligatoire'); valide = false; }
+      if (!valide) return;
+
+      btn.disabled    = true;
+      btn.textContent = 'Inscription en cours…';
+
+      try {
+        const rep = await fetch('/auth/register', {
+          method : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body   : JSON.stringify({
+            nom,
+            mot_de_passe            : mdp,
+            confirmer_mot_de_passe  : confirm,
+            otp_code                : otp,
+            question_secrete        : question,
+            reponse_secrete         : reponse
+          })
+        });
+        const donnees = await rep.json();
+
+        if (!rep.ok) {
+          const msg = donnees.erreur || 'Erreur lors de l\'inscription';
+          if (msg.includes('Nom')) { afficherErrChamp('nom', msg); }
+          else if (msg.includes('OTP')) { afficherErrChamp('otp', msg); }
+          else { msgErr.textContent = msg; msgErr.classList.add('visible'); }
+        } else {
+          msgSucc.textContent = '✅ Compte créé ! Vous pouvez maintenant vous connecter.';
+          msgSucc.classList.add('visible');
+          document.getElementById('form-inscription').reset();
+          // Basculer vers l'onglet connexion après 2 secondes
+          setTimeout(() => changerOnglet('connexion'), 2000);
+        }
+      } catch {
+        msgErr.textContent = 'Erreur réseau. Vérifiez votre connexion.';
+        msgErr.classList.add('visible');
+      } finally {
+        btn.disabled    = false;
+        btn.textContent = 'S\'inscrire';
+      }
+    });
+  </script>
+
+</body>
+</html>

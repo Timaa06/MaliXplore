@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Découverte du Mali — MaliXplore</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background : #0a0503;
+      color      : var(--bogo-cream);
+      font-family: system-ui, sans-serif;
+      overflow-x : hidden;
+    }
+
+    /* ── Fond bogolan fixe ─────────────────────────────────────── */
+    .page-bg {
+      position           : fixed;
+      inset              : 0;
+      z-index            : 0;
+      background-image   : url('/Bogolan.jpg');
+      background-size    : cover;
+      background-position: center;
+    }
+    .page-bg::after {
+      content   : '';
+      position  : absolute;
+      inset     : 0;
+      background: rgba(8,4,2,0.88);
+    }
+
+    .page-wrap {
+      position      : relative;
+      z-index       : 1;
+      min-height    : 100vh;
+      display       : flex;
+      flex-direction: column;
+    }
+
+    /* ============================================================
+       HEADER
+       ============================================================ */
+    .header {
+      display        : flex;
+      align-items    : center;
+      justify-content: space-between;
+      padding        : 1rem 2.5rem;
+      background     : rgba(8,4,2,0.7);
+      backdrop-filter: blur(12px);
+      border-bottom  : 1px solid rgba(200,134,10,0.25);
+      position       : sticky;
+      top            : 0;
+      z-index        : 100;
+    }
+
+    .header-logo {
+      font-family   : Georgia, serif;
+      font-size     : 1.5rem;
+      color         : var(--bogo-gold);
+      letter-spacing: 3px;
+      text-decoration: none;
+    }
+
+    .header-right {
+      display    : flex;
+      align-items: center;
+      gap        : 1rem;
+    }
+
+    .header-user {
+      display    : flex;
+      align-items: center;
+      gap        : 8px;
+      color      : var(--bogo-sand);
+      font-size  : 0.85rem;
+    }
+
+    .user-avatar {
+      width          : 32px;
+      height         : 32px;
+      border-radius  : 50%;
+      background     : linear-gradient(135deg, var(--bogo-clay), var(--bogo-gold));
+      display        : flex;
+      align-items    : center;
+      justify-content: center;
+      font-weight    : bold;
+      color          : var(--bogo-dark);
+      font-size      : 0.85rem;
+      flex-shrink    : 0;
+    }
+
+    .btn-logout {
+      background   : transparent;
+      border       : 1px solid rgba(200,134,10,0.35);
+      color        : #999;
+      border-radius: 6px;
+      padding      : 6px 14px;
+      cursor       : pointer;
+      font-size    : 0.8rem;
+      transition   : all 0.2s;
+      text-decoration: none;
+    }
+    .btn-logout:hover { border-color: var(--bogo-gold); color: var(--bogo-cream); }
+
+    /* ============================================================
+       NAVIGATION — onglets + quiz dans la barre
+       ============================================================ */
+    .nav-tabs {
+      display        : flex;
+      align-items    : center;
+      background     : rgba(15,8,3,0.8);
+      border-bottom  : 2px solid rgba(200,134,10,0.2);
+      padding        : 0 2.5rem;
+      gap            : 0;
+      position       : sticky;
+      top            : 62px;
+      z-index        : 90;
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-tab {
+      background   : transparent;
+      border       : none;
+      border-bottom: 3px solid transparent;
+      color        : #777;
+      padding      : 1rem 1.4rem;
+      cursor       : pointer;
+      font-size    : 0.95rem;
+      font-family  : Georgia, serif;
+      transition   : color 0.2s, border-color 0.2s;
+      margin-bottom: -2px;
+      white-space  : nowrap;
+      display      : flex;
+      align-items  : center;
+      gap          : 6px;
+    }
+    .nav-tab:hover  { color: var(--bogo-sand); }
+    .nav-tab.actif  {
+      color        : var(--bogo-gold);
+      border-bottom: 3px solid var(--bogo-gold);
+    }
+
+    /* Bouton Quiz — mis en valeur dans la nav */
+    .nav-tab-quiz {
+      margin-left  : auto;
+      background   : rgba(200,134,10,0.1);
+      border       : 1px solid rgba(200,134,10,0.3);
+      border-bottom: 3px solid transparent;
+      color        : var(--bogo-gold);
+      padding      : 0.7rem 1.4rem;
+      border-radius: 6px 6px 0 0;
+      font-weight  : bold;
+    }
+    .nav-tab-quiz:hover {
+      background: rgba(200,134,10,0.2);
+      color     : var(--bogo-cream);
+    }
+    .nav-tab-quiz.actif {
+      background   : rgba(200,134,10,0.2);
+      border-color : var(--bogo-gold);
+      border-bottom: 3px solid var(--bogo-gold);
+    }
+
+    /* ============================================================
+       PANNEAUX DE CONTENU
+       ============================================================ */
+    .panneau { display: none; }
+    .panneau.actif { display: block; }
+
+    /* ============================================================
+       EN-TÊTE DE SECTION (bandeau titre)
+       ============================================================ */
+    .section-banner {
+      padding        : 3rem 2.5rem 2rem;
+      max-width      : 1200px;
+      margin         : 0 auto;
+      display        : flex;
+      align-items    : flex-end;
+      justify-content: space-between;
+      gap            : 1rem;
+      flex-wrap      : wrap;
+    }
+
+    .section-banner-text h1 {
+      font-family   : Georgia, serif;
+      font-size     : clamp(2rem, 4vw, 3rem);
+      color         : var(--bogo-cream);
+      line-height   : 1.1;
+    }
+    .section-banner-text h1 span { color: var(--bogo-gold); }
+
+    .section-banner-text p {
+      color     : #907050;
+      font-size : 1rem;
+      margin-top: 0.4rem;
+      max-width : 500px;
+      line-height: 1.6;
+    }
+
+    .section-banner-deco {
+      font-size  : 5rem;
+      opacity    : 0.18;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       FICHES ENRICHIES
+       ============================================================ */
+    .fiches-container {
+      max-width: 1200px;
+      margin   : 0 auto;
+      padding  : 0 2.5rem 2rem;
+      display  : flex;
+      flex-direction: column;
+      gap      : 2rem;
+    }
+
+    /* Fiche horizontale grande */
+    /* ── Fiche split : texte gauche | image droite ────────────── */
+    .fiche-riche {
+      display      : grid;
+      grid-template-columns: 8px 1fr 480px;
+      gap          : 0;
+      background   : rgba(20,10,3,0.85);
+      border       : 1px solid rgba(200,134,10,0.2);
+      border-radius: 14px;
+      overflow     : hidden;
+      transition   : border-color 0.3s, box-shadow 0.3s;
+      align-items  : stretch;
+    }
+    .fiche-riche:hover {
+      border-color: rgba(200,134,10,0.55);
+      box-shadow  : 0 12px 50px rgba(0,0,0,0.6);
+    }
+
+    /* Bande colorée (fine ligne gauche) */
+    .fiche-bande {
+      background: linear-gradient(180deg, var(--bogo-gold) 0%, var(--bogo-clay) 50%, var(--bogo-brown) 100%);
+      width     : 8px;
+      flex-shrink: 0;
+    }
+
+    /* Corps texte */
+    .fiche-corps {
+      padding: 2.2rem 2.5rem;
+    }
+
+    /* Bloc image à droite — hauteur naturelle */
+    .fiche-img-droite {
+      background: #0a0500;
+      display   : flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* L'image prend toute la largeur, hauteur naturelle, pas de crop */
+    .fiche-img-droite img {
+      width     : 100%;
+      height    : auto;
+      display   : block;
+      object-fit: contain;
+    }
+
+    /* Légende sous l'image */
+    .fiche-img-droite-legende {
+      width     : 100%;
+      background: rgba(5,2,0,0.85);
+      padding   : 0.7rem 1rem;
+      font-size : 0.78rem;
+      color     : var(--bogo-sand);
+      font-style: italic;
+      text-align: center;
+    }
+
+    .fiche-header {
+      display      : flex;
+      align-items  : flex-start;
+      gap          : 1rem;
+      margin-bottom: 1rem;
+      flex-wrap    : wrap;
+    }
+
+    .fiche-icone-grand {
+      font-size  : 3rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .fiche-titre-block h2 {
+      font-family: Georgia, serif;
+      font-size  : 1.5rem;
+      color      : var(--bogo-cream);
+    }
+    .fiche-titre-block .sous-titre {
+      color    : var(--bogo-gold);
+      font-size: 0.85rem;
+      margin-top: 2px;
+    }
+
+    /* Contenu textuel riche */
+    .fiche-texte {
+      color      : #c8aa80;
+      font-size  : 0.97rem;
+      line-height: 1.8;
+      margin-bottom: 1.2rem;
+    }
+    .fiche-texte strong { color: var(--bogo-cream); }
+    .fiche-texte em     { color: var(--bogo-sand); font-style: italic; }
+
+    /* Bloc "Chiffre clé" */
+    .fiche-chiffre {
+      display      : inline-flex;
+      align-items  : center;
+      gap          : 10px;
+      background   : rgba(200,134,10,0.08);
+      border       : 1px solid rgba(200,134,10,0.25);
+      border-radius: 8px;
+      padding      : 0.6rem 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+    .chiffre-valeur {
+      font-family: Georgia, serif;
+      font-size  : 1.8rem;
+      color      : var(--bogo-gold);
+      line-height: 1;
+    }
+    .chiffre-desc {
+      font-size : 0.8rem;
+      color     : #907050;
+      max-width : 180px;
+      line-height: 1.3;
+    }
+
+    /* (ancien .fiche-img supprimé — remplacé par .fiche-img-droite) */
+
+    /* ── Grille de profils Grammy ──────────────────────────────── */
+    .grammy-grille {
+      display              : grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap                  : 1rem;
+      margin-top           : 1.2rem;
+    }
+
+    .grammy-artiste {
+      background   : rgba(200,134,10,0.07);
+      border       : 1px solid rgba(200,134,10,0.3);
+      border-radius: 12px;
+      padding      : 1.2rem;
+      text-align   : center;
+      transition   : background 0.3s, transform 0.3s;
+    }
+    .grammy-artiste:hover {
+      background: rgba(200,134,10,0.15);
+      transform : translateY(-3px);
+    }
+
+    .grammy-avatar {
+      width          : 64px;
+      height         : 64px;
+      border-radius  : 50%;
+      margin         : 0 auto 0.7rem;
+      display        : flex;
+      align-items    : center;
+      justify-content: center;
+      font-size      : 1.8rem;
+      border         : 2px solid rgba(200,134,10,0.4);
+    }
+
+    .grammy-nom {
+      font-family  : Georgia, serif;
+      font-size    : 0.9rem;
+      color        : var(--bogo-cream);
+      margin-bottom: 0.3rem;
+    }
+
+    .grammy-details {
+      font-size : 0.75rem;
+      color     : #907050;
+      line-height: 1.4;
+    }
+
+    /* ── Avatar artiste ───────────────────────────────────────── */
+    .grammy-avatar {
+      width          : 90px;
+      height         : 90px;
+      border-radius  : 50%;
+      margin         : 0 auto 0.8rem;
+      position       : relative;
+      overflow       : hidden;
+      border         : 2px solid rgba(200,134,10,0.5);
+      box-shadow     : 0 4px 16px rgba(0,0,0,0.5);
+      display        : flex;
+      align-items    : center;
+      justify-content: center;
+      font-size      : 2rem;
+    }
+    .grammy-avatar img {
+      position     : absolute;
+      inset        : 0;
+      width        : 100%;
+      height       : 100%;
+      object-fit   : cover;
+      border-radius: 50%;
+      display      : block;
+    }
+    .grammy-avatar .av-fallback {
+      position   : relative;
+      z-index    : 1;
+      font-size  : 2.2rem;
+      line-height: 1;
+    }
+
+    .grammy-badge {
+      display      : inline-flex;
+      align-items  : center;
+      gap          : 4px;
+      background   : rgba(200,134,10,0.15);
+      border       : 1px solid var(--bogo-gold);
+      border-radius: 20px;
+      padding      : 2px 8px;
+      font-size    : 0.7rem;
+      color        : var(--bogo-gold);
+      margin-top   : 0.4rem;
+    }
+
+    /* Tags */
+    .fiche-tags {
+      display  : flex;
+      flex-wrap: wrap;
+      gap      : 6px;
+      margin-top: 0.8rem;
+    }
+    .ftag {
+      background   : rgba(200,134,10,0.1);
+      border       : 1px solid rgba(200,134,10,0.3);
+      color        : var(--bogo-sand);
+      border-radius: 20px;
+      padding      : 3px 12px;
+      font-size    : 0.75rem;
+    }
+
+    /* ============================================================
+       SECTION "LE SAVIEZ-VOUS ?"
+       ============================================================ */
+    .saviez-vous-section {
+      max-width: 1200px;
+      margin   : 3rem auto 0;
+      padding  : 0 2.5rem 2rem;
+    }
+
+    .saviez-vous-titre {
+      font-family   : Georgia, serif;
+      font-size     : clamp(2rem, 4vw, 3.2rem);
+      font-weight   : bold;
+      color         : var(--bogo-gold);
+      text-align    : center;
+      margin-bottom : 0.5rem;
+      text-shadow   : 0 0 30px rgba(200,134,10,0.4);
+    }
+
+    .saviez-vous-sous {
+      text-align : center;
+      color      : #907050;
+      font-size  : 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .saviez-grille {
+      display              : grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap                  : 1.2rem;
+    }
+
+    .saviez-card {
+      background   : rgba(30,15,5,0.7);
+      border       : 1px solid rgba(200,134,10,0.2);
+      border-radius: 12px;
+      padding      : 1.5rem;
+      transition   : border-color 0.3s;
+    }
+    .saviez-card:hover { border-color: rgba(200,134,10,0.5); }
+
+    .saviez-card-icone {
+      font-size    : 2rem;
+      margin-bottom: 0.6rem;
+    }
+    .saviez-card h3 {
+      font-family  : Georgia, serif;
+      font-size    : 1.05rem;
+      color        : var(--bogo-sand);
+      margin-bottom: 0.5rem;
+    }
+    .saviez-card p {
+      font-size : 0.88rem;
+      color     : #907050;
+      line-height: 1.6;
+    }
+    .saviez-card p strong { color: var(--bogo-cream); }
+
+    /* Bandeau image dans les cartes saviez-vous */
+    .saviez-img {
+      width        : 100%;
+      height       : 130px;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      overflow     : hidden;
+      position     : relative;
+      display      : flex;
+      align-items  : center;
+      justify-content: center;
+    }
+    .saviez-img-bg {
+      position: absolute;
+      inset   : 0;
+      transition: transform 0.4s ease;
+    }
+    .saviez-card:hover .saviez-img-bg { transform: scale(1.06); }
+    .saviez-img-ico {
+      position : relative;
+      z-index  : 2;
+      font-size: 3rem;
+      filter   : drop-shadow(0 2px 8px rgba(0,0,0,0.7));
+    }
+
+    /* ============================================================
+       BIOGRAPHIE DU MALI
+       ============================================================ */
+    .bio-mali {
+      max-width : 1200px;
+      margin    : 3rem auto 0;
+      padding   : 0 2.5rem 4rem;
+    }
+
+    .bio-titre {
+      font-family   : Georgia, serif;
+      font-size     : clamp(2rem, 4vw, 3.2rem);
+      font-weight   : bold;
+      color         : var(--bogo-cream);
+      text-align    : center;
+      margin-bottom : 0.4rem;
+    }
+    .bio-titre span { color: var(--bogo-gold); }
+
+    .bio-sous {
+      text-align   : center;
+      color        : #907050;
+      font-size    : 1rem;
+      margin-bottom: 3rem;
+    }
+
+    /* Bannière intro */
+    .bio-intro {
+      background   : rgba(92,58,30,0.15);
+      border       : 1px solid rgba(200,134,10,0.2);
+      border-left  : 4px solid var(--bogo-gold);
+      border-radius: 8px;
+      padding      : 1.5rem 2rem;
+      margin-bottom: 2.5rem;
+      font-size    : 1rem;
+      color        : #c8aa80;
+      line-height  : 1.8;
+      font-style   : italic;
+    }
+
+    /* Grille de stats */
+    .bio-stats {
+      display              : grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap                  : 1rem;
+      margin-bottom        : 2.5rem;
+    }
+
+    .bio-stat {
+      background   : rgba(20,10,3,0.8);
+      border       : 1px solid rgba(200,134,10,0.2);
+      border-radius: 12px;
+      padding      : 1.5rem;
+      text-align   : center;
+      transition   : border-color 0.3s, transform 0.3s;
+    }
+    .bio-stat:hover {
+      border-color: var(--bogo-gold);
+      transform   : translateY(-4px);
+    }
+
+    .bio-stat-icone { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .bio-stat-val {
+      font-family: Georgia, serif;
+      font-size  : 1.6rem;
+      color      : var(--bogo-gold);
+      line-height: 1.1;
+    }
+    .bio-stat-label {
+      font-size : 0.78rem;
+      color     : #705030;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Blocs narratifs */
+    .bio-blocs {
+      display              : grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap                  : 1.5rem;
+      margin-bottom        : 2.5rem;
+    }
+
+    .bio-bloc {
+      background   : rgba(20,10,3,0.7);
+      border       : 1px solid rgba(200,134,10,0.15);
+      border-radius: 12px;
+      padding      : 1.8rem;
+    }
+
+    .bio-bloc-titre {
+      font-family  : Georgia, serif;
+      font-size    : 1.15rem;
+      color        : var(--bogo-sand);
+      margin-bottom: 0.8rem;
+      display      : flex;
+      align-items  : center;
+      gap          : 8px;
+    }
+
+    .bio-bloc p {
+      font-size  : 0.92rem;
+      color      : #a07850;
+      line-height: 1.75;
+    }
+    .bio-bloc p strong { color: var(--bogo-cream); }
+    .bio-bloc p em     { color: var(--bogo-gold); font-style: italic; }
+
+    /* Encart "Or du Mali" spécial */
+    .bio-or {
+      background: linear-gradient(135deg, rgba(200,134,10,0.08) 0%, rgba(92,58,30,0.2) 100%);
+      border    : 1px solid rgba(200,134,10,0.4);
+      border-radius: 14px;
+      padding   : 2rem;
+      display   : grid;
+      grid-template-columns: auto 1fr;
+      gap       : 1.5rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .bio-or-medaille {
+      font-size : 4rem;
+      line-height: 1;
+    }
+
+    .bio-or h3 {
+      font-family  : Georgia, serif;
+      font-size    : 1.3rem;
+      color        : var(--bogo-gold);
+      margin-bottom: 0.5rem;
+    }
+    .bio-or p {
+      font-size  : 0.92rem;
+      color      : #c8aa80;
+      line-height: 1.7;
+    }
+    .bio-or p strong { color: var(--bogo-cream); }
+
+    /* ============================================================
+       ONGLET QUIZ — regroupé
+       ============================================================ */
+    .quiz-container {
+      max-width: 900px;
+      margin   : 0 auto;
+      padding  : 3rem 2.5rem 4rem;
+    }
+
+    .quiz-header {
+      text-align   : center;
+      margin-bottom: 3rem;
+    }
+    .quiz-header h1 {
+      font-family: Georgia, serif;
+      font-size  : clamp(1.8rem, 4vw, 2.8rem);
+      color      : var(--bogo-cream);
+      margin-bottom: 0.5rem;
+    }
+    .quiz-header h1 span { color: var(--bogo-gold); }
+    .quiz-header p { color: #907050; font-size: 1rem; }
+
+    /* Score global */
+    .quiz-score-bar {
+      background   : rgba(20,10,3,0.8);
+      border       : 1px solid rgba(200,134,10,0.3);
+      border-radius: 12px;
+      padding      : 1.2rem 2rem;
+      display      : flex;
+      align-items  : center;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+      flex-wrap    : wrap;
+      gap          : 1rem;
+    }
+    .quiz-score-text {
+      font-family: Georgia, serif;
+      font-size  : 1.1rem;
+      color      : var(--bogo-sand);
+    }
+    .quiz-score-num {
+      font-size: 2rem;
+      color    : var(--bogo-gold);
+    }
+    .quiz-reset-btn {
+      background   : transparent;
+      border       : 1px solid rgba(200,134,10,0.4);
+      color        : var(--bogo-sand);
+      border-radius: 6px;
+      padding      : 8px 16px;
+      cursor       : pointer;
+      font-size    : 0.85rem;
+      transition   : all 0.2s;
+    }
+    .quiz-reset-btn:hover { background: rgba(200,134,10,0.1); color: var(--bogo-cream); }
+
+    /* Catégorie de quiz */
+    .quiz-categorie {
+      margin-bottom: 2.5rem;
+    }
+    .quiz-cat-titre {
+      font-family  : Georgia, serif;
+      font-size    : 1.2rem;
+      color        : var(--bogo-sand);
+      margin-bottom: 1rem;
+      display      : flex;
+      align-items  : center;
+      gap          : 8px;
+      padding-bottom: 0.6rem;
+      border-bottom : 1px solid rgba(200,134,10,0.2);
+    }
+
+    /* Carte de question */
+    .quiz-carte {
+      background   : rgba(20,10,3,0.7);
+      border       : 1px solid rgba(200,134,10,0.15);
+      border-radius: 12px;
+      padding      : 1.5rem;
+      margin-bottom: 1rem;
+      transition   : border-color 0.2s;
+    }
+    .quiz-carte:hover { border-color: rgba(200,134,10,0.3); }
+
+    .quiz-question-texte {
+      font-family  : Georgia, serif;
+      font-size    : 1rem;
+      color        : var(--bogo-cream);
+      margin-bottom: 1rem;
+    }
+
+    .quiz-options-grille {
+      display              : grid;
+      grid-template-columns: 1fr 1fr;
+      gap                  : 8px;
+    }
+
+    .qopt {
+      background   : rgba(255,255,255,0.04);
+      border       : 1px solid rgba(200,134,10,0.2);
+      border-radius: 8px;
+      padding      : 10px 14px;
+      cursor       : pointer;
+      color        : var(--bogo-cream);
+      font-size    : 0.88rem;
+      text-align   : left;
+      transition   : background 0.2s, border-color 0.2s;
+    }
+    .qopt:hover:not(:disabled) {
+      background  : rgba(160,82,45,0.25);
+      border-color: var(--bogo-clay);
+    }
+    .qopt.correct   { background: rgba(20,83,45,0.35); border-color: #22c55e; color: #9FE1CB; }
+    .qopt.incorrect { background: rgba(139,26,26,0.35); border-color: var(--bogo-red); color: #F0ADAD; }
+
+    .quiz-fb {
+      margin-top   : 0.8rem;
+      padding      : 8px 12px;
+      border-radius: 6px;
+      font-size    : 0.85rem;
+      display      : none;
+      line-height  : 1.5;
+    }
+    .quiz-fb.ok  { display:block; background: rgba(20,83,45,0.2); color:#9FE1CB; }
+    .quiz-fb.ko  { display:block; background: rgba(139,26,26,0.2); color:#F0ADAD; }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 768px) {
+      .header       { padding: 1rem; }
+      .nav-tabs     { padding: 0 0.5rem; overflow-x: auto; top: 58px; }
+      .nav-tab      { padding: 0.85rem 0.9rem; font-size: 0.85rem; }
+      .fiches-container, .saviez-vous-section, .bio-mali, .quiz-container {
+        padding-left: 1rem; padding-right: 1rem;
+      }
+      .section-banner { padding: 2rem 1rem 1rem; }
+      .fiche-riche      { grid-template-columns: 1fr; }
+      .fiche-bande      { display: none; }
+      .grammy-grille    { grid-template-columns: 1fr 1fr; }
+      .quiz-options-grille { grid-template-columns: 1fr; }
+      .bio-or { grid-template-columns: 1fr; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fond -->
+  <div class="page-bg"></div>
+
+  <div class="page-wrap">
+
+    <!-- ================================================================
+         HEADER
+         ================================================================ -->
+    <header class="header">
+      <a href="/accueil.html" class="header-logo">MaliXplore</a>
+      <div class="header-right">
+        <div class="header-user">
+          <div class="user-avatar" id="user-avatar">?</div>
+          <span id="nom-utilisateur">…</span>
+        </div>
+        <a href="/auth/logout" class="btn-logout">Déconnexion</a>
+      </div>
+    </header>
+
+    <!-- ================================================================
+         NAVIGATION — onglets + quiz intégré
+         ================================================================ -->
+    <nav class="nav-tabs" role="tablist">
+      <button class="nav-tab actif" data-onglet="culture"   onclick="changerOnglet('culture')">🎵 Culture</button>
+      <button class="nav-tab"       data-onglet="cuisine"   onclick="changerOnglet('cuisine')">🍲 Cuisine</button>
+      <button class="nav-tab"       data-onglet="regions"   onclick="changerOnglet('regions')">🏔️ Régions</button>
+      <button class="nav-tab nav-tab-quiz" data-onglet="quiz" onclick="changerOnglet('quiz')">🎯 Quiz — Testez-vous !</button>
+    </nav>
+
+    <!-- ================================================================
+         PANNEAU CULTURE
+         ================================================================ -->
+    <div id="panneau-culture" class="panneau actif">
+
+      <!-- Bandeau titre -->
+      <div class="section-banner">
+        <div class="section-banner-text">
+          <h1>Culture <span>Malienne</span></h1>
+          <p>Le Mali est l'un des foyers les plus anciens et les plus riches de civilisation en Afrique de l'Ouest. Musique, art textile, histoire impériale — une culture millénaire qui continue de rayonner sur le monde entier.</p>
+        </div>
+        <div class="section-banner-deco">🎵</div>
+      </div>
+
+      <div class="fiches-container">
+
+        <!-- Fiche 1 : Griots & Musique Manding -->
+        <article class="fiche-riche">
+          <div class="fiche-bande"></div>
+          <div class="fiche-corps">
+
+            <div class="fiche-header">
+              <span class="fiche-icone-grand">🎙️</span>
+              <div class="fiche-titre-block">
+                <h2>Musique Manding & Griots</h2>
+                <div class="sous-titre">Gardiens de la mémoire orale — 9 Grammy Awards au compteur</div>
+              </div>
+            </div>
+
+            <p class="fiche-texte">
+              En Afrique de l'Ouest, et au Mali en particulier, les <strong>griots</strong> occupent une place absolument unique dans la société. Bien plus que de simples musiciens, ils sont les <strong>archivistes vivants</strong> des peuples mandingues — ils mémorisent et transmettent oralement les généalogies, les épopées historiques, les secrets de familles nobles, parfois sur 40 ou 50 générations. Sans eux, une partie essentielle de l'histoire africaine serait perdue à jamais.
+            </p>
+            <p class="fiche-texte">
+              Leur instrument emblématique, la <strong>kora</strong>, est un chef-d'œuvre d'ingénierie musicale : elle possède <strong>21 cordes</strong> tendues sur une calebasse recouverte de peau de vache, capable de produire des harmonies comparables à celles d'une harpe de concert. La kora fut longtemps réservée aux seules familles de griots, transmise de père en fils avec les secrets de son jeu.
+            </p>
+            <p class="fiche-texte">
+              La reconnaissance mondiale de cette musique est sans précédent : le Mali est aujourd'hui détenteur de <strong>9 Grammy Awards</strong>, le prix musical le plus prestigieux du monde. Des artistes comme <strong>Salif Keïta</strong> — surnommé «&nbsp;la Voix d'Or de l'Afrique&nbsp;» — <strong>Ali Farka Touré</strong>, le "bluesman du désert", et <strong>Toumani Diabaté</strong>, virtuose de la kora, ont porté cette culture jusqu'aux scènes de Carnegie Hall et de l'Olympia de Paris, faisant du Mali une <em>référence mondiale incontestée</em> de la musique acoustique.
+            </p>
+
+            <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem;">
+              <div class="fiche-chiffre">
+                <div class="chiffre-valeur">9</div>
+                <div class="chiffre-desc">Grammy Awards remportés par des artistes maliens</div>
+              </div>
+              <div class="fiche-chiffre">
+                <div class="chiffre-valeur">21</div>
+                <div class="chiffre-desc">cordes sur la kora — instrument sacré des griots</div>
+              </div>
+            </div>
+
+            <!-- Profils des artistes Grammy -->
+            <p style="font-family:Georgia,serif;color:var(--bogo-sand);margin-bottom:0.8rem;font-size:0.95rem;">🏆 Les lauréats maliens du Grammy Award</p>
+            <div class="grammy-grille">
+
+              <div class="grammy-artiste">
+                <div class="grammy-avatar" style="background:linear-gradient(135deg,#C8860A,#5C3A1E);">
+                  <img src="/sidiki.png" alt="Sidiki Diabaté" onerror="this.parentNode.querySelector('.av-fallback').style.display='block';this.style.display='none';">
+                  <span class="av-fallback" style="display:none;">🎵</span>
+                </div>
+                <div class="grammy-nom">Sidiki Diabaté</div>
+                <div class="grammy-details">Fils de Toumani, kora nouvelle génération</div>
+                <div class="grammy-badge">🏆 2 Grammys</div>
+              </div>
+
+              <div class="grammy-artiste">
+                <div class="grammy-avatar" style="background:linear-gradient(135deg,#3d1a00,#A0522D);">
+                  <img src="/toumani.webp" alt="Toumani Diabaté" onerror="this.parentNode.querySelector('.av-fallback').style.display='block';this.style.display='none';">
+                  <span class="av-fallback" style="display:none;">🎵</span>
+                </div>
+                <div class="grammy-nom">Toumani Diabaté</div>
+                <div class="grammy-details">72ème génération de griots, maître de la kora</div>
+                <div class="grammy-badge">🏆 3 Grammys</div>
+              </div>
+
+              <div class="grammy-artiste">
+                <div class="grammy-avatar" style="background:linear-gradient(135deg,#5C3A1E,#C8860A);">
+                  <img src="/alifarka.jpg" alt="Ali Farka Touré" onerror="this.parentNode.querySelector('.av-fallback').style.display='block';this.style.display='none';">
+                  <span class="av-fallback" style="display:none;">🎸</span>
+                </div>
+                <div class="grammy-nom">Ali Farka Touré</div>
+                <div class="grammy-details">Le Bluesman du Désert — 1994 & 2006</div>
+                <div class="grammy-badge">🏆 2 Grammys</div>
+              </div>
+
+              <div class="grammy-artiste">
+                <div class="grammy-avatar" style="background:linear-gradient(135deg,#1a0e00,#8B6914);">
+                  <img src="/salif.jpg" alt="Salif Keïta" onerror="this.parentNode.querySelector('.av-fallback').style.display='block';this.style.display='none';">
+                  <span class="av-fallback" style="display:none;">🎤</span>
+                </div>
+                <div class="grammy-nom">Salif Keïta</div>
+                <div class="grammy-details">La Voix d'Or de l'Afrique — 1991</div>
+                <div class="grammy-badge">🏆 1 Grammy</div>
+              </div>
+
+              <div class="grammy-artiste">
+                <div class="grammy-avatar" style="background:linear-gradient(135deg,#2a1000,#9a6020);">
+                  <img src="/oumou.jpg" alt="Oumou Sangaré" onerror="this.parentNode.querySelector('.av-fallback').style.display='block';this.style.display='none';">
+                  <span class="av-fallback" style="display:none;">🎶</span>
+                </div>
+                <div class="grammy-nom">Oumou Sangaré</div>
+                <div class="grammy-details">Reine du Wassoulou — 2010</div>
+                <div class="grammy-badge">🏆 1 Grammy</div>
+              </div>
+
+            </div>
+
+            <div class="fiche-tags" style="margin-top:1.2rem;">
+              <span class="ftag">Griot</span>
+              <span class="ftag">Kora</span>
+              <span class="ftag">9 Grammy Awards</span>
+              <span class="ftag">Tradition orale</span>
+              <span class="ftag">Mandingue</span>
+              <span class="ftag">Wassoulou</span>
+            </div>
+          </div>
+          <!-- IMAGE DROITE — Griot -->
+          <div class="fiche-img-droite">
+            <img src="/griot.jpg" alt="Griot malien jouant la kora">
+            <div class="fiche-img-droite-legende">Griot malien — gardien de la mémoire orale</div>
+          </div>
+        </article>
+
+        <!-- Fiche 2 : Bogolan -->
+        <article class="fiche-riche">
+          <div class="fiche-bande"></div>
+          <div class="fiche-corps">
+            <div class="fiche-header">
+              <span class="fiche-icone-grand">🎨</span>
+              <div class="fiche-titre-block">
+                <h2>Tissu Bogolan</h2>
+                <div class="sous-titre">L'art de la terre transformé en symbole d'identité</div>
+              </div>
+            </div>
+
+            <p class="fiche-texte">
+              Le <strong>bogolan</strong> est bien plus qu'un tissu — c'est une écriture. Chaque motif géométrique raconte une histoire, une appartenance sociale, un événement de vie. Fabriqué selon un procédé entièrement naturel, il commence par un coton tissé à la main, que l'on imprègne de <strong>boue fermentée</strong> riche en tanins. C'est cette boue, récoltée au fond de mares spécifiques, qui donne au tissu ses couleurs caractéristiques allant du brun clair à un noir profond.
+            </p>
+            <p class="fiche-texte">
+              Historiquement, les <strong>femmes Bambaras</strong> étaient les gardiennes de ce savoir-faire. Chaque région du Mali possède ses propres codes visuels : ici un losange symbolise la féminité, là des lignes brisées évoquent le voyage du guerrier. Les chasseurs portaient traditionnellement des vêtements en bogolan car on croyait que la terre absorbait le sang et les forces mauvaises, les protégeant ainsi des dangers de la forêt.
+            </p>
+            <p class="fiche-texte">
+              Aujourd'hui, le bogolan est devenu un <strong>symbole mondial de l'identité africaine</strong>. Des maisons de couture parisiennes aux créateurs new-yorkais, ses motifs inspirent la haute couture internationale, tout en continuant d'être tissé dans les villages du Mali selon les mêmes techniques ancestrales.
+            </p>
+
+            <div class="fiche-chiffre">
+              <div class="chiffre-valeur">+500</div>
+              <div class="chiffre-desc">motifs géométriques répertoriés, chacun porteur d'un sens</div>
+            </div>
+
+            <div class="fiche-tags">
+              <span class="ftag">Bambara</span>
+              <span class="ftag">Teinture naturelle</span>
+              <span class="ftag">Boue fermentée</span>
+              <span class="ftag">Art textile</span>
+              <span class="ftag">Symbole national</span>
+            </div>
+          </div>
+          <!-- IMAGE DROITE — Bogolan réel -->
+          <div class="fiche-img-droite">
+            <img src="/Bogolan.jpg" alt="Tissu bogolan">
+            <div class="fiche-img-droite-legende">Tissu bogolan — motifs géométriques Bambaras</div>
+          </div>
+        </article>
+
+        <!-- Fiche 3 : Empire du Mali -->
+        <article class="fiche-riche">
+          <div class="fiche-bande"></div>
+          <div class="fiche-corps">
+            <div class="fiche-header">
+              <span class="fiche-icone-grand">👑</span>
+              <div class="fiche-titre-block">
+                <h2>Empire du Mali</h2>
+                <div class="sous-titre">L'empire le plus riche du monde médiéval</div>
+              </div>
+            </div>
+
+            <p class="fiche-texte">
+              Entre le XIIIe et le XVe siècle, l'Empire du Mali était tout simplement <strong>l'état le plus puissant et le plus riche du monde connu</strong>. Il contrôlait les routes commerciales du Sahara, monopolisant le commerce de l'or, du sel, du cuivre et des esclaves sur des milliers de kilomètres. À son apogée, il s'étendait de l'Atlantique jusqu'à la boucle du Niger, englobant les actuels Mali, Guinée, Sénégal et Gambie.
+            </p>
+            <p class="fiche-texte">
+              Son souverain le plus célèbre, <strong>Mansa Moussa Ier</strong>, est souvent cité par les historiens comme <em>l'homme le plus riche ayant jamais vécu sur Terre</em>. En 1324, il entreprit son pèlerinage à La Mecque à la tête d'une caravane de <strong>60 000 hommes</strong> et emportant <strong>12 tonnes d'or pur</strong>. Sur son passage — au Caire, à Médine, à La Mecque — il distribua tant d'or que le métal précieux se dévalua en Égypte pendant <em>12 ans</em>, provoquant une inflation sans précédent dans tout le monde arabe.
+            </p>
+            <p class="fiche-texte">
+              Cet événement fit connaître l'Afrique de l'Ouest au monde entier. La carte de l'Atlas catalan de 1375, l'une des plus importantes de la cartographie médiévale européenne, représente Mansa Moussa trônant en majesté, une couronne d'or sur la tête et une pépite d'or dans la main, au centre de l'Afrique.
+            </p>
+
+            <div class="fiche-chiffre">
+              <div class="chiffre-valeur">12 T</div>
+              <div class="chiffre-desc">d'or emportés lors du pèlerinage de Mansa Moussa en 1324</div>
+            </div>
+
+            <div class="fiche-tags">
+              <span class="ftag">Mansa Moussa</span>
+              <span class="ftag">Empire médiéval</span>
+              <span class="ftag">Or</span>
+              <span class="ftag">Commerce transsaharien</span>
+              <span class="ftag">XIIIe–XVe siècle</span>
+            </div>
+          </div>
+          <!-- IMAGE DROITE — Empire du Mali -->
+          <div class="fiche-img-droite">
+            <img src="/The-History-of-the-Mali-Empire.jpg" alt="Empire du Mali — Mansa Moussa">
+            <div class="fiche-img-droite-legende">Mansa Moussa — L'homme le plus riche ayant jamais vécu</div>
+          </div>
+        </article>
+
+      </div><!-- fin fiches-container -->
+
+      <!-- ============================================================
+           LE SAVIEZ-VOUS ?
+           ============================================================ -->
+      <div class="saviez-vous-section">
+        <h2 class="saviez-vous-titre">Le saviez-vous ?</h2>
+        <p class="saviez-vous-sous">Des faits fascinants que peu de gens connaissent sur le Mali</p>
+
+        <div class="saviez-grille">
+
+          <!-- Carte Grammy — pleine largeur -->
+          <div class="saviez-card" style="grid-column:1/-1;background:linear-gradient(135deg,rgba(200,134,10,0.08),rgba(92,58,30,0.25));border-color:rgba(200,134,10,0.5);">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem;flex-wrap:wrap;">
+              <span style="font-size:2.5rem;">🏆</span>
+              <h3 style="font-size:1.2rem;color:var(--bogo-gold);">Le Mali détient 9 Grammy Awards — Nation africaine la plus primée au monde</h3>
+            </div>
+            <p style="margin-bottom:1.2rem;color:#c8aa80;font-size:0.9rem;line-height:1.7;">Le Mali est la nation africaine la plus récompensée aux <strong>Grammy Awards</strong>, la cérémonie musicale la plus prestigieuse du monde. Ses artistes ont collectivement remporté <strong>9 statuettes</strong> — un record absolu pour un pays de moins de 22 millions d'habitants qui témoigne de la richesse et de l'universalité de la musique malienne.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.8rem;">
+              <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:0.8rem;">
+                <strong style="color:var(--bogo-cream);">🎸 Ali Farka Touré</strong>
+                <p style="font-size:0.78rem;margin-top:3px;color:#907050;">Grammy 1994 — <em>Talking Timbuktu</em> avec Ry Cooder<br>Grammy 2006 — <em>In the City</em> avec Toumani Diabaté</p>
+              </div>
+              <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:0.8rem;">
+                <strong style="color:var(--bogo-cream);">🎵 Toumani Diabaté</strong>
+                <p style="font-size:0.78rem;margin-top:3px;color:#907050;">Grammy 2006 — <em>In the City</em> avec Ali Farka Touré<br>72ème génération de griots, maître incontesté de la kora</p>
+              </div>
+              <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:0.8rem;">
+                <strong style="color:var(--bogo-cream);">🎤 Salif Keïta</strong>
+                <p style="font-size:0.78rem;margin-top:3px;color:#907050;">Grammy — La Voix d'Or de l'Afrique<br>Né albinos dans une famille noble, devenu icône mondiale</p>
+              </div>
+              <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:0.8rem;">
+                <strong style="color:var(--bogo-cream);">🎶 Oumou Sangaré</strong>
+                <p style="font-size:0.78rem;margin-top:3px;color:#907050;">Grammy — Reine du Wassoulou<br>Voix des droits des femmes, star mondiale depuis Bamako</p>
+              </div>
+              <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:0.8rem;">
+                <strong style="color:var(--bogo-cream);">🎤 Salif Keïta</strong>
+                <p style="font-size:0.78rem;margin-top:3px;color:#907050;"><span style="color:var(--bogo-gold);">Grammy 1991</span><br>La Voix d'Or de l'Afrique — albinos né dans une famille noble Keïta</p>
+              </div>
+              <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:0.8rem;">
+                <strong style="color:var(--bogo-cream);">🎶 Oumou Sangaré</strong>
+                <p style="font-size:0.78rem;margin-top:3px;color:#907050;"><span style="color:var(--bogo-gold);">Grammy 2010</span><br>Reine du Wassoulou — voix des droits des femmes maliennes</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="saviez-card">
+            <div class="saviez-img"><div class="saviez-img-bg" style="background:linear-gradient(135deg,#1a0800,#5C3A1E,#0a0400);"></div><span class="saviez-img-ico">📜</span></div>
+            <h3>Des manuscrits avant Gutenberg</h3>
+            <p>Tombouctou possède entre <strong>100 000 et 700 000 manuscrits</strong> datant du XIIe au XVIIe siècle — des textes de mathématiques, d'astronomie, de médecine et de philosophie écrits en arabe, en bambara et en sonrhaï, bien avant que l'imprimerie n'existe en Europe.</p>
+          </div>
+
+          <div class="saviez-card">
+            <div class="saviez-img"><div class="saviez-img-bg" style="background:linear-gradient(135deg,#0a0500,#3d1a00,#1a0a00);"></div><span class="saviez-img-ico">🎶</span></div>
+            <h3>Le blues vient du Mali</h3>
+            <p>Les musicologues ont établi un lien direct entre les <strong>pentatoniques des griots mandingues</strong> et le blues américain. Quand les esclaves maliens furent déportés en Amérique, ils emportèrent avec eux leurs structures musicales. Le blues, le jazz et le rock ont une dette énorme envers la musique malienne.</p>
+          </div>
+
+          <div class="saviez-card">
+            <div class="saviez-img"><div class="saviez-img-bg" style="background:linear-gradient(135deg,#0d0600,#5C3A1E,#C8860A,#2a0d00);"></div><span class="saviez-img-ico">👑</span></div>
+            <h3>Soundiata Keïta — le Lion du Mali</h3>
+            <p><strong>Soundiata Keïta</strong> (1217–1255), fondateur de l'Empire du Mali, était paralysé dans son enfance. Il apprit à marcher en s'appuyant sur une barre de fer qu'il courba par sa seule force. Cette épopée, racontée par les griots depuis 800 ans, est aujourd'hui comparée à <em>l'Iliade</em> et à <em>l'Odyssée</em>.</p>
+          </div>
+
+          <div class="saviez-card">
+            <div class="saviez-img"><div class="saviez-img-bg" style="background:linear-gradient(135deg,#080400,#2a1800,#A0522D,#1a0c00);"></div><span class="saviez-img-ico">🕌</span></div>
+            <h3>L'Université la plus vieille d'Afrique</h3>
+            <p>L'<strong>Université Sankore de Tombouctou</strong>, fondée au XIVe siècle, accueillait jusqu'à <strong>25 000 étudiants</strong> — plus qu'Oxford à la même époque. On y enseignait la théologie, le droit islamique, la rhétorique, la grammaire, la médecine et les mathématiques.</p>
+          </div>
+
+          <div class="saviez-card">
+            <div class="saviez-img"><div class="saviez-img-bg" style="background:linear-gradient(135deg,#030d05,#0d3018,#1a5c2a,#052010);"></div><span class="saviez-img-ico">🐊</span></div>
+            <h3>Bamako et ses crocodiles sacrés</h3>
+            <p>Le nom <strong>"Bamako"</strong> vient du bambara <em>bama</em> (crocodile) et <em>ko</em> (marigot). Au sanctuaire de Korofina, des <strong>crocodiles sacrés</strong> vivent en liberté près des habitants. Selon la tradition, les toucher porte bonheur — et ils ne les attaquent jamais.</p>
+          </div>
+
+          <div class="saviez-card">
+            <div class="saviez-img"><div class="saviez-img-bg" style="background:linear-gradient(135deg,#0e0800,#4a2800,#8B4513,#2a1200);"></div><span class="saviez-img-ico">🕌</span></div>
+            <h3>La plus grande mosquée en banco</h3>
+            <p>La <strong>Grande Mosquée de Djenné</strong>, construite en terre (banco), est la plus grande structure en argile crue du monde. Chaque année, toute la ville se réunit pour la "fête du crépissage" afin de réparer les murs — un rituel social aussi important que la prière elle-même.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ============================================================
+           BIOGRAPHIE DU MALI
+           ============================================================ -->
+      <div class="bio-mali">
+        <h2 class="bio-titre">Le <span>Mali</span> en chiffres et en vérité</h2>
+        <p class="bio-sous">Un pays immense, riche d'histoire, debout malgré tout</p>
+
+        <div class="bio-intro">
+          « Le Mali n'est pas seulement un pays — c'est un berceau. Berceau de l'Empire du Mali, berceau de la musique africaine, berceau d'une civilisation qui a ébloui le monde médiéval quand l'Europe tâtonnait encore dans ses ténèbres. »
+        </div>
+
+        <!-- Statistiques clés -->
+        <div class="bio-stats">
+          <div class="bio-stat">
+            <div class="bio-stat-icone">🗺️</div>
+            <div class="bio-stat-val">1 241 238</div>
+            <div class="bio-stat-label">km² de superficie</div>
+          </div>
+          <div class="bio-stat">
+            <div class="bio-stat-icone">👥</div>
+            <div class="bio-stat-val">~22 M</div>
+            <div class="bio-stat-label">habitants (2024)</div>
+          </div>
+          <div class="bio-stat">
+            <div class="bio-stat-icone">🏙️</div>
+            <div class="bio-stat-val">Bamako</div>
+            <div class="bio-stat-label">Capitale</div>
+          </div>
+          <div class="bio-stat">
+            <div class="bio-stat-icone">🗓️</div>
+            <div class="bio-stat-val">22 sept. 1960</div>
+            <div class="bio-stat-label">Indépendance</div>
+          </div>
+          <div class="bio-stat">
+            <div class="bio-stat-icone">🌊</div>
+            <div class="bio-stat-val">4 184 km</div>
+            <div class="bio-stat-label">Fleuve Niger</div>
+          </div>
+          <div class="bio-stat">
+            <div class="bio-stat-icone">🌡️</div>
+            <div class="bio-stat-val">+48°C</div>
+            <div class="bio-stat-label">Température max. enregistrée</div>
+          </div>
+        </div>
+
+        <!-- Encart Or -->
+        <div class="bio-or">
+          <div class="bio-or-medaille">🥇</div>
+          <div>
+            <h3>3ème producteur d'or d'Afrique</h3>
+            <p>
+              Le Mali est le <strong>3ème plus grand producteur d'or du continent africain</strong>, après le Ghana et l'Afrique du Sud. Ses mines — Syama, Loulo-Gounkoto, Morila — produisent chaque année <strong>plus de 70 tonnes d'or</strong>. Ce métal précieux représente près de <strong>70 % des recettes d'exportation</strong> du pays. C'est la même veine d'or que celle qui enrichissait Mansa Moussa au XIVe siècle — le Mali a toujours été la terre de l'or.
+            </p>
+          </div>
+        </div>
+
+        <!-- Blocs narratifs -->
+        <div class="bio-blocs">
+
+          <div class="bio-bloc" style="grid-column:1/-1;display:grid;grid-template-columns:1fr 340px;gap:0;overflow:hidden;padding:0;">
+            <div style="padding:1.8rem;">
+              <div class="bio-bloc-titre">🎖️ Le Président Assimi Goïta</div>
+              <p>
+                <strong>Assimi Goïta</strong>, né en 1983, est le président de la transition du Mali depuis le <em>28 mai 2021</em>. Colonel des forces spéciales, il a mené deux coups d'État successifs (août 2020 et mai 2021) qui ont mis fin à 9 ans de présidence d'Ibrahim Boubacar Keïta puis de Bah N'Daw. Partisan d'une souveraineté totale du Mali, il s'est rapproché de la <strong>Russie</strong> et du groupe <strong>Wagner</strong>, rompu avec la France et l'espace Schengen, et a expulsé les troupes françaises de l'opération Barkhane en 2022. Pour ses partisans, il incarne la <em>résistance panafricaine</em> ; pour ses détracteurs, il représente la fin d'un processus démocratique fragile.
+              </p>
+            </div>
+            <div style="background:#0a0500;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+              <img src="/assimi.jpg" alt="Président Assimi Goïta"
+                style="width:100%;height:auto;display:block;object-fit:contain;">
+              <div style="width:100%;background:rgba(5,2,0,0.85);padding:0.6rem 1rem;font-size:0.75rem;color:var(--bogo-sand);font-style:italic;text-align:center;">
+                Colonel Assimi Goïta — Président de la transition du Mali
+              </div>
+            </div>
+          </div>
+
+          <div class="bio-bloc">
+            <div class="bio-bloc-titre">🌊 Le Fleuve Niger — artère vitale</div>
+            <p>
+              Long de <strong>4 184 km</strong>, le Niger est le 3ème plus long fleuve d'Afrique après le Nil et le Congo. Il traverse le Mali du sud-ouest au nord-est, formant un <em>delta intérieur</em> unique au monde — une zone inondable de 30 000 km² qui se transforme chaque année en mer intérieure, nourrissant des millions de personnes. Sans le Niger, ni Bamako, ni Tombouctou, ni l'agriculture malienne n'existeraient.
+            </p>
+          </div>
+
+          <div class="bio-bloc">
+            <div class="bio-bloc-titre">🌍 Un pays aux 19 régions</div>
+            <p>
+              Le Mali est divisé en <strong>19 régions administratives</strong> : <em>Kayes, Koulikoro, Sikasso, Ségou, Mopti, Tombouctou, Gao, Kidal, Taoudénit, Ménaka, Nioro, Bougouni, Dioïla, Koutiala, Kita, Nara, Bandiagara, San</em> et <em>Douentza</em> — plus le district de Bamako. Au nord, le <strong>Sahara</strong> couvre plus de la moitié du territoire, peuplé par les Touaregs et les Arabes. Au sud, les savanes fertiles accueillent le coton, la mangue et l'arachide. Le Mali est littéralement un pays-continent.
+            </p>
+          </div>
+
+          <div class="bio-bloc">
+            <div class="bio-bloc-titre">📚 Langues et diversité</div>
+            <p>
+              Si le <strong>français</strong> est la langue officielle, le Mali compte <strong>plus de 40 langues nationales</strong>. Le <em>bambara</em> est la lingua franca parlée par 80% de la population pour le commerce et la vie quotidienne. Viennent ensuite le peul, le soninké, le dogon, le tamasheq (touareg), le songhaï et le bozo. Cette diversité linguistique reflète une richesse ethnique et culturelle sans équivalent en Afrique de l'Ouest.
+            </p>
+          </div>
+
+          <div class="bio-bloc">
+            <div class="bio-bloc-titre">🌾 Une économie agricole et minière</div>
+            <p>
+              Le Mali est l'un des plus grands producteurs de <strong>coton</strong> d'Afrique subsaharienne — il représente 15 à 20 % du PIB agricole. Avec l'or, le coton est le pilier des exportations. Le pays produit également du <strong>fonio, du sorgho, du mil, du karité et de la mangue</strong>. Malgré l'enclavement (pas d'accès à la mer), le Mali reste l'un des acteurs majeurs de l'économie sahélienne avec un PIB d'environ <em>17 milliards USD</em>.
+            </p>
+          </div>
+
+          <div class="bio-bloc">
+            <div class="bio-bloc-titre">🏆 Patrimoine UNESCO</div>
+            <p>
+              Le Mali compte <strong>4 sites inscrits au patrimoine mondial de l'UNESCO</strong> : la vieille ville de <em>Djenné</em> (1988), les <em>falaises de Bandiagara</em> — pays Dogon (1989), les <em>tombouctou</em> (1988) avec ses 3 mosquées et ses manuscrits, et le <em>tombeau des Askia</em> à Gao (2004). Ce patrimoine est aujourd'hui menacé par les conflits armés et le changement climatique — le préserver est un devoir de civilisation.
+            </p>
+          </div>
+
+        </div>
+      </div>
+      <!-- fin bio Mali -->
+
+    </div>
+    <!-- fin panneau culture -->
+
+    <!-- ================================================================
+         PANNEAU CUISINE
+         ================================================================ -->
+    <div id="panneau-cuisine" class="panneau">
+
+      <div class="section-banner">
+        <div class="section-banner-text">
+          <h1>Cuisine <span>Malienne</span></h1>
+          <p>La cuisine malienne est un voyage des sens. Née de siècles d'échanges entre paysans, pêcheurs, nomades et marchands, elle conjugue saveurs profondes, céréales ancestrales et épices du Sahel dans des recettes transmises de mère en fille depuis des générations.</p>
+        </div>
+        <div class="section-banner-deco">🍲</div>
+      </div>
+
+      <div class="fiches-container">
+
+        <article class="fiche-riche">
+          <div class="fiche-bande">Plat phare</div>
+          <div class="fiche-corps">
+            <div class="fiche-header">
+              <span class="fiche-icone-grand">🥜</span>
+              <div class="fiche-titre-block">
+                <h2>Tiga Dèguè — La sauce nationale</h2>
+                <div class="sous-titre">Le plat emblématique de tous les foyers maliens</div>
+              </div>
+            </div>
+            <p class="fiche-texte">
+              Le <strong>Tiga Dèguè</strong> — littéralement <em>"sauce arachide"</em> en bambara — est le plat national du Mali par excellence. Sa préparation commence par la torréfaction à la main des arachides sur un foyer de bois, puis leur broyage sur une pierre plate (le <em>boro</em>) jusqu'à l'obtention d'une pâte onctueuse. Cette pâte est ensuite diluée dans un bouillon de viande de mouton ou de poulet, relevé de tomate fraîche, de piment, de soumbala (haricots fermentés) et de feuilles de baobab. La sauce mijote plusieurs heures, épaissit, et développe une profondeur de saveur incomparable.
+            </p>
+            <p class="fiche-texte">
+              Servi sur du riz blanc, du tô (pâte de mil ou de sorgho) ou des ignames, le Tiga Dèguè est présent sur toutes les tables maliennes, qu'il s'agisse d'un repas quotidien, d'une fête de mariage ou d'un baptême. <strong>Chaque famille, chaque région possède sa propre variante</strong> : certains y ajoutent du gombo pour l'épaisseur, d'autres de la courge ou des feuilles de manioc. C'est un plat qui nourrit le corps, mais aussi l'identité.
+            </p>
+            <div class="fiche-chiffre">
+              <div class="chiffre-valeur">1er</div>
+              <div class="chiffre-desc">plat le plus consommé au Mali, présent dans 95% des foyers</div>
+            </div>
+            <div class="fiche-tags">
+              <span class="ftag">Bambara</span><span class="ftag">Arachide</span><span class="ftag">Plat national</span><span class="ftag">Soumbala</span><span class="ftag">Tô</span>
+            </div>
+          </div>
+          <div class="fiche-img-droite">
+            <img src="/WhatsApp%20Image%202026-03-24%20at%2000.59.22.jpeg" alt="Tiga Dèguè — sauce arachide malienne" onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:4rem;\'>🥜</div>'">
+            <div class="fiche-img-droite-legende">Tiga Dèguè — la sauce arachide nationale du Mali</div>
+          </div>
+        </article>
+
+        <article class="fiche-riche">
+          <div class="fiche-bande">Céréale</div>
+          <div class="fiche-corps">
+            <div class="fiche-header">
+              <span class="fiche-icone-grand">🌾</span>
+              <div class="fiche-titre-block">
+                <h2>Fonio — La céréale éternelle</h2>
+                <div class="sous-titre">5 000 ans d'histoire dans un grain minuscule</div>
+              </div>
+            </div>
+            <p class="fiche-texte">
+              Le <strong>fonio</strong> (<em>Digitaria exilis</em>) est la plus ancienne céréale cultivée d'Afrique de l'Ouest. Des traces de sa culture remontent à <strong>5 000 ans avant J.-C.</strong> dans le delta intérieur du Niger. Ce minuscule grain — deux fois plus petit qu'un grain de couscous — est pourtant un trésor nutritionnel : naturellement <strong>sans gluten</strong>, riche en acides aminés essentiels (méthionine et cystine absents du blé et du maïs), à faible indice glycémique, il est idéal pour les diabétiques et les personnes intolérantes au gluten.
+            </p>
+            <p class="fiche-texte">
+              Longtemps considéré comme la <em>"céréale des pauvres"</em>, le fonio connaît aujourd'hui une renaissance mondiale. Des chefs étoilés de Paris à New York l'ont inscrit à leurs menus, et l'entrepreneur sénégalais Pierre Thiam en a fait la promotion dans les grandes capitales mondiales. Au Mali, il reste un <strong>aliment de prestige</strong> servi lors des cérémonies de mariage et des fêtes religieuses.
+            </p>
+            <div class="fiche-chiffre">
+              <div class="chiffre-valeur">5 000</div>
+              <div class="chiffre-desc">ans de culture ininterrompue en Afrique de l'Ouest</div>
+            </div>
+            <div class="fiche-tags">
+              <span class="ftag">Sans gluten</span><span class="ftag">Ancestral</span><span class="ftag">Nutritif</span><span class="ftag">Superfood</span><span class="ftag">Sahel</span>
+            </div>
+          </div>
+          <div class="fiche-img-droite">
+            <img src="/fonio.jpg" alt="Fonio — céréale ancestrale du Mali" onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:4rem;\'>🌾</div>'">
+            <div class="fiche-img-droite-legende">Fonio — la plus ancienne céréale cultivée d'Afrique</div>
+          </div>
+        </article>
+
+        <article class="fiche-riche">
+          <div class="fiche-bande">Boisson</div>
+          <div class="fiche-corps">
+            <div class="fiche-header">
+              <span class="fiche-icone-grand">🌺</span>
+              <div class="fiche-titre-block">
+                <h2>Jus de Bissap — L'eau rouge du Mali</h2>
+                <div class="sous-titre">Dabileni : la boisson nationale sous la chaleur sahélienne</div>
+              </div>
+            </div>
+            <p class="fiche-texte">
+              Sous les 45 degrés de Bamako en saison sèche, rien n'étanche la soif comme un grand verre de <strong>bissap</strong> glacé. Appelé <em>dabileni</em> en bambara — «&nbsp;l'eau rouge&nbsp;» — il est préparé à partir de fleurs d'hibiscus séchées (<em>Hibiscus sabdariffa</em>), bouillies avec du gingembre frais, de la menthe et du sucre de canne. Sa couleur pourpre éclatante et son goût à la fois acidulé et floral en ont fait la boisson la plus populaire d'Afrique de l'Ouest.
+            </p>
+            <p class="fiche-texte">
+              Au-delà de son goût, le bissap est une <strong>pharmacopée naturelle</strong> : riche en anthocyanes, en vitamine C et en acide hibiscus, il est prouvé cliniquement qu'il réduit la tension artérielle et le cholestérol LDL. Dans les villages, on l'offre aux invités comme le plus grand des honneurs. Des études de l'OMS ont confirmé son efficacité dans la prévention de l'hypertension dans les pays tropicaux.
+            </p>
+            <div class="fiche-chiffre">
+              <div class="chiffre-valeur">-10%</div>
+              <div class="chiffre-desc">de réduction de tension artérielle prouvée cliniquement</div>
+            </div>
+            <div class="fiche-tags">
+              <span class="ftag">Hibiscus</span><span class="ftag">Dabileni</span><span class="ftag">Rafraîchissant</span><span class="ftag">Médicinal</span><span class="ftag">Vitamine C</span>
+            </div>
+          </div>
+          <!-- IMAGE DROITE — Bissap -->
+          <div class="fiche-img-droite">
+            <img src="/Hibiscus_et_bissap__le_secret_d_une_boisson_aux_bienfaits_insoupconnes.webp" alt="Jus de Bissap — Hibiscus">
+            <div class="fiche-img-droite-legende">Jus de Bissap — les fleurs d'hibiscus séchées, l'eau rouge du Mali</div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- ================================================================
+         PANNEAU RÉGIONS
+         ================================================================ -->
+    <div id="panneau-regions" class="panneau">
+
+      <div class="section-banner">
+        <div class="section-banner-text">
+          <h1>Régions du <span>Mali</span></h1>
+          <p>Le Mali compte <strong>19 régions administratives</strong> — du fleuve Niger aux dunes du Sahara, des falaises Dogon aux ruelles de Tombouctou. Chaque région est un monde à part entière, une civilisation en soi, un paysage qui défie l'imagination.</p>
+          <!-- Grille des 19 régions -->
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem;">
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Kayes</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Koulikoro</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Sikasso</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Ségou</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Mopti</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Tombouctou</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Gao</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Kidal</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Taoudénit</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Ménaka</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Nioro</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Bougouni</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Dioïla</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Koutiala</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Kita</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Nara</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Bandiagara</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">San</span>
+            <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Douentza</span>
+            <span style="background:rgba(200,134,10,0.2);border:1px solid var(--bogo-gold);color:var(--bogo-gold);border-radius:20px;padding:3px 10px;font-size:0.75rem;font-weight:bold;">★ Bamako (district)</span>
+          </div>
+        </div>
+        <div class="section-banner-deco">🏔️</div>
+      </div>
+
+      <div class="fiches-container">
+
+        <article class="fiche-riche">
+          <div class="fiche-bande">Capitale</div>
+          <div class="fiche-corps">
+            <div class="fiche-header">
+              <span class="fiche-icone-grand">🏙️</span>
+              <div class="fiche-titre-block">
+                <h2>Bamako — La ville aux 3 caïmans</h2>
+                <div class="sous-titre">4 millions d'âmes sur les rives du Niger</div>
+              </div>
+            </div>
+            <p class="fiche-texte">
+              <strong>Bamako</strong> tire son nom du bambara <em>bama</em> (crocodile) et <em>ko</em> (marigot ou cours d'eau). Les crocodiles sacrés du sanctuaire de Korofina y vivent encore aujourd'hui en liberté parmi les habitants, symboles vivants du lien entre la ville et ses origines. Aujourd'hui capitale d'environ <strong>4 millions d'habitants</strong>, Bamako est l'une des villes les plus peuplées et les plus dynamiques d'Afrique de l'Ouest, s'étendant sur les deux rives du fleuve Niger reliées par les ponts des Martyrs et du Roi Fahd.
+            </p>
+            <p class="fiche-texte">
+              Bamako est le cœur économique, politique et culturel du Mali. Son grand marché — l'un des plus grands d'Afrique — déborde de tissus, d'épices, de bétail et de pièces d'artisanat. Le quartier de <strong>Hamdallaye</strong> est le centre commercial moderne, tandis que <em>Niarela</em> abrite les ONG et les ambassades. La nuit, la ville vibre au rythme des concerts dans ses maquis — Bamako est aussi, sans conteste, la <strong>capitale musicale de l'Afrique de l'Ouest</strong>.
+            </p>
+            <div class="fiche-chiffre">
+              <div class="chiffre-valeur">4 M</div>
+              <div class="chiffre-desc">habitants — une des capitales à la croissance la plus rapide d'Afrique</div>
+            </div>
+            <div class="fiche-tags">
+              <span class="ftag">Niger</span><span class="ftag">Capitale</span><span class="ftag">Crocodiles sacrés</span><span class="ftag">Music City</span>
+            </div>
+          </div>
+          <div class="fiche-img-droite">
+            <img src="/Bamako.jpg" alt="Bamako — capitale du Mali" onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:4rem;\'>🏙️</div>'">
+            <div class="fiche-img-droite-legende">Bamako — la capitale sur les rives du Niger</div>
+          </div>
+        </article>
+
+        <article class="fiche-riche">
+          <div class="fiche-bande">UNESCO</div>
+          <div class="fiche-corps">
+            <div class="fiche-header">
+              <span class="fiche-icone-grand">🕌</span>
+              <div class="fiche-titre-block">
+                <h2>Tombouctou — La mystérieuse</h2>
+                <div class="sous-titre">Carrefour du savoir, de l'or et du Sahara</div>
+              </div>
+            </div>
+            <p class="fiche-texte">
+              Au XVe siècle, <strong>Tombouctou</strong> était ce que Paris et Rome représentaient pour l'Europe : le centre du monde civilisé. Surnommée <em>"la Perle du désert"</em>, <em>"la Cité des 333 saints"</em> ou <em>"la ville où le sel vaut l'or et l'or le sel"</em>, elle était le nœud du commerce transsaharien, le lieu de rencontre des caravanes arabes, berbères, touarègues et mandingues. Sel, or, esclaves, livres, épices — tout passait par Tombouctou.
+            </p>
+            <p class="fiche-texte">
+              L'<strong>Université Sankore</strong>, fondée au XIVe siècle, accueillait jusqu'à <strong>25 000 étudiants</strong> et abritait une bibliothèque de centaines de milliers de manuscrits. On y enseignait le droit islamique, l'astronomie, la médecine et la philosophie à une époque où la plupart des universités européennes n'existaient pas encore. Ces manuscrits, menacés par les jihadistes en 2012, ont été sauvés in extremis par des bibliothécaires courageux qui les ont convoyés à Bamako dans des malles de nuit.
+            </p>
+            <div class="fiche-chiffre">
+              <div class="chiffre-valeur">700 K</div>
+              <div class="chiffre-desc">manuscrits médiévaux conservés à Tombouctou</div>
+            </div>
+            <div class="fiche-tags">
+              <span class="ftag">UNESCO 1988</span><span class="ftag">Sankore</span><span class="ftag">Sahara</span><span class="ftag">Manuscrits</span><span class="ftag">Commerce de l'or</span>
+            </div>
+          </div>
+          <div class="fiche-img-droite">
+            <img src="/tombouctou.webp" alt="Tombouctou — la cité mystérieuse" onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:4rem;\'>🕌</div>'">
+            <div class="fiche-img-droite-legende">Tombouctou — la Perle du désert</div>
+          </div>
+        </article>
+
+        <article class="fiche-riche">
+          <div class="fiche-bande">UNESCO</div>
+          <div class="fiche-corps">
+            <div class="fiche-header">
+              <span class="fiche-icone-grand">⛰️</span>
+              <div class="fiche-titre-block">
+                <h2>Pays Dogon — Les bâtisseurs de falaises</h2>
+                <div class="sous-titre">150 km de falaises, 700 ans de résistance</div>
+              </div>
+            </div>
+            <p class="fiche-texte">
+              La <strong>falaise de Bandiagara</strong>, inscrite au patrimoine UNESCO en 1989, s'étend sur <strong>150 kilomètres</strong> dans la région de Mopti. Elle est le foyer du peuple <strong>Dogon</strong>, un peuple qui, au XIIIe siècle, a fui les conversions forcées et les conquêtes en s'accrochant littéralement aux parois rocheuses pour y construire ses villages. Ces maisons de banco (terre crue mêlée de paille) — greniers perchés, maisons communautaires, sanctuaires des ancêtres — défient encore aujourd'hui toutes les lois de la gravité.
+            </p>
+            <p class="fiche-texte">
+              La cosmologie Dogon est l'une des plus complexes et des plus fascinantes du monde. Dans les années 1930, l'anthropologue français <strong>Marcel Griaule</strong> découvrit que les Dogon connaissaient l'existence de <em>Sirius B</em> — une étoile invisible à l'œil nu — des siècles avant que les astronomes modernes ne la détectent avec des télescopes. Cette connaissance, transmise par leurs prêtres depuis des générations, reste l'un des plus grands mystères de l'anthropologie mondiale.
+            </p>
+            <div class="fiche-chiffre">
+              <div class="chiffre-valeur">150 km</div>
+              <div class="chiffre-desc">de falaise abritant des villages construits au XIIIe siècle</div>
+            </div>
+            <div class="fiche-tags">
+              <span class="ftag">UNESCO 1989</span><span class="ftag">Banco</span><span class="ftag">Cosmologie</span><span class="ftag">Sirius B</span><span class="ftag">Architecture</span>
+            </div>
+          </div>
+          <div class="fiche-img-droite">
+            <img src="/pays%20dogon.jpg" alt="Pays Dogon — falaises de Bandiagara" onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:4rem;\'>⛰️</div>'">
+            <div class="fiche-img-droite-legende">Pays Dogon — villages perchés sur la falaise de Bandiagara</div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- ================================================================
+         PANNEAU QUIZ
+         ================================================================ -->
+    <div id="panneau-quiz" class="panneau">
+      <div class="quiz-container">
+
+        <div class="quiz-header">
+          <h1>🎯 Quiz <span>MaliXplore</span></h1>
+          <p>9 questions pour tester ce que vous savez vraiment du Mali</p>
+        </div>
+
+        <!-- Barre de score -->
+        <div class="quiz-score-bar">
+          <div>
+            <div class="quiz-score-text">Votre score</div>
+            <div><span id="score-val" class="quiz-score-num">0</span> <span style="color:#705030">/ 9 questions</span></div>
+          </div>
+          <button class="quiz-reset-btn" onclick="resetQuiz()">↺ Recommencer</button>
+        </div>
+
+        <!-- Résultat final -->
+        <div id="quiz-resultat" style="display:none;margin:1.5rem 0;padding:1.8rem 2rem;border-radius:12px;text-align:center;"></div>
+
+        <!-- Catégorie Culture -->
+        <div class="quiz-categorie">
+          <div class="quiz-cat-titre">🎵 Culture malienne</div>
+
+          <div class="quiz-carte" id="q0">
+            <p class="quiz-question-texte">Combien de cordes possède une kora ?</p>
+            <div class="quiz-options-grille">
+              <button class="qopt" onclick="repQ(0,0,1)">a) 12 cordes</button>
+              <button class="qopt" onclick="repQ(0,1,1)">b) 21 cordes</button>
+              <button class="qopt" onclick="repQ(0,2,1)">c) 33 cordes</button>
+              <button class="qopt" onclick="repQ(0,3,1)">d) 7 cordes</button>
+            </div>
+            <div class="quiz-fb" id="fb0"></div>
+          </div>
+
+          <div class="quiz-carte" id="q1">
+            <p class="quiz-question-texte">Quel matériau naturel donne ses couleurs au tissu bogolan ?</p>
+            <div class="quiz-options-grille">
+              <button class="qopt" onclick="repQ(1,0,1)">a) Argile rouge</button>
+              <button class="qopt" onclick="repQ(1,1,1)">b) Boue fermentée</button>
+              <button class="qopt" onclick="repQ(1,2,1)">c) Jus de kola</button>
+              <button class="qopt" onclick="repQ(1,3,1)">d) Charbon de bois</button>
+            </div>
+            <div class="quiz-fb" id="fb1"></div>
+          </div>
+
+          <div class="quiz-carte" id="q2">
+            <p class="quiz-question-texte">Quelle quantité d'or Mansa Moussa emporta-t-il lors de son pèlerinage de 1324 ?</p>
+            <div class="quiz-options-grille">
+              <button class="qopt" onclick="repQ(2,0,2)">a) 2 tonnes</button>
+              <button class="qopt" onclick="repQ(2,1,2)">b) 5 tonnes</button>
+              <button class="qopt" onclick="repQ(2,2,2)">c) 12 tonnes</button>
+              <button class="qopt" onclick="repQ(2,3,2)">d) 50 tonnes</button>
+            </div>
+            <div class="quiz-fb" id="fb2"></div>
+          </div>
+        </div>
+
+        <!-- Catégorie Cuisine -->
+        <div class="quiz-categorie">
+          <div class="quiz-cat-titre">🍲 Cuisine malienne</div>
+
+          <div class="quiz-carte" id="q3">
+            <p class="quiz-question-texte">Que signifie "Tiga Dèguè" en langue bambara ?</p>
+            <div class="quiz-options-grille">
+              <button class="qopt" onclick="repQ(3,0,1)">a) Sauce pimentée</button>
+              <button class="qopt" onclick="repQ(3,1,1)">b) Sauce arachide</button>
+              <button class="qopt" onclick="repQ(3,2,1)">c) Riz au gras</button>
+              <button class="qopt" onclick="repQ(3,3,1)">d) Bouillon de poisson</button>
+            </div>
+            <div class="quiz-fb" id="fb3"></div>
+          </div>
+
+          <div class="quiz-carte" id="q4">
+            <p class="quiz-question-texte">Depuis combien d'années le fonio est-il cultivé en Afrique de l'Ouest ?</p>
+            <div class="quiz-options-grille">
+              <button class="qopt" onclick="repQ(4,0,2)">a) 500 ans</button>
+              <button class="qopt" onclick="repQ(4,1,2)">b) 2 000 ans</button>
+              <button class="qopt" onclick="repQ(4,2,2)">c) 5 000 ans</button>
+              <button class="qopt" onclick="repQ(4,3,2)">d) 1 000 ans</button>
+            </div>
+            <div class="quiz-fb" id="fb4"></div>
+          </div>
+
+          <div class="quiz-carte" id="q5">
+            <p class="quiz-question-texte">Quel est le nom bambara du jus de bissap ?</p>
+            <div class="quiz-options-grille">
+              <button class="qopt" onclick="repQ(5,0,0)">a) Dabileni</button>
+              <button class="qopt" onclick="repQ(5,1,0)">b) Soumbala</button>
+              <button class="qopt" onclick="repQ(5,2,0)">c) Dioula</button>
+              <button class="qopt" onclick="repQ(5,3,0)">d) Tiébou dien</button>
+            </div>
+            <div class="quiz-fb" id="fb5"></div>
+          </div>
+        </div>
+
+        <!-- Catégorie Régions -->
+        <div class="quiz-categorie">
+          <div class="quiz-cat-titre">🏔️ Régions du Mali</div>
+
+          <div class="quiz-carte" id="q6">
+            <p class="quiz-question-texte">Que signifie le nom "Bamako" en langue bambara ?</p>
+            <div class="quiz-options-grille">
+              <button class="qopt" onclick="repQ(6,0,1)">a) Fleuve d'or</button>
+              <button class="qopt" onclick="repQ(6,1,1)">b) Marigot aux crocodiles</button>
+              <button class="qopt" onclick="repQ(6,2,1)">c) Ville des rois</button>
+              <button class="qopt" onclick="repQ(6,3,1)">d) Source de vie</button>
+            </div>
+            <div class="quiz-fb" id="fb6"></div>
+          </div>
+
+          <div class="quiz-carte" id="q7">
+            <p class="quiz-question-texte">Combien d'étudiants l'Université Sankore de Tombouctou accueillait-elle à son apogée ?</p>
+            <div class="quiz-options-grille">
+              <button class="qopt" onclick="repQ(7,0,2)">a) 5 000 étudiants</button>
+              <button class="qopt" onclick="repQ(7,1,2)">b) 10 000 étudiants</button>
+              <button class="qopt" onclick="repQ(7,2,2)">c) 25 000 étudiants</button>
+              <button class="qopt" onclick="repQ(7,3,2)">d) 50 000 étudiants</button>
+            </div>
+            <div class="quiz-fb" id="fb7"></div>
+          </div>
+
+          <div class="quiz-carte" id="q8">
+            <p class="quiz-question-texte">Sur quelle longueur s'étend la falaise de Bandiagara au pays Dogon ?</p>
+            <div class="quiz-options-grille">
+              <button class="qopt" onclick="repQ(8,0,2)">a) 50 km</button>
+              <button class="qopt" onclick="repQ(8,1,2)">b) 100 km</button>
+              <button class="qopt" onclick="repQ(8,2,2)">c) 150 km</button>
+              <button class="qopt" onclick="repQ(8,3,2)">d) 200 km</button>
+            </div>
+            <div class="quiz-fb" id="fb8"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- fin panneau quiz -->
+
+  </div><!-- fin page-wrap -->
+
+  <script>
+    // ============================================================
+    // SESSION
+    // ============================================================
+    async function verifierSession() {
+      try {
+        const r = await fetch('/api/session/check');
+        const d = await r.json();
+        if (!d.authenticated) { window.location.href = '/index.html'; return; }
+        const nom = d.nom || '';
+        document.getElementById('nom-utilisateur').textContent = nom;
+        document.getElementById('user-avatar').textContent     = nom.charAt(0).toUpperCase();
+      } catch { window.location.href = '/index.html'; }
+    }
+    verifierSession();
+
+    // ============================================================
+    // ONGLETS
+    // ============================================================
+    function changerOnglet(nom) {
+      ['culture','cuisine','regions','quiz'].forEach(n => {
+        const btn    = document.querySelector(`[data-onglet="${n}"]`);
+        const panel  = document.getElementById(`panneau-${n}`);
+        const actif  = n === nom;
+        if (btn)   btn.classList.toggle('actif', actif);
+        if (panel) panel.classList.toggle('actif', actif);
+      });
+    }
+
+    // Activer l'onglet depuis le hash de l'URL
+    function activerDepuisHash() {
+      const hash = window.location.hash.replace('#', '');
+      if (['culture','cuisine','regions','quiz'].includes(hash)) changerOnglet(hash);
+    }
+    activerDepuisHash();
+    window.addEventListener('hashchange', activerDepuisHash);
+
+    // ============================================================
+    // QUIZ
+    // ============================================================
+    const REPONSES = {
+      // [index correct, explication]
+      0: [1, 'La kora possède exactement 21 cordes, réparties en deux rangées. Chaque corde est en nylon ou en pêche tressée.'],
+      1: [1, '"Bogo" signifie boue/terre en bambara. La boue fermentée riche en tanins est la teinture naturelle du bogolan.'],
+      2: [2, 'Mansa Moussa emporta environ 12 tonnes d\'or lors de son pèlerinage à La Mecque en 1324, provoquant une inflation en Égypte pendant 12 ans.'],
+      3: [1, '"Tiga" = arachide en bambara, "dèguè" = sauce. Tiga Dèguè est littéralement la sauce arachide, plat national du Mali.'],
+      4: [2, 'Le fonio est cultivé depuis au moins 5 000 ans en Afrique de l\'Ouest — c\'est la plus ancienne céréale cultivée du continent.'],
+      5: [0, '"Dabileni" signifie "eau rouge" en bambara, en référence à la couleur pourpre de la fleur d\'hibiscus.'],
+      6: [1, '"Bama" = crocodile, "ko" = marigot en bambara. Les crocodiles peuplaient autrefois le bras du Niger à cet endroit.'],
+      7: [2, 'L\'université Sankore accueillait jusqu\'à 25 000 étudiants au XVe siècle — plus qu\'Oxford à la même époque.'],
+      8: [2, 'La falaise de Bandiagara s\'étend sur 150 km dans la région de Mopti. Inscrite à l\'UNESCO en 1989.']
+    };
+
+    let score = 0;
+    let questionsRepondues = 0;
+
+    function repQ(qIndex, choix, indexCorrect) {
+      const carte   = document.getElementById(`q${qIndex}`);
+      const fb      = document.getElementById(`fb${qIndex}`);
+      const opts    = carte.querySelectorAll('.qopt');
+      const correct = REPONSES[qIndex][0];
+      const expl    = REPONSES[qIndex][1];
+
+      // Désactiver tous les boutons
+      opts.forEach(b => b.disabled = true);
+
+      if (choix === correct) {
+        opts[choix].classList.add('correct');
+        fb.className   = 'quiz-fb ok';
+        fb.textContent = `✅ Correct ! ${expl}`;
+        score++;
+        document.getElementById('score-val').textContent = score;
+      } else {
+        opts[choix].classList.add('incorrect');
+        opts[correct].classList.add('correct');
+        fb.className   = 'quiz-fb ko';
+        fb.textContent = `❌ Incorrect. ${expl}`;
+      }
+
+      questionsRepondues++;
+      if (questionsRepondues === 9) afficherResultat();
+    }
+
+    function afficherResultat() {
+      const bloc = document.getElementById('quiz-resultat');
+      let emoji, titre, message, bg, border;
+
+      if (score === 9) {
+        emoji = '🏆'; titre = 'Parfait !';
+        message = 'Score parfait — vous êtes un véritable expert du Mali !';
+        bg = 'linear-gradient(135deg,rgba(200,134,10,0.15),rgba(200,134,10,0.05))';
+        border = '2px solid var(--bogo-gold)';
+      } else if (score >= 7) {
+        emoji = '🥇'; titre = 'Excellent !';
+        message = `Bravo ! Vous avez obtenu ${score}/9 — vous connaissez très bien le Mali.`;
+        bg = 'linear-gradient(135deg,rgba(40,160,40,0.12),rgba(40,160,40,0.04))';
+        border = '2px solid #4a9a4a';
+      } else if (score >= 5) {
+        emoji = '👍'; titre = 'Pas mal !';
+        message = `Vous avez obtenu ${score}/9 — vous avez de bonnes bases, continuez à explorer !`;
+        bg = 'linear-gradient(135deg,rgba(200,134,10,0.1),rgba(200,134,10,0.03))';
+        border = '2px solid rgba(200,134,10,0.4)';
+      } else if (score >= 3) {
+        emoji = '📚'; titre = 'À approfondir';
+        message = `Vous avez obtenu ${score}/9 — le Mali a encore beaucoup de secrets à vous révéler !`;
+        bg = 'rgba(92,58,30,0.15)';
+        border = '2px solid rgba(92,58,30,0.4)';
+      } else {
+        emoji = '🌍'; titre = 'Début du voyage';
+        message = `Vous avez obtenu ${score}/9 — ne vous découragez pas, parcourez les fiches et revenez tenter votre chance !`;
+        bg = 'rgba(139,26,26,0.1)';
+        border = '2px solid rgba(139,26,26,0.3)';
+      }
+
+      bloc.style.background = bg;
+      bloc.style.border = border;
+      bloc.innerHTML = `
+        <div style="font-size:3rem;margin-bottom:0.5rem;">${emoji}</div>
+        <div style="font-size:1.5rem;font-weight:bold;color:var(--bogo-gold);margin-bottom:0.4rem;">${titre}</div>
+        <div style="font-size:1.1rem;color:var(--bogo-cream);margin-bottom:1rem;">${message}</div>
+        <div style="font-size:2.5rem;font-weight:bold;color:var(--bogo-gold);">${score} <span style="font-size:1.2rem;color:var(--bogo-sand);">/ 9</span></div>
+      `;
+      bloc.style.display = 'block';
+      bloc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function resetQuiz() {
+      score = 0;
+      questionsRepondues = 0;
+      document.getElementById('score-val').textContent = '0';
+      const bloc = document.getElementById('quiz-resultat');
+      bloc.style.display = 'none';
+      bloc.innerHTML = '';
+
+      for (let i = 0; i < 9; i++) {
+        const carte = document.getElementById(`q${i}`);
+        const fb    = document.getElementById(`fb${i}`);
+        if (!carte) continue;
+        carte.querySelectorAll('.qopt').forEach(b => {
+          b.disabled = false;
+          b.className = 'qopt';
+        });
+        fb.className   = 'quiz-fb';
+        fb.textContent = '';
+      }
+    }
+  </script>
+
+</body>
+</html>
