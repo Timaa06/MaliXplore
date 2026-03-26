@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Back Office — MaliXplore</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold   : #c8a84b;
+      --dark   : #0e0a04;
+      --card   : #1a1005;
+      --border : rgba(200,168,75,0.2);
+      --sand   : #c0a882;
+      --text   : #e8dcc8;
+      --green  : #4caf50;
+      --red    : #e05555;
+      --orange : #e07c30;
+      --blue   : #4a9fd4;
+      --purple : #9b6fd4;
+    }
+
+    body { background: var(--dark); color: var(--text); font-family: Arial, sans-serif; font-size: 14px; min-height: 100vh; }
+
+    /* ===== LOGIN ===== */
+    #login-screen {
+      display: flex; align-items: center; justify-content: center; min-height: 100vh;
+    }
+    .login-box {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 2.5rem 2rem; width: 100%; max-width: 360px; text-align: center;
+    }
+    .login-box h1 { color: var(--gold); font-size: 1.4rem; margin-bottom: 0.3rem; }
+    .login-box p  { color: var(--sand); font-size: 0.85rem; margin-bottom: 1.5rem; }
+    .login-box input {
+      width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 6px; color: var(--text);
+      font-size: 0.9rem; margin-bottom: 0.8rem;
+    }
+    .login-box input:focus { outline: none; border-color: var(--gold); }
+    .btn-gold {
+      width: 100%; padding: 10px; background: var(--gold); color: #1a1005;
+      border: none; border-radius: 6px; font-size: 0.95rem; font-weight: bold;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .btn-gold:hover { opacity: 0.85; }
+    .err-login { color: var(--red); font-size: 0.82rem; margin-top: 0.6rem; min-height: 1.2em; }
+
+    /* ===== ADMIN ===== */
+    #admin-screen { display: none; }
+
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem; background: var(--card);
+      border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10;
+    }
+    header h1 { color: var(--gold); font-size: 1.1rem; letter-spacing: 1px; }
+    .header-right { display: flex; align-items: center; gap: 1rem; }
+    .badge-admin { background: rgba(200,168,75,0.12); border: 1px solid var(--border); color: var(--gold); padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; }
+    .btn-deconnexion { background: none; border: 1px solid var(--border); color: var(--sand); padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.82rem; transition: border-color 0.2s; }
+    .btn-deconnexion:hover { border-color: var(--red); color: var(--red); }
+    #derniere-maj { color: var(--sand); opacity: 0.5; font-size: 0.75rem; }
+
+    main { padding: 1.5rem 2rem; max-width: 1400px; margin: 0 auto; }
+
+    /* ===== STATS ===== */
+    .stats-grille {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem; margin-bottom: 1.5rem;
+    }
+    .stat-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 1rem 1.2rem;
+    }
+    .stat-card .label { font-size: 0.75rem; color: var(--sand); opacity: 0.8; margin-bottom: 0.4rem; }
+    .stat-card .valeur { font-size: 1.6rem; font-weight: bold; color: var(--text); }
+    .stat-card.vert  .valeur { color: var(--green); }
+    .stat-card.rouge .valeur { color: var(--red); }
+    .stat-card.or    .valeur { color: var(--gold); }
+    .stat-card.bleu  .valeur { color: var(--blue); }
+
+    /* ===== FILTRES ===== */
+    .filtres {
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 1rem 1.2rem; display: flex; flex-wrap: wrap; gap: 0.8rem;
+      align-items: flex-end; margin-bottom: 1rem;
+    }
+    .filtre-groupe { display: flex; flex-direction: column; gap: 4px; }
+    .filtre-groupe label { font-size: 0.75rem; color: var(--sand); opacity: 0.8; }
+    .filtre-groupe select,
+    .filtre-groupe input {
+      padding: 7px 10px; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 6px; color: var(--text);
+      font-size: 0.85rem; min-width: 140px;
+    }
+    .filtre-groupe select:focus,
+    .filtre-groupe input:focus { outline: none; border-color: var(--gold); }
+    .btn-filtre {
+      padding: 7px 16px; background: rgba(200,168,75,0.15); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--gold); cursor: pointer; font-size: 0.85rem;
+      transition: background 0.2s; align-self: flex-end;
+    }
+    .btn-filtre:hover { background: rgba(200,168,75,0.25); }
+    .btn-reset {
+      padding: 7px 12px; background: none; border: 1px solid var(--border);
+      border-radius: 6px; color: var(--sand); cursor: pointer; font-size: 0.82rem;
+      transition: border-color 0.2s; align-self: flex-end;
+    }
+    .btn-reset:hover { border-color: var(--sand); }
+
+    /* ===== TABLE ===== */
+    .table-wrap {
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      overflow: hidden;
+    }
+    .table-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.8rem 1.2rem; border-bottom: 1px solid var(--border);
+    }
+    .table-header span { color: var(--sand); font-size: 0.82rem; }
+    .btn-refresh {
+      background: none; border: 1px solid var(--border); border-radius: 6px;
+      color: var(--sand); padding: 4px 10px; cursor: pointer; font-size: 0.8rem;
+      transition: border-color 0.2s;
+    }
+    .btn-refresh:hover { border-color: var(--gold); color: var(--gold); }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 10px 12px; text-align: left; font-size: 0.75rem; font-weight: 600;
+      color: var(--sand); opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    tbody tr { border-bottom: 1px solid rgba(200,168,75,0.07); transition: background 0.15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(200,168,75,0.04); }
+    tbody td { padding: 9px 12px; font-size: 0.83rem; vertical-align: middle; }
+    .td-date { color: var(--sand); opacity: 0.7; white-space: nowrap; font-size: 0.78rem; }
+    .td-ip   { color: var(--sand); opacity: 0.6; font-size: 0.78rem; font-family: monospace; }
+    .td-details { color: var(--sand); opacity: 0.7; font-size: 0.78rem; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* Badges type */
+    .badge {
+      display: inline-block; padding: 3px 8px; border-radius: 4px;
+      font-size: 0.72rem; font-weight: 600; white-space: nowrap;
+    }
+    .badge-connexion_succes_etape1 { background: rgba(76,175,80,0.15);  color: var(--green); }
+    .badge-connexion_complete       { background: rgba(76,175,80,0.25);  color: #80e083; }
+    .badge-connexion_echec          { background: rgba(224,85,85,0.15);  color: var(--red); }
+    .badge-otp_envoye               { background: rgba(74,159,212,0.15); color: var(--blue); }
+    .badge-otp_succes               { background: rgba(74,159,212,0.2);  color: #7dc4e8; }
+    .badge-otp_echec                { background: rgba(224,85,85,0.15);  color: var(--red); }
+    .badge-otp_renvoye              { background: rgba(74,159,212,0.1);  color: var(--blue); }
+    .badge-schema_echec             { background: rgba(224,85,85,0.15);  color: var(--red); }
+    .badge-deconnexion              { background: rgba(155,111,212,0.15);color: var(--purple); }
+    .badge-inscription_succes       { background: rgba(76,175,80,0.15);  color: var(--green); }
+    .badge-inscription_echec        { background: rgba(224,85,85,0.15);  color: var(--red); }
+    .badge-inscription_otp_envoye   { background: rgba(74,159,212,0.15); color: var(--blue); }
+    .badge-inscription_otp_succes   { background: rgba(74,159,212,0.2);  color: #7dc4e8; }
+    .badge-inscription_otp_echec    { background: rgba(224,85,85,0.15);  color: var(--red); }
+    .badge-inscription_otp_renvoye  { background: rgba(74,159,212,0.1);  color: var(--blue); }
+
+    /* Pagination */
+    .pagination {
+      display: flex; justify-content: center; align-items: center; gap: 0.5rem;
+      padding: 1rem;
+    }
+    .btn-page {
+      background: none; border: 1px solid var(--border); border-radius: 5px;
+      color: var(--sand); padding: 5px 11px; cursor: pointer; font-size: 0.82rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-page:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+    .btn-page:disabled { opacity: 0.3; cursor: default; }
+    .btn-page.actif { border-color: var(--gold); color: var(--gold); background: rgba(200,168,75,0.1); }
+    .info-pages { color: var(--sand); opacity: 0.6; font-size: 0.8rem; }
+
+    .vide { text-align: center; padding: 3rem; color: var(--sand); opacity: 0.5; }
+
+    @media (max-width: 768px) {
+      main { padding: 1rem; }
+      header { padding: 0.8rem 1rem; }
+      .stats-grille { grid-template-columns: repeat(2, 1fr); }
+      .td-ip, .td-details { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== ÉCRAN DE CONNEXION ===== -->
+  <div id="login-screen">
+    <div class="login-box">
+      <a href="/index.html" style="display:inline-block;margin-bottom:1rem;font-size:0.82rem;color:rgba(200,168,75,0.6);text-decoration:none;border:1px solid rgba(200,168,75,0.25);padding:5px 12px;border-radius:6px;transition:all 0.2s;" onmouseover="this.style.color='#c8a84b';this.style.borderColor='#c8a84b'" onmouseout="this.style.color='rgba(200,168,75,0.6)';this.style.borderColor='rgba(200,168,75,0.25)'">← Retour au site</a>
+      <h1>MaliXplore</h1>
+      <p>Back Office — Accès administrateur</p>
+      <input type="text"     id="login-user" placeholder="Identifiant" autocomplete="username">
+      <input type="password" id="login-pass" placeholder="Mot de passe" autocomplete="current-password">
+      <button class="btn-gold" id="btn-login">Se connecter</button>
+      <div class="err-login" id="err-login"></div>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARD ADMIN ===== -->
+  <div id="admin-screen">
+
+    <header>
+      <h1>⚡ MaliXplore — Back Office</h1>
+      <div class="header-right">
+        <span id="derniere-maj"></span>
+        <span class="badge-admin">Administrateur</span>
+        <button class="btn-deconnexion" onclick="deconnexion()">Déconnexion</button>
+      </div>
+    </header>
+
+    <main>
+
+      <!-- Stats du jour -->
+      <div class="stats-grille" id="stats-grille">
+        <div class="stat-card or">
+          <div class="label">Utilisateurs total</div>
+          <div class="valeur" id="stat-users">—</div>
+        </div>
+        <div class="stat-card vert">
+          <div class="label">Connexions réussies (aujourd'hui)</div>
+          <div class="valeur" id="stat-connexions">—</div>
+        </div>
+        <div class="stat-card rouge">
+          <div class="label">Échecs connexion (aujourd'hui)</div>
+          <div class="valeur" id="stat-echecs">—</div>
+        </div>
+        <div class="stat-card bleu">
+          <div class="label">OTP envoyés (aujourd'hui)</div>
+          <div class="valeur" id="stat-otp">—</div>
+        </div>
+        <div class="stat-card vert">
+          <div class="label">Inscriptions (aujourd'hui)</div>
+          <div class="valeur" id="stat-inscriptions">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Déconnexions (aujourd'hui)</div>
+          <div class="valeur" id="stat-deconnexions">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Total événements</div>
+          <div class="valeur" id="stat-total">—</div>
+        </div>
+      </div>
+
+      <!-- Filtres -->
+      <div class="filtres">
+        <div class="filtre-groupe">
+          <label>Type d'événement</label>
+          <select id="filtre-type">
+            <option value="">Tous</option>
+            <option value="connexion_succes_etape1">Connexion réussie (étape 1)</option>
+            <option value="connexion_complete">Connexion complète</option>
+            <option value="connexion_echec">Échec connexion</option>
+            <option value="otp_envoye">OTP envoyé</option>
+            <option value="otp_succes">OTP vérifié</option>
+            <option value="otp_echec">Échec OTP</option>
+            <option value="otp_renvoye">OTP renvoyé</option>
+            <option value="schema_echec">Échec schéma</option>
+            <option value="deconnexion">Déconnexion</option>
+            <option value="inscription_succes">Inscription réussie</option>
+            <option value="inscription_echec">Échec inscription</option>
+            <option value="inscription_otp_envoye">OTP inscription envoyé</option>
+            <option value="inscription_otp_succes">OTP inscription vérifié</option>
+            <option value="inscription_otp_echec">Échec OTP inscription</option>
+            <option value="inscription_otp_renvoye">OTP inscription renvoyé</option>
+          </select>
+        </div>
+        <div class="filtre-groupe">
+          <label>Utilisateur</label>
+          <input type="text" id="filtre-nom" placeholder="Nom ou email…">
+        </div>
+        <div class="filtre-groupe">
+          <label>Du</label>
+          <input type="date" id="filtre-debut">
+        </div>
+        <div class="filtre-groupe">
+          <label>Au</label>
+          <input type="date" id="filtre-fin">
+        </div>
+        <button class="btn-filtre" onclick="chargerLogs(1)">Filtrer</button>
+        <button class="btn-reset"  onclick="reinitFiltres()">Réinitialiser</button>
+      </div>
+
+      <!-- Tableau -->
+      <div class="table-wrap">
+        <div class="table-header">
+          <span id="info-total">Chargement…</span>
+          <button class="btn-refresh" onclick="rafraichir()">↻ Actualiser</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Date / Heure</th>
+              <th>Événement</th>
+              <th>Utilisateur</th>
+              <th>Email</th>
+              <th>IP</th>
+              <th>Détails</th>
+            </tr>
+          </thead>
+          <tbody id="logs-tbody"></tbody>
+        </table>
+        <div class="pagination" id="pagination"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    // ===========================
+    // LIBELLÉS
+    // ===========================
+    const LIBELLES = {
+      connexion_succes_etape1 : 'Connexion — étape 1',
+      connexion_complete      : 'Connexion complète',
+      connexion_echec         : 'Échec connexion',
+      otp_envoye              : 'OTP envoyé',
+      otp_succes              : 'OTP vérifié',
+      otp_echec               : 'Échec OTP',
+      otp_renvoye             : 'OTP renvoyé',
+      schema_echec            : 'Échec schéma',
+      deconnexion             : 'Déconnexion',
+      inscription_succes      : 'Inscription réussie',
+      inscription_echec       : 'Échec inscription',
+      inscription_otp_envoye  : 'OTP inscription envoyé',
+      inscription_otp_succes  : 'OTP inscription vérifié',
+      inscription_otp_echec   : 'Échec OTP inscription',
+      inscription_otp_renvoye : 'OTP inscription renvoyé',
+    };
+
+    // ===========================
+    // LOGIN
+    // ===========================
+    document.getElementById('login-pass').addEventListener('keydown', e => {
+      if (e.key === 'Enter') connecterAdmin();
+    });
+    document.getElementById('btn-login').addEventListener('click', connecterAdmin);
+
+    async function connecterAdmin() {
+      const login       = document.getElementById('login-user').value.trim();
+      const mot_de_passe = document.getElementById('login-pass').value;
+      const errEl       = document.getElementById('err-login');
+      errEl.textContent = '';
+
+      if (!login || !mot_de_passe) { errEl.textContent = 'Remplissez tous les champs'; return; }
+
+      try {
+        const rep  = await fetch('/admin/login', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ login, mot_de_passe })
+        });
+        const data = await rep.json();
+        if (!rep.ok) { errEl.textContent = data.erreur || 'Identifiants incorrects'; return; }
+        afficherDashboard();
+      } catch { errEl.textContent = 'Erreur réseau'; }
+    }
+
+    function deconnexion() { window.location.href = '/admin/logout'; }
+
+    function afficherDashboard() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-screen').style.display = 'block';
+      chargerStats();
+      chargerLogs(1);
+      // Auto-refresh toutes les 30s
+      setInterval(rafraichir, 30000);
+    }
+
+    function rafraichir() { chargerStats(); chargerLogs(pageCourante); }
+
+    // ===========================
+    // STATS
+    // ===========================
+    async function chargerStats() {
+      try {
+        const rep  = await fetch('/admin/api/stats');
+        if (!rep.ok) return;
+        const data = await rep.json();
+        const t    = data.today;
+
+        document.getElementById('stat-users').textContent        = data.total_users;
+        document.getElementById('stat-total').textContent        = data.total_logs;
+        document.getElementById('stat-connexions').textContent   = (t.connexion_succes_etape1 || 0);
+        document.getElementById('stat-echecs').textContent       = (t.connexion_echec || 0) + (t.otp_echec || 0) + (t.schema_echec || 0);
+        document.getElementById('stat-otp').textContent          = (t.otp_envoye || 0) + (t.inscription_otp_envoye || 0);
+        document.getElementById('stat-inscriptions').textContent = (t.inscription_succes || 0);
+        document.getElementById('stat-deconnexions').textContent = (t.deconnexion || 0);
+
+        const now = new Date();
+        document.getElementById('derniere-maj').textContent = `Mis à jour à ${now.toLocaleTimeString('fr-FR')}`;
+      } catch (e) { console.error(e); }
+    }
+
+    // ===========================
+    // LOGS
+    // ===========================
+    let pageCourante = 1;
+    const LIMITE     = 50;
+
+    function getParams(page) {
+      const p = new URLSearchParams();
+      const type  = document.getElementById('filtre-type').value;
+      const nom   = document.getElementById('filtre-nom').value.trim();
+      const debut = document.getElementById('filtre-debut').value;
+      const fin   = document.getElementById('filtre-fin').value;
+      if (type)  p.set('type',       type);
+      if (nom)   p.set('nom',        nom);
+      if (debut) p.set('date_debut', debut);
+      if (fin)   p.set('date_fin',   fin);
+      p.set('page',   page);
+      p.set('limite', LIMITE);
+      return p.toString();
+    }
+
+    async function chargerLogs(page) {
+      pageCourante = page;
+      try {
+        const rep  = await fetch(`/admin/api/logs?${getParams(page)}`);
+        if (!rep.ok) return;
+        const data = await rep.json();
+        afficherLogs(data);
+      } catch (e) { console.error(e); }
+    }
+
+    function afficherLogs({ logs, total, page, limite }) {
+      const tbody = document.getElementById('logs-tbody');
+      document.getElementById('info-total').textContent =
+        `${total} événement${total > 1 ? 's' : ''} — page ${page} / ${Math.max(1, Math.ceil(total / limite))}`;
+
+      if (!logs.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="vide">Aucun événement trouvé</td></tr>';
+        document.getElementById('pagination').innerHTML = '';
+        return;
+      }
+
+      tbody.innerHTML = logs.map(l => {
+        const date    = new Date(l.created_at);
+        const dateStr = date.toLocaleDateString('fr-FR') + ' ' + date.toLocaleTimeString('fr-FR');
+        const libelle = LIBELLES[l.type] || l.type;
+        const badge   = `<span class="badge badge-${l.type}">${libelle}</span>`;
+        const nom     = l.nom   || (l.email ? '' : '<span style="opacity:0.4">—</span>');
+        const email   = l.email || '<span style="opacity:0.4">—</span>';
+        const ip      = l.ip    || '—';
+        const details = l.details ? escapeHtml(l.details) : '—';
+
+        return `<tr>
+          <td class="td-date">${dateStr}</td>
+          <td>${badge}</td>
+          <td>${escapeHtml(nom)}</td>
+          <td>${escapeHtml(email)}</td>
+          <td class="td-ip">${escapeHtml(ip)}</td>
+          <td class="td-details" title="${escapeHtml(l.details || '')}">${details}</td>
+        </tr>`;
+      }).join('');
+
+      afficherPagination(total, page, limite);
+    }
+
+    function afficherPagination(total, page, limite) {
+      const nbPages = Math.ceil(total / limite);
+      const el = document.getElementById('pagination');
+      if (nbPages <= 1) { el.innerHTML = ''; return; }
+
+      let html = `<button class="btn-page" onclick="chargerLogs(${page-1})" ${page===1?'disabled':''}>← Préc.</button>`;
+
+      const debut = Math.max(1, page - 2);
+      const fin   = Math.min(nbPages, page + 2);
+      if (debut > 1) html += `<button class="btn-page" onclick="chargerLogs(1)">1</button>${debut > 2 ? '<span class="info-pages">…</span>' : ''}`;
+      for (let i = debut; i <= fin; i++) {
+        html += `<button class="btn-page ${i===page?'actif':''}" onclick="chargerLogs(${i})">${i}</button>`;
+      }
+      if (fin < nbPages) html += `${fin < nbPages-1 ? '<span class="info-pages">…</span>' : ''}<button class="btn-page" onclick="chargerLogs(${nbPages})">${nbPages}</button>`;
+      html += `<button class="btn-page" onclick="chargerLogs(${page+1})" ${page===nbPages?'disabled':''}>Suiv. →</button>`;
+      html += `<span class="info-pages">${total} résultats</span>`;
+      el.innerHTML = html;
+    }
+
+    function reinitFiltres() {
+      document.getElementById('filtre-type').value  = '';
+      document.getElementById('filtre-nom').value   = '';
+      document.getElementById('filtre-debut').value = '';
+      document.getElementById('filtre-fin').value   = '';
+      chargerLogs(1);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // Vérifier si déjà connecté au chargement
+    (async () => {
+      try {
+        const rep = await fetch('/admin/api/stats');
+        if (rep.ok) afficherDashboard();
+      } catch {}
+    })();
+  </script>
+
+</body>
+</html>

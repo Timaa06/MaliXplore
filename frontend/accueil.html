@@ -6,9 +6,7 @@
   <title>Accueil — MaliXplore</title>
   <link rel="stylesheet" href="/css/style.css">
   <style>
-    /* ============================================================
-       ACCUEIL — redesign complet
-       ============================================================ */
+   
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -18,7 +16,7 @@
       overflow-x : hidden;
     }
 
-    /* ── FOND bogolan fixe + voile ─────────────────────────────── */
+   
     .page-bg {
       position           : fixed;
       inset              : 0;
@@ -40,7 +38,7 @@
       );
     }
 
-    /* ── Tout le contenu passe par-dessus le fond ──────────────── */
+   
     .page-content {
       position      : relative;
       z-index       : 1;
@@ -49,9 +47,7 @@
       flex-direction: column;
     }
 
-    /* ============================================================
-       HEADER
-       ============================================================ */
+    
     .header {
       display        : flex;
       align-items    : center;
@@ -116,9 +112,6 @@
       color       : var(--bogo-cream);
     }
 
-    /* ============================================================
-       HERO
-       ============================================================ */
     .hero {
       display        : flex;
       flex-direction : column;
@@ -129,7 +122,7 @@
       flex           : 1;
     }
 
-    /* Ligne décorative au-dessus du titre */
+    
     .hero-deco {
       display    : flex;
       align-items: center;
@@ -150,7 +143,7 @@
       opacity   : 0.5;
     }
 
-    /* Bienvenue */
+    
     .hero-bienvenue {
       font-family   : Georgia, serif;
       font-size     : clamp(0.95rem, 2vw, 1.15rem);
@@ -161,7 +154,7 @@
       animation     : fadeIn 0.8s ease 0.2s forwards;
     }
 
-    /* Nom de l'utilisateur en grand */
+    
     .hero-nom {
       font-family   : Georgia, serif;
       font-size     : clamp(2.8rem, 7vw, 5.5rem);
@@ -177,7 +170,7 @@
       text-shadow: 0 0 40px rgba(200,134,10,0.6);
     }
 
-    /* Sous-titre */
+    
     .hero-sous-titre {
       font-size    : clamp(1rem, 2vw, 1.2rem);
       color        : #b89060;
@@ -187,7 +180,7 @@
       animation    : fadeIn 1s ease 0.45s forwards;
     }
 
-    /* Ligne décorative bogolan (motif répété) */
+    
     .ligne-deco {
       width     : min(600px, 85vw);
       height    : 6px;
@@ -206,9 +199,6 @@
       animation    : fadeIn 1s ease 0.5s forwards;
     }
 
-    /* ============================================================
-       CARTES
-       ============================================================ */
     .cartes-section {
       padding  : 0 2rem 5rem;
       max-width: 1100px;
@@ -234,7 +224,7 @@
       gap                  : 1.5rem;
     }
 
-    /* Carte individuelle */
+    
     .card {
       position     : relative;
       border-radius: 16px;
@@ -246,7 +236,7 @@
       transition   : transform 0.4s ease, box-shadow 0.4s ease;
     }
 
-    /* Animation d'entrée décalée */
+    
     .card:nth-child(1) { animation: slideUp 0.7s ease 0.7s forwards; }
     .card:nth-child(2) { animation: slideUp 0.7s ease 0.85s forwards; }
     .card:nth-child(3) { animation: slideUp 0.7s ease 1s forwards; }
@@ -256,7 +246,7 @@
       box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px var(--bogo-gold);
     }
 
-    /* Fond dégradé de chaque carte */
+    
     .card-bg {
       position: absolute;
       inset   : 0;
@@ -269,7 +259,7 @@
     .card-bg-cuisine  { background: linear-gradient(145deg, #1a0e04 0%, #4a2d10 50%, #6b3d18 100%); }
     .card-bg-regions  { background: linear-gradient(145deg, #0e0a02 0%, #3d2e08 50%, #5a4210 100%); }
 
-    /* Motif bogolan discret en overlay */
+    
     .card-pattern {
       position        : absolute;
       inset           : 0;
@@ -281,7 +271,7 @@
     }
     .card:hover .card-pattern { opacity: 0.13; }
 
-    /* Bordure lumineuse */
+    
     .card::before {
       content      : '';
       position     : absolute;
@@ -293,7 +283,7 @@
     }
     .card:hover::before { border-color: var(--bogo-gold); }
 
-    /* Contenu de la carte */
+    
     .card-body {
       position: relative;
       z-index : 2;
@@ -349,7 +339,7 @@
       font-size    : 0.72rem;
     }
 
-    /* Bouton "Explorer" dans chaque carte */
+    
     .card-cta {
       display        : inline-flex;
       align-items    : center;
@@ -363,9 +353,6 @@
     .card:hover .card-cta { gap: 10px; }
     .card-cta::after { content: '→'; }
 
-    /* ============================================================
-       STATISTIQUES (bandeau central)
-       ============================================================ */
     .stats-bandeau {
       display              : grid;
       grid-template-columns: repeat(3, 1fr);
@@ -402,9 +389,6 @@
       letter-spacing: 1px;
     }
 
-    /* ============================================================
-       FOOTER
-       ============================================================ */
     .footer {
       text-align: center;
       padding   : 2rem;
@@ -413,9 +397,6 @@
       border-top: 1px solid rgba(200,134,10,0.1);
     }
 
-    /* ============================================================
-       ANIMATIONS
-       ============================================================ */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -426,7 +407,6 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── Responsive ─────────────────────────────────────────────── */
     @media (max-width: 768px) {
       .header { padding: 1rem 1.2rem; }
       .hero   { padding: 3rem 1.5rem 2rem; }
@@ -439,12 +419,11 @@
 </head>
 <body>
 
-  <!-- Fond bogolan fixe -->
+  
   <div class="page-bg"></div>
 
   <div class="page-content">
 
-    <!-- ── HEADER ──────────────────────────────────────────────── -->
     <header class="header">
       <div class="header-logo">MaliXplore</div>
       <div class="header-right">
@@ -456,7 +435,6 @@
       </div>
     </header>
 
-    <!-- ── HERO ────────────────────────────────────────────────── -->
     <section class="hero">
 
       <div class="hero-deco">✦ Bienvenue sur MaliXplore ✦</div>
@@ -473,7 +451,7 @@
 
       <div class="ligne-deco"></div>
 
-      <!-- Bandeau de stats -->
+      
       <div class="stats-bandeau">
         <div class="stat-item">
           <div class="stat-chiffre">9</div>
@@ -493,11 +471,10 @@
 
     </section>
 
-    <!-- ── CARTES ──────────────────────────────────────────────── -->
     <section class="cartes-section">
       <div class="cartes-grille">
 
-        <!-- Carte Culture -->
+        
         <a href="/mali.html#culture" class="card">
           <div class="card-bg card-bg-culture"></div>
           <div class="card-pattern"></div>
@@ -519,7 +496,7 @@
           </div>
         </a>
 
-        <!-- Carte Cuisine -->
+        
         <a href="/mali.html#cuisine" class="card">
           <div class="card-bg card-bg-cuisine"></div>
           <div class="card-pattern"></div>
@@ -540,7 +517,7 @@
           </div>
         </a>
 
-        <!-- Carte Régions -->
+        
         <a href="/mali.html#regions" class="card">
           <div class="card-bg card-bg-regions"></div>
           <div class="card-pattern"></div>
@@ -564,7 +541,6 @@
       </div>
     </section>
 
-    <!-- ── FOOTER ──────────────────────────────────────────────── -->
     <footer class="footer">
       © 2024 MaliXplore — Le Mali, Berceau de l'Afrique
     </footer>
@@ -584,11 +560,11 @@
 
         const nom = donnees.nom || 'Visiteur';
 
-        // Afficher le nom dans le header et le héros
+       
         document.getElementById('nom-utilisateur').textContent = nom;
         document.getElementById('nom-hero').textContent        = nom;
 
-        // Initiale dans l'avatar
+        
         document.getElementById('user-avatar').textContent = nom.charAt(0).toUpperCase();
 
       } catch {

@@ -11,262 +11,569 @@
   <div class="auth-wrapper">
     <div class="auth-box">
 
-      <!-- Logo -->
       <div class="auth-logo">
         <h1>MaliXplore</h1>
         <p>Découvrez la richesse du Mali</p>
       </div>
 
-      <h2>Créer un compte MaliXplore</h2>
+      <!-- Indicateur d'étapes -->
+      <div class="mfa-indicateur" aria-label="Étapes d'inscription">
 
-      <!-- Message de succès global -->
+        <div class="mfa-etape">
+          <div class="mfa-cercle or" id="ind-1" aria-current="step">1</div>
+          <span class="mfa-label active" id="lbl-1">Email</span>
+        </div>
+
+        <div class="mfa-ligne" id="ligne-1"></div>
+
+        <div class="mfa-etape">
+          <div class="mfa-cercle gris" id="ind-2">2</div>
+          <span class="mfa-label" id="lbl-2">Vérification</span>
+        </div>
+
+        <div class="mfa-ligne" id="ligne-2"></div>
+
+        <div class="mfa-etape">
+          <div class="mfa-cercle gris" id="ind-3">3</div>
+          <span class="mfa-label" id="lbl-3">Profil</span>
+        </div>
+
+      </div>
+
+      <!-- Messages globaux -->
       <div id="msg-succes" class="message-succes" role="alert"></div>
-
-      <!-- Message d'erreur global -->
       <div id="msg-erreur" class="message-erreur" role="alert"></div>
 
-      <!-- Formulaire d'inscription -->
-      <form id="form-inscription" novalidate>
+      <!-- ===== ÉTAPE 1 : Email ===== -->
+      <div id="etape-1">
+        <h2>Créer un compte — Étape 1</h2>
+        <p style="text-align:center;color:var(--bogo-sand);font-size:0.9rem;margin-bottom:1.2rem;">
+          Entrez votre adresse email pour commencer
+        </p>
 
-        <!-- Nom d'utilisateur -->
-        <div class="form-groupe">
-          <label for="nom">Nom d'utilisateur</label>
-          <input
-            type="text"
-            id="nom"
-            name="nom"
-            placeholder="Votre nom d'utilisateur"
-            autocomplete="username"
-            required
-          >
-          <div class="erreur-champ" id="err-nom"></div>
-        </div>
-
-        <!-- Mot de passe -->
-        <div class="form-groupe">
-          <label for="mot_de_passe">Mot de passe</label>
-          <input
-            type="password"
-            id="mot_de_passe"
-            name="mot_de_passe"
-            placeholder="Votre mot de passe"
-            autocomplete="new-password"
-            required
-          >
-          <div class="erreur-champ" id="err-mdp"></div>
-        </div>
-
-        <!-- Confirmer le mot de passe -->
-        <div class="form-groupe">
-          <label for="confirmer_mot_de_passe">Confirmer le mot de passe</label>
-          <input
-            type="password"
-            id="confirmer_mot_de_passe"
-            name="confirmer_mot_de_passe"
-            placeholder="Répétez votre mot de passe"
-            autocomplete="new-password"
-            required
-          >
-          <div class="erreur-champ" id="err-confirm"></div>
-        </div>
-
-        <!-- Code OTP personnel -->
-        <div class="form-groupe">
-          <label for="otp_code">Code OTP personnel (6 chiffres)</label>
-          <input
-            type="number"
-            id="otp_code"
-            name="otp_code"
-            placeholder="Ex : 482619"
-            min="100000"
-            max="999999"
-            required
-          >
-          <div class="aide-champ">
-            Ce code vous sera demandé à chaque connexion. Notez-le bien.
+        <form id="form-email" novalidate>
+          <div class="form-groupe">
+            <label for="email">Adresse email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="votre@email.com"
+              autocomplete="email"
+              required
+            >
+            <div class="erreur-champ" id="err-email"></div>
           </div>
-          <div class="erreur-champ" id="err-otp"></div>
+
+          <button type="submit" class="btn-primaire" id="btn-email">
+            Envoyer le code de vérification
+          </button>
+        </form>
+
+        <p class="lien-nav">
+          Déjà un compte ? <a href="/index.html#connexion">Se connecter</a>
+        </p>
+      </div>
+
+      <!-- ===== ÉTAPE 2 : OTP ===== -->
+      <div id="etape-2" style="display:none;">
+        <h2>Créer un compte — Étape 2</h2>
+        <p style="text-align:center;color:var(--bogo-sand);font-size:0.9rem;margin-bottom:0.4rem;">
+          Un code à 6 chiffres a été envoyé à
+        </p>
+        <p id="email-affiche" style="text-align:center;color:var(--bogo-sand);font-weight:bold;font-size:0.95rem;margin-bottom:1rem;"></p>
+
+        <form id="form-otp-inscription" novalidate>
+          <div class="otp-grille" aria-label="Saisie du code OTP à 6 chiffres">
+            <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 1">
+            <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 2">
+            <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 3">
+            <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 4">
+            <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 5">
+            <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 6">
+          </div>
+
+          <button type="submit" class="btn-primaire" id="btn-otp-inscription">
+            Vérifier le code
+          </button>
+        </form>
+
+        <div style="text-align:center;margin-top:1rem;">
+          <button id="btn-renvoyer-inscription" style="background:none;border:none;color:var(--bogo-sand);text-decoration:underline;cursor:pointer;font-size:0.9rem;">
+            Renvoyer le code
+          </button>
+          <span id="compte-rebours-inscription" style="display:none;color:var(--bogo-sand);font-size:0.85rem;opacity:0.7;"></span>
         </div>
 
-        <!-- Question secrète -->
-        <div class="form-groupe">
-          <label for="question_secrete">Question secrète</label>
-          <select id="question_secrete" name="question_secrete" required>
-            <option value="" disabled selected>— Choisissez une question —</option>
-            <option value="Quelle est la ville de naissance de ta mère ?">
-              Quelle est la ville de naissance de ta mère ?
-            </option>
-            <option value="Quel est le prénom de ton meilleur ami d'enfance ?">
-              Quel est le prénom de ton meilleur ami d'enfance ?
-            </option>
-            <option value="Quel est le nom de ton premier animal de compagnie ?">
-              Quel est le nom de ton premier animal de compagnie ?
-            </option>
-            <option value="Quelle est ta nourriture préférée ?">
-              Quelle est ta nourriture préférée ?
-            </option>
-            <option value="Dans quelle ville as-tu grandi ?">
-              Dans quelle ville as-tu grandi ?
-            </option>
-          </select>
-          <div class="erreur-champ" id="err-question"></div>
+        <div style="text-align:center;margin-top:0.8rem;">
+          <button id="btn-retour-email" style="background:none;border:none;color:var(--bogo-sand);opacity:0.7;cursor:pointer;font-size:0.85rem;text-decoration:underline;">
+            ← Changer d'email
+          </button>
         </div>
+      </div>
 
-        <!-- Réponse secrète -->
-        <div class="form-groupe">
-          <label for="reponse_secrete">Votre réponse</label>
-          <input
-            type="text"
-            id="reponse_secrete"
-            name="reponse_secrete"
-            placeholder="Votre réponse secrète"
-            autocomplete="off"
-            required
-          >
-          <div class="erreur-champ" id="err-reponse"></div>
-        </div>
+      <!-- ===== ÉTAPE 3 : Profil ===== -->
+      <div id="etape-3" style="display:none;">
+        <h2>Créer un compte — Étape 3</h2>
+        <p style="text-align:center;color:var(--bogo-sand);font-size:0.9rem;margin-bottom:1.2rem;">
+          Finalisez votre inscription
+        </p>
 
-        <!-- Bouton d'inscription -->
-        <button type="submit" class="btn-primaire" id="btn-inscrire">
-          S'inscrire
-        </button>
+        <form id="form-profil" novalidate>
 
-      </form>
+          <div class="form-groupe">
+            <label for="nom">Nom d'utilisateur</label>
+            <input
+              type="text"
+              id="nom"
+              name="nom"
+              placeholder="Votre nom d'utilisateur"
+              autocomplete="username"
+              required
+            >
+            <div class="erreur-champ" id="err-nom"></div>
+          </div>
 
-      <!-- Lien vers la connexion -->
-      <p class="lien-nav">
-        Déjà un compte ? <a href="/index.html#connexion">Se connecter</a>
-      </p>
+          <div class="form-groupe">
+            <label for="mot_de_passe">Mot de passe</label>
+            <input
+              type="password"
+              id="mot_de_passe"
+              name="mot_de_passe"
+              placeholder="Votre mot de passe"
+              autocomplete="new-password"
+              required
+            >
+            <div class="erreur-champ" id="err-mdp"></div>
+          </div>
+
+          <div class="form-groupe">
+            <label for="confirmer_mot_de_passe">Confirmer le mot de passe</label>
+            <input
+              type="password"
+              id="confirmer_mot_de_passe"
+              name="confirmer_mot_de_passe"
+              placeholder="Répétez votre mot de passe"
+              autocomplete="new-password"
+              required
+            >
+            <div class="erreur-champ" id="err-confirm"></div>
+          </div>
+
+          <!-- Schéma secret -->
+          <div style="text-align:center;margin-bottom:0.5rem;">
+            <label style="color:var(--bogo-sand);font-size:0.9rem;">Schéma secret</label>
+          </div>
+
+          <div id="schema-phase" style="text-align:center;">
+            <p id="schema-hint" style="font-size:0.82rem;color:var(--bogo-sand);opacity:0.75;margin-bottom:0.5rem;">
+              Dessinez votre schéma (minimum 4 points)
+            </p>
+            <canvas id="schema-canvas" width="220" height="220"
+              style="cursor:crosshair;touch-action:none;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(200,168,75,0.15);">
+            </canvas>
+            <br>
+            <button type="button" id="btn-schema-effacer"
+              style="margin-top:0.5rem;background:none;border:none;color:var(--bogo-sand);text-decoration:underline;cursor:pointer;font-size:0.82rem;opacity:0.7;">
+              Effacer
+            </button>
+          </div>
+          <div class="erreur-champ" id="err-schema"></div>
+
+          <button type="submit" class="btn-primaire" id="btn-inscrire">
+            Créer mon compte
+          </button>
+
+        </form>
+      </div>
 
     </div>
   </div>
 
   <script>
-    // ── Références aux éléments du formulaire ──────────────
-    const form         = document.getElementById('form-inscription');
-    const btnInscrire  = document.getElementById('btn-inscrire');
-    const msgSucces    = document.getElementById('msg-succes');
-    const msgErreur    = document.getElementById('msg-erreur');
 
-    // Références aux champs d'erreur individuels
-    const erreurs = {
-      nom      : document.getElementById('err-nom'),
-      mdp      : document.getElementById('err-mdp'),
-      confirm  : document.getElementById('err-confirm'),
-      otp      : document.getElementById('err-otp'),
-      question : document.getElementById('err-question'),
-      reponse  : document.getElementById('err-reponse')
-    };
+    // ---- Éléments partagés ----
+    const msgSucces = document.getElementById('msg-succes');
+    const msgErreur = document.getElementById('msg-erreur');
 
-    // ── Fonction : afficher une erreur sous un champ ───────
-    function afficherErreurChamp(cle, message) {
-      erreurs[cle].textContent = message;
-      erreurs[cle].classList.add('visible');
+    function afficherErreur(msg) {
+      msgErreur.textContent = msg;
+      msgErreur.classList.add('visible');
+      msgSucces.classList.remove('visible');
     }
 
-    // ── Fonction : masquer toutes les erreurs ──────────────
-    function reinitialiserErreurs() {
-      Object.values(erreurs).forEach(el => {
-        el.textContent = '';
-        el.classList.remove('visible');
-      });
+    function afficherSucces(msg) {
+      msgSucces.textContent = msg;
+      msgSucces.classList.add('visible');
+      msgErreur.classList.remove('visible');
+    }
+
+    function cacherMessages() {
       msgErreur.classList.remove('visible');
       msgSucces.classList.remove('visible');
     }
 
-    // ── Soumission du formulaire ───────────────────────────
-    form.addEventListener('submit', async (e) => {
+    // ---- Navigation entre étapes ----
+    function allerEtape(n) {
+      cacherMessages();
+      document.getElementById('etape-1').style.display = n === 1 ? '' : 'none';
+      document.getElementById('etape-2').style.display = n === 2 ? '' : 'none';
+      document.getElementById('etape-3').style.display = n === 3 ? '' : 'none';
+
+      // Indicateur
+      [1, 2, 3].forEach(i => {
+        const cercle = document.getElementById('ind-' + i);
+        const label  = document.getElementById('lbl-' + i);
+        if (i < n) {
+          cercle.className = 'mfa-cercle vert';
+          cercle.textContent = '✓';
+          label.className = 'mfa-label valide';
+        } else if (i === n) {
+          cercle.className = 'mfa-cercle or';
+          cercle.textContent = i;
+          label.className = 'mfa-label active';
+        } else {
+          cercle.className = 'mfa-cercle gris';
+          cercle.textContent = i;
+          label.className = 'mfa-label';
+        }
+      });
+
+      if (n >= 2) document.getElementById('ligne-1').classList.add('valide');
+      else        document.getElementById('ligne-1').classList.remove('valide');
+      if (n >= 3) document.getElementById('ligne-2').classList.add('valide');
+      else        document.getElementById('ligne-2').classList.remove('valide');
+    }
+
+    // ===========================
+    // ÉTAPE 1 — Email
+    // ===========================
+    const formEmail  = document.getElementById('form-email');
+    const btnEmail   = document.getElementById('btn-email');
+    const errEmail   = document.getElementById('err-email');
+
+    formEmail.addEventListener('submit', async (e) => {
       e.preventDefault();
-      reinitialiserErreurs();
+      cacherMessages();
+      errEmail.textContent = '';
+      errEmail.classList.remove('visible');
 
-      const nom        = document.getElementById('nom').value.trim();
-      const mdp        = document.getElementById('mot_de_passe').value;
-      const confirm    = document.getElementById('confirmer_mot_de_passe').value;
-      const otp        = document.getElementById('otp_code').value;
-      const question   = document.getElementById('question_secrete').value;
-      const reponse    = document.getElementById('reponse_secrete').value.trim();
+      const email = document.getElementById('email').value.trim();
 
-      // ── Validation côté client ─────────────────────────
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errEmail.textContent = 'Adresse email invalide';
+        errEmail.classList.add('visible');
+        return;
+      }
+
+      btnEmail.disabled    = true;
+      btnEmail.textContent = 'Envoi en cours…';
+
+      try {
+        const rep = await fetch('/auth/register/email', {
+          method : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body   : JSON.stringify({ email })
+        });
+        const data = await rep.json();
+
+        if (!rep.ok) {
+          afficherErreur(data.erreur || 'Erreur lors de l\'envoi');
+        } else {
+          document.getElementById('email-affiche').textContent = email;
+          allerEtape(2);
+          setTimeout(() => document.querySelector('.otp-chiffre').focus(), 100);
+        }
+      } catch {
+        afficherErreur('Erreur réseau. Vérifiez votre connexion.');
+      } finally {
+        btnEmail.disabled    = false;
+        btnEmail.textContent = 'Envoyer le code de vérification';
+      }
+    });
+
+    // ===========================
+    // ÉTAPE 2 — OTP
+    // ===========================
+    const casesOtp       = document.querySelectorAll('.otp-chiffre');
+    const formOtp        = document.getElementById('form-otp-inscription');
+    const btnOtp         = document.getElementById('btn-otp-inscription');
+    const btnRenvoyer    = document.getElementById('btn-renvoyer-inscription');
+    const compteRebours  = document.getElementById('compte-rebours-inscription');
+
+    casesOtp.forEach((input, index) => {
+      input.addEventListener('keypress', (e) => {
+        if (!/[0-9]/.test(e.key)) e.preventDefault();
+      });
+      input.addEventListener('input', () => {
+        input.value = input.value.replace(/\D/g, '').slice(-1);
+        if (input.value && index < casesOtp.length - 1) casesOtp[index + 1].focus();
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && index > 0) casesOtp[index - 1].focus();
+      });
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const colle = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
+        colle.split('').forEach((c, i) => { if (casesOtp[i]) casesOtp[i].value = c; });
+        const dernier = Math.min(colle.length - 1, casesOtp.length - 1);
+        if (dernier >= 0) casesOtp[dernier].focus();
+      });
+    });
+
+    formOtp.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      cacherMessages();
+
+      const otp_code = Array.from(casesOtp).map(c => c.value).join('');
+
+      if (otp_code.length !== 6) {
+        afficherErreur('Veuillez saisir les 6 chiffres du code');
+        return;
+      }
+
+      btnOtp.disabled    = true;
+      btnOtp.textContent = 'Vérification…';
+
+      try {
+        const rep  = await fetch('/auth/register/otp', {
+          method : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body   : JSON.stringify({ otp_code })
+        });
+        const data = await rep.json();
+
+        if (!rep.ok) {
+          afficherErreur(data.erreur || 'Code incorrect');
+          casesOtp.forEach(c => c.value = '');
+          casesOtp[0].focus();
+        } else {
+          allerEtape(3);
+          document.getElementById('nom').focus();
+        }
+      } catch {
+        afficherErreur('Erreur réseau. Vérifiez votre connexion.');
+      } finally {
+        btnOtp.disabled    = false;
+        btnOtp.textContent = 'Vérifier le code';
+      }
+    });
+
+    // Renvoyer OTP
+    let timerRenvoi = null;
+
+    function demarrerDelaiRenvoi() {
+      let sec = 60;
+      btnRenvoyer.style.display    = 'none';
+      compteRebours.style.display  = 'inline';
+      compteRebours.textContent    = `Renvoyer dans ${sec}s`;
+      timerRenvoi = setInterval(() => {
+        sec--;
+        if (sec <= 0) {
+          clearInterval(timerRenvoi);
+          compteRebours.style.display = 'none';
+          btnRenvoyer.style.display   = 'inline';
+        } else {
+          compteRebours.textContent = `Renvoyer dans ${sec}s`;
+        }
+      }, 1000);
+    }
+
+    btnRenvoyer.addEventListener('click', async () => {
+      cacherMessages();
+      btnRenvoyer.disabled = true;
+      try {
+        const rep  = await fetch('/auth/register/renvoyer', { method: 'POST' });
+        const data = await rep.json();
+        if (!rep.ok) {
+          afficherErreur(data.erreur || 'Erreur lors du renvoi');
+          btnRenvoyer.disabled = false;
+        } else {
+          afficherSucces('Nouveau code envoyé !');
+          casesOtp.forEach(c => c.value = '');
+          casesOtp[0].focus();
+          demarrerDelaiRenvoi();
+        }
+      } catch {
+        afficherErreur('Erreur réseau.');
+        btnRenvoyer.disabled = false;
+      }
+    });
+
+    document.getElementById('btn-retour-email').addEventListener('click', () => {
+      casesOtp.forEach(c => c.value = '');
+      if (timerRenvoi) clearInterval(timerRenvoi);
+      btnRenvoyer.style.display   = 'inline';
+      compteRebours.style.display = 'none';
+      allerEtape(1);
+    });
+
+    // ===========================
+    // ÉTAPE 3 — Profil + Schéma
+    // ===========================
+    const formProfil  = document.getElementById('form-profil');
+    const btnInscrire = document.getElementById('btn-inscrire');
+
+    const erreurs = {
+      nom    : document.getElementById('err-nom'),
+      mdp    : document.getElementById('err-mdp'),
+      confirm: document.getElementById('err-confirm'),
+      schema : document.getElementById('err-schema')
+    };
+
+    function afficherErreurChamp(cle, msg) {
+      erreurs[cle].textContent = msg;
+      erreurs[cle].classList.add('visible');
+    }
+
+    function reinitialiserErreursChamps() {
+      Object.values(erreurs).forEach(el => { el.textContent = ''; el.classList.remove('visible'); });
+    }
+
+    // --- Pattern Lock ---
+    const schCanvas  = document.getElementById('schema-canvas');
+    const schCtx     = schCanvas.getContext('2d');
+    const SCH_SIZE   = 220, SCH_MARGE = 44, SCH_HIT = 20, SCH_DOT = 8, SCH_HALO = 16;
+    const schPos     = [];
+    for (let r = 0; r < 3; r++)
+      for (let c = 0; c < 3; c++)
+        schPos.push({ x: SCH_MARGE + c*(SCH_SIZE-2*SCH_MARGE)/2, y: SCH_MARGE + r*(SCH_SIZE-2*SCH_MARGE)/2, idx: r*3+c });
+
+    let schPattern = [], schDessin = false, schSouris = null, schErreur = false;
+    // Phase : 'dessiner' | 'confirmer'
+    let schPhase = 'dessiner', schPremier = null;
+
+    function schDessiner(couleurForce) {
+      schCtx.clearRect(0, 0, SCH_SIZE, SCH_SIZE);
+      const col = couleurForce || (schErreur ? '#e05555' : '#c8a84b');
+      // Lignes
+      if (schPattern.length > 1) {
+        schCtx.beginPath();
+        schCtx.strokeStyle = schErreur ? 'rgba(224,85,85,0.7)' : 'rgba(200,168,75,0.7)';
+        schCtx.lineWidth = 2; schCtx.lineCap = 'round';
+        schCtx.moveTo(schPos[schPattern[0]].x, schPos[schPattern[0]].y);
+        for (let i = 1; i < schPattern.length; i++) schCtx.lineTo(schPos[schPattern[i]].x, schPos[schPattern[i]].y);
+        if (schDessin && schSouris) schCtx.lineTo(schSouris.x, schSouris.y);
+        schCtx.stroke();
+      } else if (schPattern.length === 1 && schDessin && schSouris) {
+        schCtx.beginPath(); schCtx.strokeStyle = 'rgba(200,168,75,0.4)'; schCtx.lineWidth = 2;
+        schCtx.moveTo(schPos[schPattern[0]].x, schPos[schPattern[0]].y);
+        schCtx.lineTo(schSouris.x, schSouris.y); schCtx.stroke();
+      }
+      // Points
+      schPos.forEach(p => {
+        const sel = schPattern.includes(p.idx);
+        if (sel) { schCtx.beginPath(); schCtx.arc(p.x,p.y,SCH_HALO,0,Math.PI*2); schCtx.fillStyle=schErreur?'rgba(224,85,85,0.18)':'rgba(200,168,75,0.18)'; schCtx.fill(); }
+        schCtx.beginPath(); schCtx.arc(p.x,p.y,SCH_DOT,0,Math.PI*2);
+        if (sel) { schCtx.fillStyle=col; schCtx.fill(); }
+        else { schCtx.strokeStyle='rgba(200,168,75,0.4)'; schCtx.lineWidth=2; schCtx.stroke(); schCtx.beginPath(); schCtx.arc(p.x,p.y,3,0,Math.PI*2); schCtx.fillStyle='rgba(200,168,75,0.3)'; schCtx.fill(); }
+      });
+    }
+
+    function schGetPos(e) {
+      const rect = schCanvas.getBoundingClientRect();
+      const sx = SCH_SIZE/rect.width, sy = SCH_SIZE/rect.height;
+      const cx = e.touches?e.touches[0].clientX:e.clientX, cy = e.touches?e.touches[0].clientY:e.clientY;
+      return { x:(cx-rect.left)*sx, y:(cy-rect.top)*sy };
+    }
+
+    function schTrouver(pos) { return schPos.find(p=>Math.hypot(p.x-pos.x,p.y-pos.y)<SCH_HIT); }
+
+    function schDebut(e) {
+      e.preventDefault(); schErreur=false; schPattern=[]; schDessin=true;
+      schSouris=schGetPos(e); const d=schTrouver(schSouris);
+      if(d) schPattern.push(d.idx); schDessiner();
+    }
+    function schMouvement(e) {
+      if(!schDessin) return; e.preventDefault();
+      schSouris=schGetPos(e); const d=schTrouver(schSouris);
+      if(d&&!schPattern.includes(d.idx)) schPattern.push(d.idx); schDessiner();
+    }
+    function schFin() {
+      if(!schDessin) return; schDessin=false; schSouris=null;
+      const hint = document.getElementById('schema-hint');
+      if(schPattern.length < 4) {
+        schErreur=true; hint.textContent='Trop court — minimum 4 points'; schDessiner();
+      } else if(schPhase === 'dessiner') {
+        schPremier = schPattern.join('');
+        schPattern=[]; schPhase='confirmer';
+        hint.textContent='Confirmez votre schéma'; schDessiner();
+      } else {
+        const confirm2 = schPattern.join('');
+        if(confirm2 !== schPremier) {
+          schErreur=true; hint.textContent='Schémas différents — recommencez';
+          schPattern=[]; schPhase='dessiner'; schPremier=null; schDessiner();
+        } else {
+          hint.textContent='Schéma confirmé !'; schDessiner('#4caf50');
+        }
+      }
+    }
+
+    schCanvas.addEventListener('mousedown',  schDebut);
+    schCanvas.addEventListener('mousemove',  schMouvement);
+    schCanvas.addEventListener('mouseup',    schFin);
+    schCanvas.addEventListener('mouseleave', schFin);
+    schCanvas.addEventListener('touchstart', schDebut,    { passive:false });
+    schCanvas.addEventListener('touchmove',  schMouvement,{ passive:false });
+    schCanvas.addEventListener('touchend',   schFin);
+
+    document.getElementById('btn-schema-effacer').addEventListener('click', () => {
+      schPattern=[]; schDessin=false; schSouris=null; schErreur=false;
+      schPhase='dessiner'; schPremier=null;
+      document.getElementById('schema-hint').textContent='Dessinez votre schéma (minimum 4 points)';
+      schDessiner();
+    });
+
+    schDessiner();
+
+    formProfil.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      cacherMessages();
+      reinitialiserErreursChamps();
+
+      const nom     = document.getElementById('nom').value.trim();
+      const mdp     = document.getElementById('mot_de_passe').value;
+      const confirm = document.getElementById('confirmer_mot_de_passe').value;
+
       let valide = true;
-
-      if (!nom) {
-        afficherErreurChamp('nom', 'Le nom d\'utilisateur est obligatoire');
-        valide = false;
-      }
-
-      if (!mdp) {
-        afficherErreurChamp('mdp', 'Le mot de passe est obligatoire');
-        valide = false;
-      }
-
-      if (mdp !== confirm) {
-        afficherErreurChamp('confirm', 'Les mots de passe ne correspondent pas');
-        valide = false;
-      }
-
-      if (!otp || !/^\d{6}$/.test(String(otp))) {
-        afficherErreurChamp('otp', 'Le code OTP doit contenir exactement 6 chiffres');
-        valide = false;
-      }
-
-      if (!question) {
-        afficherErreurChamp('question', 'Veuillez choisir une question secrète');
-        valide = false;
-      }
-
-      if (!reponse) {
-        afficherErreurChamp('reponse', 'La réponse secrète est obligatoire');
-        valide = false;
+      if (!nom)          { afficherErreurChamp('nom',     'Le nom d\'utilisateur est obligatoire'); valide = false; }
+      if (!mdp)          { afficherErreurChamp('mdp',     'Le mot de passe est obligatoire'); valide = false; }
+      if (mdp !== confirm){ afficherErreurChamp('confirm','Les mots de passe ne correspondent pas'); valide = false; }
+      if (!schPremier || schPhase !== 'confirmer' || schPattern.join('') !== schPremier) {
+        afficherErreurChamp('schema', 'Veuillez dessiner et confirmer votre schéma'); valide = false;
       }
 
       if (!valide) return;
 
-      // ── Envoi au serveur ───────────────────────────────
       btnInscrire.disabled    = true;
-      btnInscrire.textContent = 'Inscription en cours…';
+      btnInscrire.textContent = 'Création en cours…';
 
       try {
-        const reponseServeur = await fetch('/auth/register', {
+        const rep  = await fetch('/auth/register', {
           method : 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body   : JSON.stringify({ nom, mot_de_passe: mdp, confirmer_mot_de_passe: confirm, otp_code: otp, question_secrete: question, reponse_secrete: reponse })
+          body   : JSON.stringify({ nom, mot_de_passe: mdp, confirmer_mot_de_passe: confirm, schema_secret: schPremier })
         });
+        const data = await rep.json();
 
-        const donnees = await reponseServeur.json();
-
-        if (!reponseServeur.ok) {
-          // Gestion des erreurs du serveur
-          const msg = donnees.erreur || 'Erreur lors de l\'inscription';
-
-          if (msg.includes('Nom d\'utilisateur')) {
-            afficherErreurChamp('nom', msg);
-          } else if (msg.includes('OTP')) {
-            afficherErreurChamp('otp', msg);
-          } else if (msg.includes('correspondent')) {
-            afficherErreurChamp('confirm', msg);
-          } else {
-            msgErreur.textContent = msg;
-            msgErreur.classList.add('visible');
-          }
+        if (!rep.ok) {
+          const msg = data.erreur || 'Erreur lors de l\'inscription';
+          if (msg.includes('Nom')) afficherErreurChamp('nom', msg);
+          else if (msg.includes('correspondent')) afficherErreurChamp('confirm', msg);
+          else afficherErreur(msg);
         } else {
-          // Succès : afficher le message et rediriger
-          msgSucces.textContent = donnees.message;
-          msgSucces.classList.add('visible');
-          form.reset();
-
-          setTimeout(() => {
-            window.location.href = '/index.html';
-          }, 2000);
+          afficherSucces(data.message);
+          formProfil.reset();
+          setTimeout(() => { window.location.href = '/index.html'; }, 2000);
         }
-
-      } catch (err) {
-        msgErreur.textContent = 'Erreur réseau. Vérifiez votre connexion.';
-        msgErreur.classList.add('visible');
+      } catch {
+        afficherErreur('Erreur réseau. Vérifiez votre connexion.');
       } finally {
         btnInscrire.disabled    = false;
-        btnInscrire.textContent = 'S\'inscrire';
+        btnInscrire.textContent = 'Créer mon compte';
       }
     });
+
   </script>
 
 </body>

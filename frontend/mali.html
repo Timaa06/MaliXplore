@@ -15,7 +15,7 @@
       overflow-x : hidden;
     }
 
-    /* ── Fond bogolan fixe ─────────────────────────────────────── */
+    
     .page-bg {
       position           : fixed;
       inset              : 0;
@@ -39,9 +39,7 @@
       flex-direction: column;
     }
 
-    /* ============================================================
-       HEADER
-       ============================================================ */
+    
     .header {
       display        : flex;
       align-items    : center;
@@ -104,9 +102,7 @@
     }
     .btn-logout:hover { border-color: var(--bogo-gold); color: var(--bogo-cream); }
 
-    /* ============================================================
-       NAVIGATION — onglets + quiz dans la barre
-       ============================================================ */
+    
     .nav-tabs {
       display        : flex;
       align-items    : center;
@@ -142,7 +138,7 @@
       border-bottom: 3px solid var(--bogo-gold);
     }
 
-    /* Bouton Quiz — mis en valeur dans la nav */
+    
     .nav-tab-quiz {
       margin-left  : auto;
       background   : rgba(200,134,10,0.1);
@@ -163,15 +159,11 @@
       border-bottom: 3px solid var(--bogo-gold);
     }
 
-    /* ============================================================
-       PANNEAUX DE CONTENU
-       ============================================================ */
+    
     .panneau { display: none; }
     .panneau.actif { display: block; }
 
-    /* ============================================================
-       EN-TÊTE DE SECTION (bandeau titre)
-       ============================================================ */
+    
     .section-banner {
       padding        : 3rem 2.5rem 2rem;
       max-width      : 1200px;
@@ -206,9 +198,7 @@
       flex-shrink: 0;
     }
 
-    /* ============================================================
-       FICHES ENRICHIES
-       ============================================================ */
+    
     .fiches-container {
       max-width: 1200px;
       margin   : 0 auto;
@@ -218,8 +208,8 @@
       gap      : 2rem;
     }
 
-    /* Fiche horizontale grande */
-    /* ── Fiche split : texte gauche | image droite ────────────── */
+    
+    
     .fiche-riche {
       display      : grid;
       grid-template-columns: 8px 1fr 480px;
@@ -236,19 +226,19 @@
       box-shadow  : 0 12px 50px rgba(0,0,0,0.6);
     }
 
-    /* Bande colorée (fine ligne gauche) */
+    
     .fiche-bande {
       background: linear-gradient(180deg, var(--bogo-gold) 0%, var(--bogo-clay) 50%, var(--bogo-brown) 100%);
       width     : 8px;
       flex-shrink: 0;
     }
 
-    /* Corps texte */
+    
     .fiche-corps {
       padding: 2.2rem 2.5rem;
     }
 
-    /* Bloc image à droite — hauteur naturelle */
+    
     .fiche-img-droite {
       background: #0a0500;
       display   : flex;
@@ -257,7 +247,7 @@
       justify-content: center;
     }
 
-    /* L'image prend toute la largeur, hauteur naturelle, pas de crop */
+    
     .fiche-img-droite img {
       width     : 100%;
       height    : auto;
@@ -265,7 +255,7 @@
       object-fit: contain;
     }
 
-    /* Légende sous l'image */
+    
     .fiche-img-droite-legende {
       width     : 100%;
       background: rgba(5,2,0,0.85);
@@ -301,7 +291,7 @@
       margin-top: 2px;
     }
 
-    /* Contenu textuel riche */
+    
     .fiche-texte {
       color      : #c8aa80;
       font-size  : 0.97rem;
@@ -311,7 +301,7 @@
     .fiche-texte strong { color: var(--bogo-cream); }
     .fiche-texte em     { color: var(--bogo-sand); font-style: italic; }
 
-    /* Bloc "Chiffre clé" */
+    
     .fiche-chiffre {
       display      : inline-flex;
       align-items  : center;
@@ -335,9 +325,9 @@
       line-height: 1.3;
     }
 
-    /* (ancien .fiche-img supprimé — remplacé par .fiche-img-droite) */
+    
 
-    /* ── Grille de profils Grammy ──────────────────────────────── */
+    
     .grammy-grille {
       display              : grid;
       grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -383,7 +373,7 @@
       line-height: 1.4;
     }
 
-    /* ── Avatar artiste ───────────────────────────────────────── */
+    
     .grammy-avatar {
       width          : 90px;
       height         : 90px;
@@ -427,7 +417,7 @@
       margin-top   : 0.4rem;
     }
 
-    /* Tags */
+    
     .fiche-tags {
       display  : flex;
       flex-wrap: wrap;
@@ -443,9 +433,7 @@
       font-size    : 0.75rem;
     }
 
-    /* ============================================================
-       SECTION "LE SAVIEZ-VOUS ?"
-       ============================================================ */
+    
     .saviez-vous-section {
       max-width: 1200px;
       margin   : 3rem auto 0;
@@ -501,7 +489,7 @@
     }
     .saviez-card p strong { color: var(--bogo-cream); }
 
-    /* Bandeau image dans les cartes saviez-vous */
+    
     .saviez-img {
       width        : 100%;
       height       : 130px;
@@ -526,9 +514,7 @@
       filter   : drop-shadow(0 2px 8px rgba(0,0,0,0.7));
     }
 
-    /* ============================================================
-       BIOGRAPHIE DU MALI
-       ============================================================ */
+    
     .bio-mali {
       max-width : 1200px;
       margin    : 3rem auto 0;
@@ -552,7 +538,7 @@
       margin-bottom: 3rem;
     }
 
-    /* Bannière intro */
+    
     .bio-intro {
       background   : rgba(92,58,30,0.15);
       border       : 1px solid rgba(200,134,10,0.2);
@@ -566,7 +552,7 @@
       font-style   : italic;
     }
 
-    /* Grille de stats */
+    
     .bio-stats {
       display              : grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -602,7 +588,7 @@
       letter-spacing: 1px;
     }
 
-    /* Blocs narratifs */
+    
     .bio-blocs {
       display              : grid;
       grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -635,7 +621,7 @@
     .bio-bloc p strong { color: var(--bogo-cream); }
     .bio-bloc p em     { color: var(--bogo-gold); font-style: italic; }
 
-    /* Encart "Or du Mali" spécial */
+    
     .bio-or {
       background: linear-gradient(135deg, rgba(200,134,10,0.08) 0%, rgba(92,58,30,0.2) 100%);
       border    : 1px solid rgba(200,134,10,0.4);
@@ -666,9 +652,7 @@
     }
     .bio-or p strong { color: var(--bogo-cream); }
 
-    /* ============================================================
-       ONGLET QUIZ — regroupé
-       ============================================================ */
+    
     .quiz-container {
       max-width: 900px;
       margin   : 0 auto;
@@ -688,7 +672,7 @@
     .quiz-header h1 span { color: var(--bogo-gold); }
     .quiz-header p { color: #907050; font-size: 1rem; }
 
-    /* Score global */
+    
     .quiz-score-bar {
       background   : rgba(20,10,3,0.8);
       border       : 1px solid rgba(200,134,10,0.3);
@@ -722,7 +706,7 @@
     }
     .quiz-reset-btn:hover { background: rgba(200,134,10,0.1); color: var(--bogo-cream); }
 
-    /* Catégorie de quiz */
+    
     .quiz-categorie {
       margin-bottom: 2.5rem;
     }
@@ -738,7 +722,7 @@
       border-bottom : 1px solid rgba(200,134,10,0.2);
     }
 
-    /* Carte de question */
+    
     .quiz-carte {
       background   : rgba(20,10,3,0.7);
       border       : 1px solid rgba(200,134,10,0.15);
@@ -791,14 +775,114 @@
     .quiz-fb.ok  { display:block; background: rgba(20,83,45,0.2); color:#9FE1CB; }
     .quiz-fb.ko  { display:block; background: rgba(139,26,26,0.2); color:#F0ADAD; }
 
-    /* ============================================================
-       RESPONSIVE
-       ============================================================ */
+    
+    .geo-section {
+      max-width: 1200px;
+      margin   : 3rem auto 0;
+      padding  : 0 2.5rem 4rem;
+    }
+
+    .geo-titre-section {
+      font-family  : Georgia, serif;
+      font-size    : clamp(2rem, 4vw, 3.2rem);
+      color        : var(--bogo-cream);
+      text-align   : center;
+      margin-bottom: 2rem;
+    }
+    .geo-titre-section span { color: var(--bogo-gold); }
+
+    .geo-inner {
+      display              : grid;
+      grid-template-columns: 1fr 1fr;
+      gap                  : 3rem;
+      align-items          : start;
+      background           : rgba(15,8,3,0.7);
+      border               : 1px solid rgba(200,134,10,0.2);
+      border-radius        : 16px;
+      padding              : 2.5rem;
+    }
+
+    .geo-map-wrap {
+      border-radius: 12px;
+      overflow     : hidden;
+      border       : 1px solid rgba(200,134,10,0.3);
+      background   : #0a0500;
+    }
+    .geo-map-wrap img {
+      width     : 100%;
+      height    : auto;
+      display   : block;
+      object-fit: contain;
+    }
+    .geo-map-legende {
+      background: rgba(5,2,0,0.85);
+      padding   : 0.7rem 1rem;
+      font-size : 0.78rem;
+      color     : var(--bogo-sand);
+      font-style: italic;
+      text-align: center;
+    }
+
+    .geo-desc h2 {
+      font-family  : Georgia, serif;
+      font-size    : 1.5rem;
+      color        : var(--bogo-cream);
+      margin-bottom: 0.4rem;
+    }
+    .geo-desc .sous {
+      display      : block;
+      color        : var(--bogo-gold);
+      font-size    : 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+    .geo-desc p {
+      color        : #c8aa80;
+      font-size    : 0.95rem;
+      line-height  : 1.8;
+      margin-bottom: 1.2rem;
+    }
+    .geo-desc p strong { color: var(--bogo-cream); }
+    .geo-desc p em     { color: var(--bogo-gold); font-style: italic; }
+
+    .geo-frontieres {
+      background   : rgba(200,134,10,0.05);
+      border       : 1px solid rgba(200,134,10,0.2);
+      border-radius: 10px;
+      padding      : 1.2rem 1.5rem;
+      margin-bottom: 1.4rem;
+    }
+    .geo-frontieres h3 {
+      font-family  : Georgia, serif;
+      font-size    : 1rem;
+      color        : var(--bogo-sand);
+      margin-bottom: 0.8rem;
+    }
+    .geo-frontiere-ligne {
+      display      : flex;
+      align-items  : flex-start;
+      gap          : 10px;
+      padding      : 0.4rem 0;
+      border-bottom: 1px solid rgba(200,134,10,0.1);
+      font-size    : 0.9rem;
+      color        : #c8aa80;
+    }
+    .geo-frontiere-ligne:last-child { border-bottom: none; }
+    .geo-dir {
+      font-family   : Georgia, serif;
+      color         : var(--bogo-gold);
+      font-size     : 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      min-width     : 80px;
+      padding-top   : 2px;
+      flex-shrink   : 0;
+    }
+
     @media (max-width: 768px) {
       .header       { padding: 1rem; }
       .nav-tabs     { padding: 0 0.5rem; overflow-x: auto; top: 58px; }
       .nav-tab      { padding: 0.85rem 0.9rem; font-size: 0.85rem; }
-      .fiches-container, .saviez-vous-section, .bio-mali, .quiz-container {
+      .fiches-container, .saviez-vous-section, .bio-mali, .quiz-container, .geo-section {
         padding-left: 1rem; padding-right: 1rem;
       }
       .section-banner { padding: 2rem 1rem 1rem; }
@@ -807,19 +891,18 @@
       .grammy-grille    { grid-template-columns: 1fr 1fr; }
       .quiz-options-grille { grid-template-columns: 1fr; }
       .bio-or { grid-template-columns: 1fr; text-align: center; }
+      .geo-inner { grid-template-columns: 1fr; gap: 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Fond -->
+  
   <div class="page-bg"></div>
 
   <div class="page-wrap">
 
-    <!-- ================================================================
-         HEADER
-         ================================================================ -->
+    
     <header class="header">
       <a href="/accueil.html" class="header-logo">MaliXplore</a>
       <div class="header-right">
@@ -831,9 +914,7 @@
       </div>
     </header>
 
-    <!-- ================================================================
-         NAVIGATION — onglets + quiz intégré
-         ================================================================ -->
+    
     <nav class="nav-tabs" role="tablist">
       <button class="nav-tab actif" data-onglet="culture"   onclick="changerOnglet('culture')">🎵 Culture</button>
       <button class="nav-tab"       data-onglet="cuisine"   onclick="changerOnglet('cuisine')">🍲 Cuisine</button>
@@ -841,12 +922,10 @@
       <button class="nav-tab nav-tab-quiz" data-onglet="quiz" onclick="changerOnglet('quiz')">🎯 Quiz — Testez-vous !</button>
     </nav>
 
-    <!-- ================================================================
-         PANNEAU CULTURE
-         ================================================================ -->
+    
     <div id="panneau-culture" class="panneau actif">
 
-      <!-- Bandeau titre -->
+      
       <div class="section-banner">
         <div class="section-banner-text">
           <h1>Culture <span>Malienne</span></h1>
@@ -857,7 +936,7 @@
 
       <div class="fiches-container">
 
-        <!-- Fiche 1 : Griots & Musique Manding -->
+        
         <article class="fiche-riche">
           <div class="fiche-bande"></div>
           <div class="fiche-corps">
@@ -891,7 +970,7 @@
               </div>
             </div>
 
-            <!-- Profils des artistes Grammy -->
+            
             <p style="font-family:Georgia,serif;color:var(--bogo-sand);margin-bottom:0.8rem;font-size:0.95rem;">🏆 Les lauréats maliens du Grammy Award</p>
             <div class="grammy-grille">
 
@@ -956,14 +1035,14 @@
               <span class="ftag">Wassoulou</span>
             </div>
           </div>
-          <!-- IMAGE DROITE — Griot -->
+          
           <div class="fiche-img-droite">
             <img src="/griot.jpg" alt="Griot malien jouant la kora">
             <div class="fiche-img-droite-legende">Griot malien — gardien de la mémoire orale</div>
           </div>
         </article>
 
-        <!-- Fiche 2 : Bogolan -->
+        
         <article class="fiche-riche">
           <div class="fiche-bande"></div>
           <div class="fiche-corps">
@@ -998,14 +1077,14 @@
               <span class="ftag">Symbole national</span>
             </div>
           </div>
-          <!-- IMAGE DROITE — Bogolan réel -->
+          
           <div class="fiche-img-droite">
             <img src="/Bogolan.jpg" alt="Tissu bogolan">
             <div class="fiche-img-droite-legende">Tissu bogolan — motifs géométriques Bambaras</div>
           </div>
         </article>
 
-        <!-- Fiche 3 : Empire du Mali -->
+        
         <article class="fiche-riche">
           <div class="fiche-bande"></div>
           <div class="fiche-corps">
@@ -1040,25 +1119,23 @@
               <span class="ftag">XIIIe–XVe siècle</span>
             </div>
           </div>
-          <!-- IMAGE DROITE — Empire du Mali -->
+          
           <div class="fiche-img-droite">
             <img src="/The-History-of-the-Mali-Empire.jpg" alt="Empire du Mali — Mansa Moussa">
             <div class="fiche-img-droite-legende">Mansa Moussa — L'homme le plus riche ayant jamais vécu</div>
           </div>
         </article>
 
-      </div><!-- fin fiches-container -->
+      </div>
 
-      <!-- ============================================================
-           LE SAVIEZ-VOUS ?
-           ============================================================ -->
+      
       <div class="saviez-vous-section">
         <h2 class="saviez-vous-titre">Le saviez-vous ?</h2>
         <p class="saviez-vous-sous">Des faits fascinants que peu de gens connaissent sur le Mali</p>
 
         <div class="saviez-grille">
 
-          <!-- Carte Grammy — pleine largeur -->
+          
           <div class="saviez-card" style="grid-column:1/-1;background:linear-gradient(135deg,rgba(200,134,10,0.08),rgba(92,58,30,0.25));border-color:rgba(200,134,10,0.5);">
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem;flex-wrap:wrap;">
               <span style="font-size:2.5rem;">🏆</span>
@@ -1132,9 +1209,7 @@
         </div>
       </div>
 
-      <!-- ============================================================
-           BIOGRAPHIE DU MALI
-           ============================================================ -->
+      
       <div class="bio-mali">
         <h2 class="bio-titre">Le <span>Mali</span> en chiffres et en vérité</h2>
         <p class="bio-sous">Un pays immense, riche d'histoire, debout malgré tout</p>
@@ -1143,7 +1218,7 @@
           « Le Mali n'est pas seulement un pays — c'est un berceau. Berceau de l'Empire du Mali, berceau de la musique africaine, berceau d'une civilisation qui a ébloui le monde médiéval quand l'Europe tâtonnait encore dans ses ténèbres. »
         </div>
 
-        <!-- Statistiques clés -->
+        
         <div class="bio-stats">
           <div class="bio-stat">
             <div class="bio-stat-icone">🗺️</div>
@@ -1177,7 +1252,7 @@
           </div>
         </div>
 
-        <!-- Encart Or -->
+        
         <div class="bio-or">
           <div class="bio-or-medaille">🥇</div>
           <div>
@@ -1188,7 +1263,7 @@
           </div>
         </div>
 
-        <!-- Blocs narratifs -->
+        
         <div class="bio-blocs">
 
           <div class="bio-bloc" style="grid-column:1/-1;display:grid;grid-template-columns:1fr 340px;gap:0;overflow:hidden;padding:0;">
@@ -1244,14 +1319,12 @@
 
         </div>
       </div>
-      <!-- fin bio Mali -->
+      
 
     </div>
-    <!-- fin panneau culture -->
+    
 
-    <!-- ================================================================
-         PANNEAU CUISINE
-         ================================================================ -->
+    
     <div id="panneau-cuisine" class="panneau">
 
       <div class="section-banner">
@@ -1348,7 +1421,7 @@
               <span class="ftag">Hibiscus</span><span class="ftag">Dabileni</span><span class="ftag">Rafraîchissant</span><span class="ftag">Médicinal</span><span class="ftag">Vitamine C</span>
             </div>
           </div>
-          <!-- IMAGE DROITE — Bissap -->
+          
           <div class="fiche-img-droite">
             <img src="/Hibiscus_et_bissap__le_secret_d_une_boisson_aux_bienfaits_insoupconnes.webp" alt="Jus de Bissap — Hibiscus">
             <div class="fiche-img-droite-legende">Jus de Bissap — les fleurs d'hibiscus séchées, l'eau rouge du Mali</div>
@@ -1358,16 +1431,14 @@
       </div>
     </div>
 
-    <!-- ================================================================
-         PANNEAU RÉGIONS
-         ================================================================ -->
+    
     <div id="panneau-regions" class="panneau">
 
       <div class="section-banner">
         <div class="section-banner-text">
           <h1>Régions du <span>Mali</span></h1>
           <p>Le Mali compte <strong>19 régions administratives</strong> — du fleuve Niger aux dunes du Sahara, des falaises Dogon aux ruelles de Tombouctou. Chaque région est un monde à part entière, une civilisation en soi, un paysage qui défie l'imagination.</p>
-          <!-- Grille des 19 régions -->
+          
           <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem;">
             <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Kayes</span>
             <span style="background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.3);color:var(--bogo-sand);border-radius:20px;padding:3px 10px;font-size:0.75rem;">Koulikoro</span>
@@ -1487,11 +1558,44 @@
         </article>
 
       </div>
+
+      <div class="geo-section">
+        <h2 class="geo-titre-section">Le <span>Mali</span> — Portrait géographique</h2>
+        <div class="geo-inner">
+
+          <div class="geo-map-wrap">
+            <img src="/carte%20du%20Mali%20ba.jpg" alt="Carte du Mali"
+              onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:320px;font-size:6rem;background:#0a0500;\'>🗺️</div>'">
+            <div class="geo-map-legende">Carte politique du Mali — Afrique de l'Ouest</div>
+          </div>
+
+          <div class="geo-desc">
+            <h2>République du Mali</h2>
+            <span class="sous">État enclavé d'Afrique de l'Ouest &nbsp;·&nbsp; Pays sahélien</span>
+
+            <div class="geo-frontieres">
+              <h3>🧭 Pays limitrophes</h3>
+              <div class="geo-frontiere-ligne"><span class="geo-dir">Nord</span><span>Algérie</span></div>
+              <div class="geo-frontiere-ligne"><span class="geo-dir">Nord-Ouest</span><span>Mauritanie</span></div>
+              <div class="geo-frontiere-ligne"><span class="geo-dir">Ouest</span><span>Sénégal</span></div>
+              <div class="geo-frontiere-ligne"><span class="geo-dir">Sud-Ouest</span><span>Guinée &nbsp;·&nbsp; Côte d'Ivoire</span></div>
+              <div class="geo-frontiere-ligne"><span class="geo-dir">Sud</span><span>Burkina Faso</span></div>
+              <div class="geo-frontiere-ligne"><span class="geo-dir">Est</span><span>Niger</span></div>
+            </div>
+
+            <p>Avec <strong>1 241 238 km²</strong>, le Mali est le <em>8e plus grand pays d'Afrique</em> et l'un des plus vastes du monde, borné par sept nations.</p>
+
+            <p>Le Mali est un pays <strong>sahélien</strong> — cette bande de transition entre le Sahara aride au nord et les savanes tropicales au sud. Ce gradient climatique façonne tout : les paysages, les modes de vie, les cultures et les migrations. Au nord, les dunes du Sahara s'étendent à perte de vue ; au centre, les plaines du Sahel ponctuées d'acacias ; au sud, les terres fertiles irriguées par le <em>fleuve Niger</em>, poumon économique du pays.</p>
+
+            <p>Le <strong>fleuve Niger</strong>, troisième plus long fleuve d'Afrique avec <em>4 180 km</em>, traverse le Mali sur plus de <strong>1 700 km</strong>. Il forme au cœur du pays un gigantesque <em>delta intérieur</em> qui inonde chaque année des milliers de kilomètres carrés, nourrissant des millions de personnes et de têtes de bétail. <strong>Bamako</strong>, la capitale, est bâtie sur ses deux rives et compte aujourd'hui plus de <em>3 millions d'habitants</em>, faisant d'elle l'une des villes à la croissance la plus rapide d'Afrique.</p>
+          </div>
+
+        </div>
+      </div>
+
     </div>
 
-    <!-- ================================================================
-         PANNEAU QUIZ
-         ================================================================ -->
+    
     <div id="panneau-quiz" class="panneau">
       <div class="quiz-container">
 
@@ -1500,7 +1604,7 @@
           <p>9 questions pour tester ce que vous savez vraiment du Mali</p>
         </div>
 
-        <!-- Barre de score -->
+        
         <div class="quiz-score-bar">
           <div>
             <div class="quiz-score-text">Votre score</div>
@@ -1509,10 +1613,10 @@
           <button class="quiz-reset-btn" onclick="resetQuiz()">↺ Recommencer</button>
         </div>
 
-        <!-- Résultat final -->
+        
         <div id="quiz-resultat" style="display:none;margin:1.5rem 0;padding:1.8rem 2rem;border-radius:12px;text-align:center;"></div>
 
-        <!-- Catégorie Culture -->
+        
         <div class="quiz-categorie">
           <div class="quiz-cat-titre">🎵 Culture malienne</div>
 
@@ -1550,7 +1654,7 @@
           </div>
         </div>
 
-        <!-- Catégorie Cuisine -->
+        
         <div class="quiz-categorie">
           <div class="quiz-cat-titre">🍲 Cuisine malienne</div>
 
@@ -1588,7 +1692,7 @@
           </div>
         </div>
 
-        <!-- Catégorie Régions -->
+        
         <div class="quiz-categorie">
           <div class="quiz-cat-titre">🏔️ Régions du Mali</div>
 
@@ -1628,14 +1732,12 @@
 
       </div>
     </div>
-    <!-- fin panneau quiz -->
+    
 
-  </div><!-- fin page-wrap -->
+  </div>
 
   <script>
-    // ============================================================
-    // SESSION
-    // ============================================================
+
     async function verifierSession() {
       try {
         const r = await fetch('/api/session/check');
@@ -1648,9 +1750,6 @@
     }
     verifierSession();
 
-    // ============================================================
-    // ONGLETS
-    // ============================================================
     function changerOnglet(nom) {
       ['culture','cuisine','regions','quiz'].forEach(n => {
         const btn    = document.querySelector(`[data-onglet="${n}"]`);
@@ -1661,7 +1760,6 @@
       });
     }
 
-    // Activer l'onglet depuis le hash de l'URL
     function activerDepuisHash() {
       const hash = window.location.hash.replace('#', '');
       if (['culture','cuisine','regions','quiz'].includes(hash)) changerOnglet(hash);
@@ -1669,11 +1767,8 @@
     activerDepuisHash();
     window.addEventListener('hashchange', activerDepuisHash);
 
-    // ============================================================
-    // QUIZ
-    // ============================================================
     const REPONSES = {
-      // [index correct, explication]
+
       0: [1, 'La kora possède exactement 21 cordes, réparties en deux rangées. Chaque corde est en nylon ou en pêche tressée.'],
       1: [1, '"Bogo" signifie boue/terre en bambara. La boue fermentée riche en tanins est la teinture naturelle du bogolan.'],
       2: [2, 'Mansa Moussa emporta environ 12 tonnes d\'or lors de son pèlerinage à La Mecque en 1324, provoquant une inflation en Égypte pendant 12 ans.'],
@@ -1695,7 +1790,6 @@
       const correct = REPONSES[qIndex][0];
       const expl    = REPONSES[qIndex][1];
 
-      // Désactiver tous les boutons
       opts.forEach(b => b.disabled = true);
 
       if (choix === correct) {

@@ -6,11 +6,9 @@
   <title>MaliXplore — Découvrez la richesse du Mali</title>
   <link rel="stylesheet" href="/css/style.css">
   <style>
-    /* ============================================================
-       LANDING PAGE — styles spécifiques à la page marketing
-       ============================================================ */
+    
 
-    /* Fond : photo sombre + motif bogolan superposé */
+    
     .landing-body {
       margin     : 0;
       min-height : 100vh;
@@ -18,7 +16,7 @@
       background : var(--bogo-dark);
     }
 
-    /* ── Arrière-plan bogolan (image réelle) ───────────────────── */
+    
     .landing-bg {
       position           : fixed;
       inset              : 0;
@@ -29,7 +27,7 @@
       background-repeat  : no-repeat;
     }
 
-    /* Voile sombre par-dessus pour garder le texte lisible */
+    
     .landing-bg::after {
       content   : '';
       position  : absolute;
@@ -43,7 +41,7 @@
       );
     }
 
-    /* ── Contenu principal (par-dessus le fond) ────────────────── */
+    
     .landing-content {
       position       : relative;
       z-index        : 1;
@@ -53,7 +51,7 @@
       min-height     : 100vh;
     }
 
-    /* ── Barre de navigation supérieure ───────────────────────── */
+    
     .landing-nav {
       width          : 100%;
       display        : flex;
@@ -94,7 +92,7 @@
       color     : var(--bogo-dark);
     }
 
-    /* ── Section héros ─────────────────────────────────────────── */
+    
     .hero {
       flex           : 1;
       display        : flex;
@@ -107,7 +105,7 @@
       margin         : 0 auto;
     }
 
-    /* Badge "Nouveau" */
+    
     .hero-badge {
       display      : inline-flex;
       align-items  : center;
@@ -124,7 +122,7 @@
       animation    : fadeDown 0.8s ease both;
     }
 
-    /* Titre principal */
+    
     .hero-titre {
       font-family   : Georgia, serif;
       font-size     : clamp(3.5rem, 9vw, 7rem);
@@ -140,7 +138,7 @@
       text-shadow: 0 0 40px rgba(200,134,10,0.5);
     }
 
-    /* Citation principale */
+    
     .hero-citation {
       font-family  : Georgia, serif;
       font-style   : italic;
@@ -164,7 +162,7 @@
       text-shadow   : 0 0 30px rgba(200,134,10,0.4);
     }
 
-    /* Séparateur décoratif */
+    
     .separateur {
       display        : flex;
       align-items    : center;
@@ -183,7 +181,7 @@
       background: linear-gradient(90deg, transparent, var(--bogo-gold), transparent);
     }
 
-    /* Description */
+    
     .hero-desc {
       font-size    : 1.05rem;
       color        : #c0a882;
@@ -193,7 +191,7 @@
       animation    : fadeDown 1s ease 0.35s both;
     }
 
-    /* ── Bouton CTA principal ──────────────────────────────────── */
+    
     .btn-cta {
       display      : inline-flex;
       align-items  : center;
@@ -231,7 +229,7 @@
       transform: translateX(4px);
     }
 
-    /* ── Cartes de fonctionnalités ─────────────────────────────── */
+    
     .features {
       display              : grid;
       grid-template-columns: repeat(3, 1fr);
@@ -276,7 +274,7 @@
       line-height: 1.5;
     }
 
-    /* ── Pied de page minimaliste ──────────────────────────────── */
+    
     .landing-footer {
       position   : relative;
       z-index    : 1;
@@ -286,9 +284,7 @@
       font-size  : 0.78rem;
     }
 
-    /* ============================================================
-       MODAL AUTH (connexion + inscription en onglets)
-       ============================================================ */
+    
     .auth-modal-overlay {
       position       : fixed;
       inset          : 0;
@@ -328,7 +324,7 @@
       transform: translateY(0) scale(1);
     }
 
-    /* Bouton fermeture modal */
+    
     .auth-modal-fermer {
       position  : absolute;
       top       : 1rem;
@@ -344,7 +340,7 @@
 
     .auth-modal-fermer:hover { color: var(--bogo-cream); }
 
-    /* Mini logo dans la modal */
+    
     .modal-logo {
       text-align   : center;
       margin-bottom: 1.2rem;
@@ -357,7 +353,7 @@
       letter-spacing: 2px;
     }
 
-    /* Onglets Connexion / Inscription */
+    
     .auth-tabs {
       display      : flex;
       border-bottom: 1px solid rgba(200,134,10,0.3);
@@ -383,7 +379,7 @@
       border-bottom: 3px solid var(--bogo-gold);
     }
 
-    /* Panneaux des onglets */
+    
     .auth-panneau {
       display: none;
     }
@@ -392,7 +388,7 @@
       display: block;
     }
 
-    /* ── Animations ───────────────────────────────────────────── */
+    
     @keyframes fadeDown {
       from { opacity: 0; transform: translateY(-20px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -403,7 +399,7 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── Responsive ───────────────────────────────────────────── */
+    
     @media (max-width: 640px) {
       .landing-nav { padding: 1rem 1.2rem; }
       .features { grid-template-columns: 1fr; }
@@ -414,52 +410,55 @@
 </head>
 <body class="landing-body">
 
-  <!-- Fond animé bogolan -->
+  
   <div class="landing-bg"></div>
 
-  <!-- Contenu principal -->
+  
   <div class="landing-content">
 
-    <!-- Barre de navigation -->
+    
     <nav class="landing-nav">
       <div class="nav-logo">MaliXplore</div>
       <div class="nav-links">
+        <a href="/admin.html" style="background:transparent;border:1px solid rgba(200,168,75,0.4);color:rgba(200,168,75,0.7);border-radius:6px;padding:8px 16px;font-size:0.85rem;font-family:Georgia,serif;text-decoration:none;transition:all 0.25s;" onmouseover="this.style.borderColor='var(--bogo-gold)';this.style.color='var(--bogo-gold)'" onmouseout="this.style.borderColor='rgba(200,168,75,0.4)';this.style.color='rgba(200,168,75,0.7)'">
+          Admin
+        </a>
         <button class="nav-btn-connexion" onclick="ouvrirModal('connexion')">
           Se connecter
         </button>
       </div>
     </nav>
 
-    <!-- Section héros -->
+    
     <section class="hero">
 
-      <!-- Badge -->
+      
       <div class="hero-badge">
         ✦ Découverte culturelle ✦
       </div>
 
-      <!-- Titre -->
+      
       <h1 class="hero-titre">
         Mali<span>Xplore</span>
       </h1>
 
-      <!-- Citation phare -->
+      
       <p class="hero-citation">
         <strong>« Le Mali, Berceau de l'Afrique »</strong>
         L'Afrique, Berceau de l'Humanité
       </p>
 
-      <!-- Séparateur -->
+      
       <div class="separateur">✦</div>
 
-      <!-- Description -->
+      
       <p class="hero-desc">
         Plongez au cœur d'une civilisation millénaire. Griots, bogolan,
         Empire du Mali, cuisine ancestrale et paysages époustouflants —
         tout ce qui fait la grandeur d'un peuple vous attend.
       </p>
 
-      <!-- Bouton CTA -->
+      
       <button class="btn-cta" onclick="ouvrirModal('inscription')">
         Découvrir MaliXplore
         <span class="fleche">→</span>
@@ -467,7 +466,7 @@
 
     </section>
 
-    <!-- Cartes de fonctionnalités -->
+    
     <div class="features">
 
       <div class="feature-card">
@@ -490,28 +489,26 @@
 
     </div>
 
-    <!-- Pied de page -->
+    
     <footer class="landing-footer">
       © 2024 MaliXplore — Tous droits réservés
     </footer>
 
   </div>
 
-  <!-- ============================================================
-       MODAL AUTH — Connexion / Inscription
-       ============================================================ -->
+  
   <div id="auth-overlay" class="auth-modal-overlay" onclick="fermerModalParFond(event)">
     <div class="auth-modal" role="dialog" aria-modal="true" aria-label="Authentification">
 
-      <!-- Bouton fermeture -->
+      
       <button class="auth-modal-fermer" onclick="fermerModal()" aria-label="Fermer">✕</button>
 
-      <!-- Mini logo -->
+      
       <div class="modal-logo">
         <h2>MaliXplore</h2>
       </div>
 
-      <!-- Onglets -->
+      
       <div class="auth-tabs" role="tablist">
         <button class="auth-tab-btn actif" id="tab-connexion" role="tab"
           aria-selected="true" aria-controls="panneau-connexion"
@@ -525,10 +522,10 @@
         </button>
       </div>
 
-      <!-- ── PANNEAU CONNEXION ────────────────────────────────── -->
+      
       <div id="panneau-connexion" class="auth-panneau actif" role="tabpanel">
 
-        <!-- Indicateur MFA -->
+        
         <div class="mfa-indicateur" style="margin-bottom:1.5rem;">
           <div class="mfa-etape">
             <div class="mfa-cercle or">1</div>
@@ -567,102 +564,147 @@
 
       </div>
 
-      <!-- ── PANNEAU INSCRIPTION ─────────────────────────────── -->
+      
       <div id="panneau-inscription" class="auth-panneau" role="tabpanel">
 
         <div id="msg-succes-inscr" class="message-succes"></div>
         <div id="msg-erreur-inscr" class="message-erreur"></div>
 
-        <form id="form-inscription" novalidate>
-
-          <div class="form-groupe">
-            <label for="nom-inscr">Nom d'utilisateur</label>
-            <input type="text" id="nom-inscr" placeholder="Votre nom d'utilisateur" autocomplete="username" required>
-            <div class="erreur-champ" id="err-nom"></div>
+        <!-- Indicateur étapes -->
+        <div class="mfa-indicateur" style="margin-bottom:1.2rem;">
+          <div class="mfa-etape">
+            <div class="mfa-cercle or" id="ins-ind-1">1</div>
+            <span class="mfa-label active" id="ins-lbl-1">Email</span>
           </div>
-
-          <div class="form-groupe">
-            <label for="mdp-inscr">Mot de passe</label>
-            <input type="password" id="mdp-inscr" placeholder="Votre mot de passe" autocomplete="new-password" required>
-            <div class="erreur-champ" id="err-mdp"></div>
+          <div class="mfa-ligne" id="ins-ligne-1"></div>
+          <div class="mfa-etape">
+            <div class="mfa-cercle gris" id="ins-ind-2">2</div>
+            <span class="mfa-label" id="ins-lbl-2">Vérification</span>
           </div>
-
-          <div class="form-groupe">
-            <label for="confirm-inscr">Confirmer le mot de passe</label>
-            <input type="password" id="confirm-inscr" placeholder="Répétez votre mot de passe" autocomplete="new-password" required>
-            <div class="erreur-champ" id="err-confirm"></div>
+          <div class="mfa-ligne" id="ins-ligne-2"></div>
+          <div class="mfa-etape">
+            <div class="mfa-cercle gris" id="ins-ind-3">3</div>
+            <span class="mfa-label" id="ins-lbl-3">Profil</span>
           </div>
+        </div>
 
-          <div class="form-groupe">
-            <label for="otp-inscr">Code OTP personnel (6 chiffres)</label>
-            <input type="number" id="otp-inscr" placeholder="Ex : 482619" min="100000" max="999999" required>
-            <div class="aide-champ">Ce code vous sera demandé à chaque connexion. Notez-le bien.</div>
-            <div class="erreur-champ" id="err-otp"></div>
+        <!-- Étape 1 : Email -->
+        <div id="ins-etape-1">
+          <p style="font-size:0.85rem;color:var(--bogo-sand);text-align:center;margin-bottom:1rem;">
+            Entrez votre adresse email pour commencer
+          </p>
+          <form id="form-inscr-email" novalidate>
+            <div class="form-groupe">
+              <label for="email-inscr">Adresse email</label>
+              <input type="email" id="email-inscr" placeholder="votre@email.com" autocomplete="email" required>
+              <div class="erreur-champ" id="err-email-inscr"></div>
+            </div>
+            <button type="submit" class="btn-primaire" id="btn-inscr-email">
+              Envoyer le code de vérification
+            </button>
+          </form>
+        </div>
+
+        <!-- Étape 2 : OTP -->
+        <div id="ins-etape-2" style="display:none;">
+          <p style="font-size:0.85rem;color:var(--bogo-sand);text-align:center;margin-bottom:0.3rem;">Code envoyé à</p>
+          <p id="ins-email-affiche" style="text-align:center;color:var(--bogo-sand);font-weight:bold;font-size:0.9rem;margin-bottom:1rem;"></p>
+          <form id="form-inscr-otp" novalidate>
+            <div class="otp-grille" aria-label="Code OTP à 6 chiffres">
+              <input class="otp-chiffre ins-otp" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 1">
+              <input class="otp-chiffre ins-otp" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 2">
+              <input class="otp-chiffre ins-otp" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 3">
+              <input class="otp-chiffre ins-otp" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 4">
+              <input class="otp-chiffre ins-otp" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 5">
+              <input class="otp-chiffre ins-otp" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 6">
+            </div>
+            <button type="submit" class="btn-primaire" id="btn-inscr-otp">Vérifier le code</button>
+          </form>
+          <div style="text-align:center;margin-top:0.8rem;">
+            <button id="btn-inscr-renvoyer" style="background:none;border:none;color:var(--bogo-sand);text-decoration:underline;cursor:pointer;font-size:0.85rem;">Renvoyer le code</button>
+            <span id="ins-rebours" style="display:none;color:var(--bogo-sand);font-size:0.82rem;opacity:0.7;"></span>
           </div>
-
-          <div class="form-groupe">
-            <label for="question-inscr">Question secrète</label>
-            <select id="question-inscr" required>
-              <option value="" disabled selected>— Choisissez une question —</option>
-              <option value="Quelle est la ville de naissance de ta mère ?">Quelle est la ville de naissance de ta mère ?</option>
-              <option value="Quel est le prénom de ton meilleur ami d'enfance ?">Quel est le prénom de ton meilleur ami d'enfance ?</option>
-              <option value="Quel est le nom de ton premier animal de compagnie ?">Quel est le nom de ton premier animal de compagnie ?</option>
-              <option value="Quelle est ta nourriture préférée ?">Quelle est ta nourriture préférée ?</option>
-              <option value="Dans quelle ville as-tu grandi ?">Dans quelle ville as-tu grandi ?</option>
-            </select>
-            <div class="erreur-champ" id="err-question"></div>
+          <div style="text-align:center;margin-top:0.5rem;">
+            <button id="btn-inscr-retour" style="background:none;border:none;color:var(--bogo-sand);opacity:0.6;cursor:pointer;font-size:0.82rem;text-decoration:underline;">← Changer d'email</button>
           </div>
+        </div>
 
-          <div class="form-groupe">
-            <label for="reponse-inscr">Votre réponse</label>
-            <input type="text" id="reponse-inscr" placeholder="Votre réponse secrète" autocomplete="off" required>
-            <div class="erreur-champ" id="err-reponse"></div>
-          </div>
+        <!-- Étape 3 : Profil + Schéma -->
+        <div id="ins-etape-3" style="display:none;">
+          <p style="font-size:0.85rem;color:var(--bogo-sand);text-align:center;margin-bottom:1rem;">Finalisez votre inscription</p>
+          <form id="form-inscr-profil" novalidate>
+            <div class="form-groupe">
+              <label for="nom-inscr">Nom d'utilisateur</label>
+              <input type="text" id="nom-inscr" placeholder="Votre nom d'utilisateur" autocomplete="username" required>
+              <div class="erreur-champ" id="err-nom-inscr"></div>
+            </div>
+            <div class="form-groupe">
+              <label for="mdp-inscr">Mot de passe</label>
+              <input type="password" id="mdp-inscr" placeholder="Votre mot de passe" autocomplete="new-password" required>
+              <div class="erreur-champ" id="err-mdp-inscr"></div>
+            </div>
+            <div class="form-groupe">
+              <label for="confirm-inscr">Confirmer le mot de passe</label>
+              <input type="password" id="confirm-inscr" placeholder="Répétez votre mot de passe" autocomplete="new-password" required>
+              <div class="erreur-champ" id="err-confirm-inscr"></div>
+            </div>
 
-          <button type="submit" class="btn-primaire" id="btn-inscrire">S'inscrire</button>
+            <!-- Schéma secret -->
+            <div style="text-align:center;margin-bottom:0.4rem;">
+              <label style="color:var(--bogo-sand);font-size:0.88rem;">Schéma secret</label>
+            </div>
+            <div style="text-align:center;">
+              <p id="ins-schema-hint" style="font-size:0.8rem;color:var(--bogo-sand);opacity:0.75;margin-bottom:0.4rem;">
+                Dessinez votre schéma (minimum 4 points)
+              </p>
+              <canvas id="ins-schema-canvas" width="200" height="200"
+                style="cursor:crosshair;touch-action:none;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(200,168,75,0.15);">
+              </canvas>
+              <br>
+              <button type="button" id="ins-btn-sch-effacer"
+                style="margin-top:0.4rem;background:none;border:none;color:var(--bogo-sand);text-decoration:underline;cursor:pointer;font-size:0.8rem;opacity:0.7;">
+                Effacer
+              </button>
+            </div>
+            <div class="erreur-champ" id="err-schema-inscr"></div>
 
-        </form>
+            <button type="submit" class="btn-primaire" id="btn-inscrire">Créer mon compte</button>
+          </form>
+        </div>
 
       </div>
-      <!-- fin panneaux -->
+      
 
     </div>
   </div>
-  <!-- fin modal -->
+  
 
   <script>
-    // ============================================================
-    // GESTION DE LA MODAL
-    // ============================================================
 
-    /**
-     * Ouvrir la modal sur l'onglet spécifié ('connexion' ou 'inscription')
-     */
+    
     function ouvrirModal(onglet) {
       document.getElementById('auth-overlay').classList.add('visible');
       document.body.style.overflow = 'hidden';
       changerOnglet(onglet || 'connexion');
     }
 
-    /** Fermer la modal */
+    
     function fermerModal() {
       document.getElementById('auth-overlay').classList.remove('visible');
       document.body.style.overflow = '';
     }
 
-    /** Fermer en cliquant sur le fond */
+    
     function fermerModalParFond(e) {
       if (e.target === document.getElementById('auth-overlay')) fermerModal();
     }
 
-    /** Fermer avec Échap */
+    
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') fermerModal();
     });
 
-    /**
-     * Changer d'onglet dans la modal
-     */
+    
     function changerOnglet(nom) {
       ['connexion', 'inscription'].forEach(n => {
         document.getElementById(`tab-${n}`).classList.toggle('actif', n === nom);
@@ -671,9 +713,6 @@
       });
     }
 
-    // ============================================================
-    // FORMULAIRE DE CONNEXION (étape 1)
-    // ============================================================
     document.getElementById('form-login').addEventListener('submit', async (e) => {
       e.preventDefault();
       const msgErr = document.getElementById('msg-erreur-login');
@@ -715,93 +754,286 @@
       }
     });
 
-    // ============================================================
-    // FORMULAIRE D'INSCRIPTION
-    // ============================================================
-    const errs = {
-      nom     : document.getElementById('err-nom'),
-      mdp     : document.getElementById('err-mdp'),
-      confirm : document.getElementById('err-confirm'),
-      otp     : document.getElementById('err-otp'),
-      question: document.getElementById('err-question'),
-      reponse : document.getElementById('err-reponse')
+    // ============================================
+    // INSCRIPTION — 3 étapes
+    // ============================================
+
+    const insSucc = document.getElementById('msg-succes-inscr');
+    const insErr  = document.getElementById('msg-erreur-inscr');
+
+    function insAfficherErr(msg) {
+      insErr.textContent = msg;
+      insErr.classList.add('visible');
+      insSucc.classList.remove('visible');
+    }
+
+    function insAfficherSucc(msg) {
+      insSucc.textContent = msg;
+      insSucc.classList.add('visible');
+      insErr.classList.remove('visible');
+    }
+
+    function insCacherMessages() {
+      insErr.classList.remove('visible');
+      insSucc.classList.remove('visible');
+    }
+
+    function insAllerEtape(n) {
+      insCacherMessages();
+      document.getElementById('ins-etape-1').style.display = n === 1 ? '' : 'none';
+      document.getElementById('ins-etape-2').style.display = n === 2 ? '' : 'none';
+      document.getElementById('ins-etape-3').style.display = n === 3 ? '' : 'none';
+
+      [1, 2, 3].forEach(i => {
+        const c = document.getElementById('ins-ind-' + i);
+        const l = document.getElementById('ins-lbl-' + i);
+        if (i < n)      { c.className = 'mfa-cercle vert'; c.textContent = '✓'; l.className = 'mfa-label valide'; }
+        else if (i ===n){ c.className = 'mfa-cercle or';   c.textContent = i;   l.className = 'mfa-label active'; }
+        else            { c.className = 'mfa-cercle gris'; c.textContent = i;   l.className = 'mfa-label'; }
+      });
+
+      if (n >= 2) document.getElementById('ins-ligne-1').classList.add('valide');
+      else        document.getElementById('ins-ligne-1').classList.remove('valide');
+      if (n >= 3) document.getElementById('ins-ligne-2').classList.add('valide');
+      else        document.getElementById('ins-ligne-2').classList.remove('valide');
+    }
+
+    // Réinitialiser l'inscription quand on change d'onglet
+    const _changerOngletOriginal = changerOnglet;
+    changerOnglet = function(nom) {
+      _changerOngletOriginal(nom);
+      if (nom === 'inscription') insAllerEtape(1);
     };
 
-    function afficherErrChamp(cle, msg) {
-      errs[cle].textContent = msg;
-      errs[cle].classList.add('visible');
-    }
-
-    function reinitErrs() {
-      Object.values(errs).forEach(el => {
-        el.textContent = '';
-        el.classList.remove('visible');
-      });
-      document.getElementById('msg-erreur-inscr').classList.remove('visible');
-      document.getElementById('msg-succes-inscr').classList.remove('visible');
-    }
-
-    document.getElementById('form-inscription').addEventListener('submit', async (e) => {
+    // --- Étape 1 : Email ---
+    document.getElementById('form-inscr-email').addEventListener('submit', async (e) => {
       e.preventDefault();
-      reinitErrs();
+      insCacherMessages();
+      const errEl = document.getElementById('err-email-inscr');
+      errEl.textContent = ''; errEl.classList.remove('visible');
 
-      const nom      = document.getElementById('nom-inscr').value.trim();
-      const mdp      = document.getElementById('mdp-inscr').value;
-      const confirm  = document.getElementById('confirm-inscr').value;
-      const otp      = document.getElementById('otp-inscr').value;
-      const question = document.getElementById('question-inscr').value;
-      const reponse  = document.getElementById('reponse-inscr').value.trim();
-      const btn      = document.getElementById('btn-inscrire');
-      const msgSucc  = document.getElementById('msg-succes-inscr');
-      const msgErr   = document.getElementById('msg-erreur-inscr');
+      const email = document.getElementById('email-inscr').value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errEl.textContent = 'Adresse email invalide';
+        errEl.classList.add('visible');
+        return;
+      }
 
-      // Validation client
-      let valide = true;
-      if (!nom)                                        { afficherErrChamp('nom',      'Obligatoire'); valide = false; }
-      if (!mdp)                                        { afficherErrChamp('mdp',      'Obligatoire'); valide = false; }
-      if (mdp !== confirm)                             { afficherErrChamp('confirm',  'Les mots de passe ne correspondent pas'); valide = false; }
-      if (!otp || !/^\d{6}$/.test(String(otp)))       { afficherErrChamp('otp',      'Exactement 6 chiffres requis'); valide = false; }
-      if (!question)                                   { afficherErrChamp('question', 'Choisissez une question'); valide = false; }
-      if (!reponse)                                    { afficherErrChamp('reponse',  'Obligatoire'); valide = false; }
-      if (!valide) return;
-
-      btn.disabled    = true;
-      btn.textContent = 'Inscription en cours…';
+      const btn = document.getElementById('btn-inscr-email');
+      btn.disabled = true; btn.textContent = 'Envoi en cours…';
 
       try {
-        const rep = await fetch('/auth/register', {
-          method : 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body   : JSON.stringify({
-            nom,
-            mot_de_passe            : mdp,
-            confirmer_mot_de_passe  : confirm,
-            otp_code                : otp,
-            question_secrete        : question,
-            reponse_secrete         : reponse
-          })
+        const rep  = await fetch('/auth/register/email', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
+        const data = await rep.json();
+        if (!rep.ok) {
+          insAfficherErr(data.erreur || 'Erreur lors de l\'envoi');
+        } else {
+          document.getElementById('ins-email-affiche').textContent = email;
+          insAllerEtape(2);
+          setTimeout(() => document.querySelector('.ins-otp').focus(), 100);
+        }
+      } catch { insAfficherErr('Erreur réseau.'); }
+      finally  { btn.disabled = false; btn.textContent = 'Envoyer le code de vérification'; }
+    });
+
+    // --- Étape 2 : OTP ---
+    const insOtpCases = document.querySelectorAll('.ins-otp');
+    insOtpCases.forEach((inp, idx) => {
+      inp.addEventListener('keypress', e => { if (!/[0-9]/.test(e.key)) e.preventDefault(); });
+      inp.addEventListener('input', () => {
+        inp.value = inp.value.replace(/\D/g,'').slice(-1);
+        if (inp.value && idx < insOtpCases.length - 1) insOtpCases[idx+1].focus();
+      });
+      inp.addEventListener('keydown', e => { if (e.key==='Backspace' && !inp.value && idx>0) insOtpCases[idx-1].focus(); });
+      inp.addEventListener('paste', e => {
+        e.preventDefault();
+        const t = (e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'').slice(0,6);
+        t.split('').forEach((c,i) => { if (insOtpCases[i]) insOtpCases[i].value = c; });
+        const last = Math.min(t.length-1, insOtpCases.length-1);
+        if (last >= 0) insOtpCases[last].focus();
+      });
+    });
+
+    document.getElementById('form-inscr-otp').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      insCacherMessages();
+      const otp_code = Array.from(insOtpCases).map(c => c.value).join('');
+      if (otp_code.length !== 6) { insAfficherErr('Veuillez saisir les 6 chiffres du code'); return; }
+
+      const btn = document.getElementById('btn-inscr-otp');
+      btn.disabled = true; btn.textContent = 'Vérification…';
+
+      try {
+        const rep  = await fetch('/auth/register/otp', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ otp_code }) });
+        const data = await rep.json();
+        if (!rep.ok) {
+          insAfficherErr(data.erreur || 'Code incorrect');
+          insOtpCases.forEach(c => c.value = ''); insOtpCases[0].focus();
+        } else {
+          insAllerEtape(3);
+          document.getElementById('nom-inscr').focus();
+        }
+      } catch { insAfficherErr('Erreur réseau.'); }
+      finally  { btn.disabled = false; btn.textContent = 'Vérifier le code'; }
+    });
+
+    let insTimerRenvoi = null;
+    function insDemarrerDelai() {
+      let s = 60;
+      document.getElementById('btn-inscr-renvoyer').style.display = 'none';
+      const rb = document.getElementById('ins-rebours');
+      rb.style.display = 'inline'; rb.textContent = `Renvoyer dans ${s}s`;
+      insTimerRenvoi = setInterval(() => {
+        s--;
+        if (s <= 0) { clearInterval(insTimerRenvoi); rb.style.display='none'; document.getElementById('btn-inscr-renvoyer').style.display='inline'; }
+        else rb.textContent = `Renvoyer dans ${s}s`;
+      }, 1000);
+    }
+
+    document.getElementById('btn-inscr-renvoyer').addEventListener('click', async () => {
+      insCacherMessages();
+      document.getElementById('btn-inscr-renvoyer').disabled = true;
+      try {
+        const rep  = await fetch('/auth/register/renvoyer', { method:'POST' });
+        const data = await rep.json();
+        if (!rep.ok) { insAfficherErr(data.erreur || 'Erreur'); document.getElementById('btn-inscr-renvoyer').disabled = false; }
+        else { insAfficherSucc('Nouveau code envoyé !'); insOtpCases.forEach(c=>c.value=''); insOtpCases[0].focus(); insDemarrerDelai(); }
+      } catch { insAfficherErr('Erreur réseau.'); document.getElementById('btn-inscr-renvoyer').disabled = false; }
+    });
+
+    document.getElementById('btn-inscr-retour').addEventListener('click', () => {
+      insOtpCases.forEach(c => c.value = '');
+      if (insTimerRenvoi) clearInterval(insTimerRenvoi);
+      document.getElementById('btn-inscr-renvoyer').style.display = 'inline';
+      document.getElementById('ins-rebours').style.display = 'none';
+      insAllerEtape(1);
+    });
+
+    // --- Étape 3 : Profil + Schéma ---
+    const insErrs = {
+      nom    : document.getElementById('err-nom-inscr'),
+      mdp    : document.getElementById('err-mdp-inscr'),
+      confirm: document.getElementById('err-confirm-inscr'),
+      schema : document.getElementById('err-schema-inscr')
+    };
+
+    function insAfficherErrChamp(cle, msg) { insErrs[cle].textContent = msg; insErrs[cle].classList.add('visible'); }
+    function insReinitErrsChamps() { Object.values(insErrs).forEach(el => { el.textContent=''; el.classList.remove('visible'); }); }
+
+    // Pattern Lock (modale)
+    let insSchCanvas, insSchCtx, insSchPos=[], insSchPattern=[], insSchDessin=false, insSchSouris=null, insSchErreur=false, insSchPhase='dessiner', insSchPremier=null;
+    const IS=200, IM=40, IH=18, ID=8, IHL=15;
+
+    function insSchInit() {
+      insSchCanvas = document.getElementById('ins-schema-canvas');
+      insSchCtx    = insSchCanvas.getContext('2d');
+      insSchPos    = [];
+      for(let r=0;r<3;r++) for(let c=0;c<3;c++) insSchPos.push({x:IM+c*(IS-2*IM)/2,y:IM+r*(IS-2*IM)/2,idx:r*3+c});
+      insSchPattern=[]; insSchDessin=false; insSchSouris=null; insSchErreur=false; insSchPhase='dessiner'; insSchPremier=null;
+
+      insSchCanvas.addEventListener('mousedown',  insSchDebut);
+      insSchCanvas.addEventListener('mousemove',  insSchMouvement);
+      insSchCanvas.addEventListener('mouseup',    insSchFin);
+      insSchCanvas.addEventListener('mouseleave', insSchFin);
+      insSchCanvas.addEventListener('touchstart', insSchDebut,    {passive:false});
+      insSchCanvas.addEventListener('touchmove',  insSchMouvement,{passive:false});
+      insSchCanvas.addEventListener('touchend',   insSchFin);
+
+      document.getElementById('ins-btn-sch-effacer').addEventListener('click', () => {
+        insSchPattern=[]; insSchDessin=false; insSchSouris=null; insSchErreur=false; insSchPhase='dessiner'; insSchPremier=null;
+        document.getElementById('ins-schema-hint').textContent='Dessinez votre schéma (minimum 4 points)';
+        insSchDessiner();
+      });
+      insSchDessiner();
+    }
+
+    function insSchDessiner(col) {
+      if(!insSchCtx) return;
+      insSchCtx.clearRect(0,0,IS,IS);
+      const c = col||(insSchErreur?'#e05555':'#c8a84b');
+      if(insSchPattern.length>1){
+        insSchCtx.beginPath(); insSchCtx.strokeStyle=insSchErreur?'rgba(224,85,85,0.7)':'rgba(200,168,75,0.7)'; insSchCtx.lineWidth=2; insSchCtx.lineCap='round';
+        insSchCtx.moveTo(insSchPos[insSchPattern[0]].x,insSchPos[insSchPattern[0]].y);
+        for(let i=1;i<insSchPattern.length;i++) insSchCtx.lineTo(insSchPos[insSchPattern[i]].x,insSchPos[insSchPattern[i]].y);
+        if(insSchDessin&&insSchSouris) insSchCtx.lineTo(insSchSouris.x,insSchSouris.y);
+        insSchCtx.stroke();
+      } else if(insSchPattern.length===1&&insSchDessin&&insSchSouris){
+        insSchCtx.beginPath(); insSchCtx.strokeStyle='rgba(200,168,75,0.4)'; insSchCtx.lineWidth=2;
+        insSchCtx.moveTo(insSchPos[insSchPattern[0]].x,insSchPos[insSchPattern[0]].y);
+        insSchCtx.lineTo(insSchSouris.x,insSchSouris.y); insSchCtx.stroke();
+      }
+      insSchPos.forEach(p=>{
+        const sel=insSchPattern.includes(p.idx);
+        if(sel){insSchCtx.beginPath();insSchCtx.arc(p.x,p.y,IHL,0,Math.PI*2);insSchCtx.fillStyle=insSchErreur?'rgba(224,85,85,0.18)':'rgba(200,168,75,0.18)';insSchCtx.fill();}
+        insSchCtx.beginPath();insSchCtx.arc(p.x,p.y,ID,0,Math.PI*2);
+        if(sel){insSchCtx.fillStyle=c;insSchCtx.fill();}
+        else{insSchCtx.strokeStyle='rgba(200,168,75,0.4)';insSchCtx.lineWidth=2;insSchCtx.stroke();insSchCtx.beginPath();insSchCtx.arc(p.x,p.y,3,0,Math.PI*2);insSchCtx.fillStyle='rgba(200,168,75,0.3)';insSchCtx.fill();}
+      });
+    }
+
+    function insSchGP(e){const rect=insSchCanvas.getBoundingClientRect();const sx=IS/rect.width,sy=IS/rect.height;const cx=e.touches?e.touches[0].clientX:e.clientX,cy=e.touches?e.touches[0].clientY:e.clientY;return{x:(cx-rect.left)*sx,y:(cy-rect.top)*sy};}
+    function insSchTrouver(pos){return insSchPos.find(p=>Math.hypot(p.x-pos.x,p.y-pos.y)<IH);}
+
+    function insSchDebut(e){e.preventDefault();insSchErreur=false;insSchPattern=[];insSchDessin=true;insSchSouris=insSchGP(e);const d=insSchTrouver(insSchSouris);if(d)insSchPattern.push(d.idx);insSchDessiner();}
+    function insSchMouvement(e){if(!insSchDessin)return;e.preventDefault();insSchSouris=insSchGP(e);const d=insSchTrouver(insSchSouris);if(d&&!insSchPattern.includes(d.idx))insSchPattern.push(d.idx);insSchDessiner();}
+    function insSchFin(){
+      if(!insSchDessin)return;insSchDessin=false;insSchSouris=null;
+      const h=document.getElementById('ins-schema-hint');
+      if(insSchPattern.length<4){insSchErreur=true;h.textContent='Trop court — minimum 4 points';insSchDessiner();}
+      else if(insSchPhase==='dessiner'){insSchPremier=insSchPattern.join('');insSchPattern=[];insSchPhase='confirmer';h.textContent='Confirmez votre schéma';insSchDessiner();}
+      else{
+        const c2=insSchPattern.join('');
+        if(c2!==insSchPremier){insSchErreur=true;h.textContent='Schémas différents — recommencez';insSchPattern=[];insSchPhase='dessiner';insSchPremier=null;insSchDessiner();}
+        else{h.textContent='Schéma confirmé !';insSchDessiner('#4caf50');}
+      }
+    }
+
+    // Initialiser la grille quand on arrive à l'étape 3
+    const _insAllerEtapeOrig = insAllerEtape;
+    insAllerEtape = function(n) {
+      _insAllerEtapeOrig(n);
+      if(n===3) setTimeout(insSchInit, 50);
+    };
+
+    document.getElementById('form-inscr-profil').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      insCacherMessages(); insReinitErrsChamps();
+
+      const nom     = document.getElementById('nom-inscr').value.trim();
+      const mdp     = document.getElementById('mdp-inscr').value;
+      const confirm = document.getElementById('confirm-inscr').value;
+
+      let valide = true;
+      if (!nom)           { insAfficherErrChamp('nom',     'Obligatoire'); valide = false; }
+      if (!mdp)           { insAfficherErrChamp('mdp',     'Obligatoire'); valide = false; }
+      if (mdp !== confirm){ insAfficherErrChamp('confirm', 'Les mots de passe ne correspondent pas'); valide = false; }
+      if (!insSchPremier || insSchPhase !== 'confirmer' || insSchPattern.join('') !== insSchPremier) {
+        insAfficherErrChamp('schema', 'Veuillez dessiner et confirmer votre schéma'); valide = false;
+      }
+      if (!valide) return;
+
+      const btn = document.getElementById('btn-inscrire');
+      btn.disabled = true; btn.textContent = 'Création en cours…';
+
+      try {
+        const rep  = await fetch('/auth/register', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ nom, mot_de_passe: mdp, confirmer_mot_de_passe: confirm, schema_secret: insSchPremier })
         });
-        const donnees = await rep.json();
+        const data = await rep.json();
 
         if (!rep.ok) {
-          const msg = donnees.erreur || 'Erreur lors de l\'inscription';
-          if (msg.includes('Nom')) { afficherErrChamp('nom', msg); }
-          else if (msg.includes('OTP')) { afficherErrChamp('otp', msg); }
-          else { msgErr.textContent = msg; msgErr.classList.add('visible'); }
+          const msg = data.erreur || 'Erreur';
+          if (msg.includes('Nom')) insAfficherErrChamp('nom', msg);
+          else if (msg.includes('correspondent')) insAfficherErrChamp('confirm', msg);
+          else insAfficherErr(msg);
         } else {
-          msgSucc.textContent = '✅ Compte créé ! Vous pouvez maintenant vous connecter.';
-          msgSucc.classList.add('visible');
-          document.getElementById('form-inscription').reset();
-          // Basculer vers l'onglet connexion après 2 secondes
-          setTimeout(() => changerOnglet('connexion'), 2000);
+          insAfficherSucc('Compte créé ! Vous pouvez maintenant vous connecter.');
+          document.getElementById('form-inscr-profil').reset();
+          setTimeout(() => { changerOnglet('connexion'); insAllerEtape(1); }, 2000);
         }
-      } catch {
-        msgErr.textContent = 'Erreur réseau. Vérifiez votre connexion.';
-        msgErr.classList.add('visible');
-      } finally {
-        btn.disabled    = false;
-        btn.textContent = 'S\'inscrire';
-      }
+      } catch { insAfficherErr('Erreur réseau.'); }
+      finally  { btn.disabled = false; btn.textContent = 'Créer mon compte'; }
     });
   </script>
 

@@ -11,33 +11,33 @@
   <div class="auth-wrapper">
     <div class="auth-box">
 
-      <!-- Logo -->
+      
       <div class="auth-logo">
         <h1>MaliXplore</h1>
         <p>Découvrez la richesse du Mali</p>
       </div>
 
-      <!-- Indicateur de progression MFA -->
+      
       <div class="mfa-indicateur" aria-label="Étapes de connexion MFA">
-        <!-- Étape 1 : validée (vert) -->
+        
         <div class="mfa-etape">
           <div class="mfa-cercle vert" aria-label="Étape 1 validée">✓</div>
           <span class="mfa-label valide">Identité</span>
         </div>
 
-        <!-- Ligne validée -->
+        
         <div class="mfa-ligne valide"></div>
 
-        <!-- Étape 2 : active (or) -->
+        
         <div class="mfa-etape">
           <div class="mfa-cercle or" aria-current="step">2</div>
           <span class="mfa-label active">OTP</span>
         </div>
 
-        <!-- Ligne en attente -->
+        
         <div class="mfa-ligne"></div>
 
-        <!-- Étape 3 : à venir (gris) -->
+        
         <div class="mfa-etape">
           <div class="mfa-cercle gris">3</div>
           <span class="mfa-label">Secret</span>
@@ -46,17 +46,18 @@
 
       <h2>Connexion — Étape 2</h2>
 
-      <p style="text-align:center; color:var(--bogo-sand); margin-bottom:1rem; font-size:0.9rem;">
-        Entrez votre code OTP personnel que vous avez défini à l'inscription
+      <p style="text-align:center; color:var(--bogo-sand); margin-bottom:0.5rem; font-size:0.9rem;">
+        Un code à 6 chiffres vient d'être envoyé à votre adresse email.
+      </p>
+      <p style="text-align:center; color:var(--bogo-sand); margin-bottom:1rem; font-size:0.85rem; opacity:0.8;">
+        Ce code expire dans <strong>10 minutes</strong>.
       </p>
 
-      <!-- Message d'erreur -->
+      <div id="msg-succes" class="message-succes" role="alert"></div>
       <div id="msg-erreur" class="message-erreur" role="alert"></div>
 
-      <!-- Formulaire OTP -->
       <form id="form-otp" novalidate>
 
-        <!-- 6 cases de saisie OTP -->
         <div class="otp-grille" aria-label="Saisie du code OTP à 6 chiffres">
           <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 1">
           <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 2">
@@ -66,38 +67,91 @@
           <input class="otp-chiffre" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Chiffre 6">
         </div>
 
-        <!-- Bouton -->
         <button type="submit" class="btn-primaire" id="btn-verifier">
           Vérifier
         </button>
 
       </form>
 
+      <div style="text-align:center; margin-top:1rem;">
+        <button id="btn-renvoyer" class="btn-secondaire" style="background:none;border:none;color:var(--bogo-sand);text-decoration:underline;cursor:pointer;font-size:0.9rem;">
+          Renvoyer le code
+        </button>
+        <span id="compte-rebours" style="display:none; color:var(--bogo-sand); font-size:0.85rem; opacity:0.7;"></span>
+      </div>
+
     </div>
   </div>
 
   <script>
-    const form       = document.getElementById('form-otp');
-    const btnVerif   = document.getElementById('btn-verifier');
-    const msgErreur  = document.getElementById('msg-erreur');
-    const cases      = document.querySelectorAll('.otp-chiffre');
+    const form          = document.getElementById('form-otp');
+    const btnVerif      = document.getElementById('btn-verifier');
+    const msgErreur     = document.getElementById('msg-erreur');
+    const msgSucces     = document.getElementById('msg-succes');
+    const btnRenvoyer   = document.getElementById('btn-renvoyer');
+    const compteRebours = document.getElementById('compte-rebours');
+    const cases         = document.querySelectorAll('.otp-chiffre');
 
-    // ── Focus automatique sur la première case au chargement ──
     cases[0].focus();
 
-    // ── Gestion de la navigation entre les cases OTP ──────────
+    // --- Bouton renvoyer avec délai 60s ---
+    let timerRenvoi = null;
+
+    function demarrerDelaiRenvoi() {
+      let secondes = 60;
+      btnRenvoyer.style.display = 'none';
+      compteRebours.style.display = 'inline';
+      compteRebours.textContent = `Renvoyer dans ${secondes}s`;
+
+      timerRenvoi = setInterval(() => {
+        secondes--;
+        if (secondes <= 0) {
+          clearInterval(timerRenvoi);
+          compteRebours.style.display = 'none';
+          btnRenvoyer.style.display   = 'inline';
+        } else {
+          compteRebours.textContent = `Renvoyer dans ${secondes}s`;
+        }
+      }, 1000);
+    }
+
+    btnRenvoyer.addEventListener('click', async () => {
+      msgErreur.classList.remove('visible');
+      msgSucces.classList.remove('visible');
+      btnRenvoyer.disabled = true;
+
+      try {
+        const reponse = await fetch('/auth/otp/renvoyer', { method: 'POST' });
+        const donnees = await reponse.json();
+
+        if (!reponse.ok) {
+          msgErreur.textContent = donnees.erreur || 'Erreur lors du renvoi';
+          msgErreur.classList.add('visible');
+          if (donnees.redirect) window.location.href = donnees.redirect;
+        } else {
+          msgSucces.textContent = 'Nouveau code envoyé par email !';
+          msgSucces.classList.add('visible');
+          cases.forEach(c => c.value = '');
+          cases[0].focus();
+          demarrerDelaiRenvoi();
+        }
+      } catch {
+        msgErreur.textContent = 'Erreur réseau. Vérifiez votre connexion.';
+        msgErreur.classList.add('visible');
+        btnRenvoyer.disabled = false;
+      }
+    });
+
     cases.forEach((input, index) => {
 
-      // N'autoriser que les chiffres
       input.addEventListener('keypress', (e) => {
         if (!/[0-9]/.test(e.key)) {
           e.preventDefault();
         }
       });
 
-      // Avancer automatiquement à la case suivante après saisie
       input.addEventListener('input', (e) => {
-        // Conserver uniquement le dernier chiffre saisi
+
         input.value = input.value.replace(/\D/g, '').slice(-1);
 
         if (input.value && index < cases.length - 1) {
@@ -105,14 +159,12 @@
         }
       });
 
-      // Gestion de la touche Retour arrière
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Backspace' && !input.value && index > 0) {
           cases[index - 1].focus();
         }
       });
 
-      // Gestion du collage d'un code complet
       input.addEventListener('paste', (e) => {
         e.preventDefault();
         const colle = (e.clipboardData || window.clipboardData)
@@ -124,18 +176,15 @@
           if (cases[i]) cases[i].value = chiffre;
         });
 
-        // Focus sur la dernière case remplie
         const dernier = Math.min(colle.length - 1, cases.length - 1);
         if (dernier >= 0) cases[dernier].focus();
       });
     });
 
-    // ── Soumission du formulaire OTP ───────────────────────────
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       msgErreur.classList.remove('visible');
 
-      // Assembler le code OTP depuis les 6 cases
       const otp_code = Array.from(cases).map(c => c.value).join('');
 
       if (otp_code.length !== 6 || !/^\d{6}$/.test(otp_code)) {
@@ -160,16 +209,14 @@
           msgErreur.textContent = donnees.erreur || 'Code OTP incorrect';
           msgErreur.classList.add('visible');
 
-          // Vider les cases et refocaliser sur la première
           cases.forEach(c => c.value = '');
           cases[0].focus();
 
-          // Si session invalide, rediriger vers l'accueil
           if (donnees.redirect) {
             setTimeout(() => { window.location.href = donnees.redirect; }, 1500);
           }
         } else {
-          // Rediriger vers l'étape 3 (question secrète)
+
           window.location.href = donnees.redirect || '/secret.html';
         }
 
